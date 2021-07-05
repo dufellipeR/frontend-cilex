@@ -5,7 +5,6 @@ import { Link, useHistory } from 'react-router-dom';
 import { FiHome, FiPower } from 'react-icons/fi';
 import chefChoose from '../../assets/chefChoose.svg';
 import { useAuth } from '../../hooks/auth';
-import { useToast } from '../../hooks/toast';
 
 import Button from '../../components/Button';
 

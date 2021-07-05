@@ -17,7 +17,6 @@ import {
   HiOutlineUserGroup,
 } from 'react-icons/hi';
 import { useAuth } from '../../hooks/auth';
-import { useToast } from '../../hooks/toast';
 
 import Button from '../../components/Button';
 

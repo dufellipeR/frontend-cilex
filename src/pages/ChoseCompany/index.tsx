@@ -11,7 +11,6 @@ import { FiPower } from 'react-icons/fi';
 import { HiOutlineOfficeBuilding } from 'react-icons/hi';
 import chooseSvg from '../../assets/town.svg';
 import { useAuth } from '../../hooks/auth';
-import { useToast } from '../../hooks/toast';
 
 import Button from '../../components/Button';
 

@@ -8,7 +8,7 @@ import * as Yup from 'yup';
 import { FormHandles } from '@unform/core';
 import { Link, useHistory, useLocation } from 'react-router-dom';
 import getValidationErrors from '../../utils/getValidationErrors';
-import { useToast } from '../../hooks/toast';
+import { toast } from 'react-toastify';
 
 import Input from '../../components/Input';
 import Button from '../../components/Button';
@@ -26,8 +26,6 @@ const ResetPassword: React.FC = () => {
 
   const location = useLocation();
   const history = useHistory();
-
-  const { addToast } = useToast();
 
   const handleSubmit = useCallback(
     async (data: ResetPasswordFormData) => {
@@ -70,14 +68,10 @@ const ResetPassword: React.FC = () => {
           return;
         }
 
-        addToast({
-          type: 'info',
-          title: 'Erro ao resetar senha',
-          description: 'Ocorreu um erro ao resetar sua senha, tente novamente.',
-        });
+        toast.info('Erro ao resetar senha! Ocorreu um erro ao resetar sua senha, tente novamente.')
       }
     },
-    [addToast, history, location.search],
+    [history, location.search],
   );
   return (
     <>

@@ -13,7 +13,7 @@ import {
   HiOutlineTrash,
 } from 'react-icons/hi';
 import { useAuth } from '../../hooks/auth';
-import { useToast } from '../../hooks/toast';
+import { toast } from 'react-toastify';
 
 import Button from '../../components/Button';
 
@@ -68,8 +68,6 @@ const EditCompany: React.FC = () => {
 
   const { id } = useParams();
 
-  const { addToast } = useToast();
-
   const [editting, setEditting] = useState<boolean>(false);
 
   const [company, setCompany] = useState<IRegisterForm | null>(null);
@@ -117,11 +115,7 @@ const EditCompany: React.FC = () => {
         });
 
         api.put(`/company/${id}`, data).then(() => {
-          addToast({
-            type: 'success',
-            title: 'Atualizado com sucesso',
-          });
-
+          toast.success('Atualizado com sucesso');
           history.push('/company');
         });
       } catch (err) {
@@ -132,14 +126,10 @@ const EditCompany: React.FC = () => {
           return;
         }
 
-        addToast({
-          type: 'error',
-          title: 'Erro no registro da empresa',
-          description: 'Ocorreu um erro ao fazer login, cheque as credenciais',
-        });
+        toast.error('Erro no registro da empresa! Ocorreu um erro ao fazer login, cheque as credenciais');
       }
     },
-    [addToast, history, id],
+    [history, id],
   );
 
   useEffect(() => {

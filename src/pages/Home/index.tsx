@@ -16,7 +16,6 @@ import {
 } from 'react-icons/fi';
 import chooseSvg from '../../assets/road-sign.svg';
 import { useAuth } from '../../hooks/auth';
-import { useToast } from '../../hooks/toast';
 
 import Button from '../../components/Button';
 

@@ -14,7 +14,7 @@ import { Form } from '@unform/web';
 import { FormHandles } from '@unform/core';
 import { HiOutlineArrowLeft } from 'react-icons/hi';
 import { useAuth } from '../../hooks/auth';
-import { useToast } from '../../hooks/toast';
+import { toast } from 'react-toastify';
 
 import Button from '../../components/Button';
 
@@ -42,8 +42,6 @@ const RegisterPeople: React.FC = () => {
 
   const history = useHistory();
   const { user } = useAuth();
-
-  const { addToast } = useToast();
 
   const handleLogout = useCallback((): void => {
     history.push('/');
@@ -79,11 +77,7 @@ const RegisterPeople: React.FC = () => {
         });
 
         api.post('/company', data).then((response) => {
-          addToast({
-            type: 'success',
-            title: 'Registrado com sucesso',
-          });
-
+          toast.success('Registrado com sucesso');
           history.push('/company');
         });
       } catch (err) {
@@ -94,14 +88,10 @@ const RegisterPeople: React.FC = () => {
           return;
         }
 
-        addToast({
-          type: 'error',
-          title: 'Erro no registro da empresa',
-          description: 'Ocorreu um erro ao fazer login, cheque as credenciais',
-        });
+        toast.error('Erro no registro da empresa! Ocorreu um erro ao fazer login, cheque as credenciais');
       }
     },
-    [addToast, history],
+    [history],
   );
 
   return (

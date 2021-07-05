@@ -11,7 +11,7 @@ import solutionSvg from '../../assets/solution.svg';
 
 import getValidationErrors from '../../utils/getValidationErrors';
 import { useAuth } from '../../hooks/auth';
-import { useToast } from '../../hooks/toast';
+import { toast } from 'react-toastify';
 
 import Input from '../../components/Input';
 import Button from '../../components/Button';
@@ -28,8 +28,7 @@ const SignIn: React.FC = () => {
 
   const history = useHistory();
 
-  const { signIn } = useAuth();
-  const { addToast } = useToast();
+  // const { signIn } = useAuth();
 
   const handleSubmit = useCallback(
     async (data: SignInFormData) => {
@@ -44,12 +43,13 @@ const SignIn: React.FC = () => {
           abortEarly: false,
         });
 
-        await signIn({
-          username: data.username,
-          password: data.password,
-        });
+        // await signIn({
+        //   username: data.username,
+        //   password: data.password,
+        // });
 
-        history.push('/chosecompany');
+        // history.push('/chosecompany');
+        toast.success('Autenticado!')
       } catch (err) {
         if (err instanceof Yup.ValidationError) {
           const errors = getValidationErrors(err);
@@ -58,14 +58,10 @@ const SignIn: React.FC = () => {
           return;
         }
 
-        addToast({
-          type: 'error',
-          title: 'Erro na autenticação',
-          description: 'Ocorreu um erro ao fazer login, cheque as credenciais',
-        });
+        toast.error('Erro na autenticação! Ocorreu um erro ao fazer login, cheque as credenciais')
       }
     },
-    [signIn, addToast, history],
+    [/* signIn, */ history],
   );
   return (
     <>

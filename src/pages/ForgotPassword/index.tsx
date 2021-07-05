@@ -7,7 +7,7 @@ import * as Yup from 'yup';
 import { FormHandles } from '@unform/core';
 import { Link } from 'react-router-dom';
 import getValidationErrors from '../../utils/getValidationErrors';
-import { useToast } from '../../hooks/toast';
+import { toast } from 'react-toastify';
 
 import Input from '../../components/Input';
 import Button from '../../components/Button';
@@ -22,8 +22,6 @@ interface ForgotPasswordFormData {
 const ForgotPassword: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const formRef = useRef<FormHandles>(null);
-
-  const { addToast } = useToast();
 
   const handleSubmit = useCallback(
     async (data: ForgotPasswordFormData) => {
@@ -45,13 +43,7 @@ const ForgotPassword: React.FC = () => {
           email: data.email,
         });
 
-        addToast({
-          type: 'success',
-          title: 'E-mail de recuperação enviado',
-          description: `Enviamos um e-mail para confirmar a recuperação de senha,
-           cheque sua caixa de entrada`,
-        });
-
+        toast.success('E-mail de recuperação enviado! Enviamos um e-mail para confirmar a recuperação de senha, cheque sua caixa de entrada')
         // history.push('/dashboard');
       } catch (err) {
         if (err instanceof Yup.ValidationError) {
@@ -61,17 +53,12 @@ const ForgotPassword: React.FC = () => {
           return;
         }
 
-        addToast({
-          type: 'info',
-          title: 'Erro na recuperação de senha',
-          description: `Ocorreu um erro ao tentar realizar a recuperação de senha,
-            tente novamente mais tarde`,
-        });
+        toast.info('Erro na recuperação de senha! Ocorreu um erro ao tentar realizar a recuperação de senha, tente novamente mais tarde')
       } finally {
         setLoading(false);
       }
     },
-    [addToast],
+    [],
   );
   return (
     <>
