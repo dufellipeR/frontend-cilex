@@ -1,6 +1,6 @@
 import React, { ButtonHTMLAttributes, useCallback } from 'react';
 import { HiOutlineSwitchVertical } from 'react-icons/hi';
-import { useHistory } from 'react-router';
+import { useHistory } from 'react-router-dom';
 
 import { Container } from './styles';
 

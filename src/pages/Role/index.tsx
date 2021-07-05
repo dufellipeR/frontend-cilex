@@ -29,7 +29,7 @@ const Role: React.FC = () => {
   const [items, setItems] = useState<IRole[]>([]);
 
   useEffect(() => {
-    api.get<IRole[]>('/role').then((response) => {
+    api.get<IRole[]>('/role').then(response => {
       setItems(response.data);
     });
   }, []);
@@ -67,7 +67,7 @@ const Role: React.FC = () => {
             <DefaultTable tbh={['Código', 'Cargo', 'Função']}>
               <tbody>
                 {items &&
-                  items.map((row) => (
+                  items.map(row => (
                     <tr key={row.id}>
                       <td>{row.code}</td>
                       <td>{row.role}</td>

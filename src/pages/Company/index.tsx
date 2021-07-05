@@ -30,7 +30,7 @@ const Company: React.FC = () => {
   const [companies, setCompanies] = useState<Icompany[]>([]);
 
   useEffect(() => {
-    api.get<Icompany[]>('/company').then((response) => {
+    api.get<Icompany[]>('/company').then(response => {
       setCompanies(response.data);
     });
   }, []);
@@ -70,7 +70,7 @@ const Company: React.FC = () => {
             >
               <tbody>
                 {companies &&
-                  companies.map((row) => (
+                  companies.map(row => (
                     <tr key={row.id}>
                       <td>{row.cod}</td>
                       <td>{row.cnpj}</td>

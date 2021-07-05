@@ -28,7 +28,7 @@ const Group: React.FC = () => {
   const [items, setItems] = useState<IGroup[]>([]);
 
   useEffect(() => {
-    api.get<IGroup[]>('/group').then((response) => {
+    api.get<IGroup[]>('/group').then(response => {
       setItems(response.data);
     });
   }, []);
@@ -66,7 +66,7 @@ const Group: React.FC = () => {
             <DefaultTable tbh={['Código', 'Descrição']}>
               <tbody>
                 {items &&
-                  items.map((row) => (
+                  items.map(row => (
                     <tr key={row.id}>
                       <td>{row.code}</td>
                       <td>{row.description}</td>

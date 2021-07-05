@@ -67,7 +67,7 @@ const ChoseCompany: React.FC = () => {
   }, []);
 
   useEffect(() => {
-    api.get<Icompany[]>('/company').then((response) => {
+    api.get<Icompany[]>('/company').then(response => {
       setCompanies(response.data);
       if (response.data.length === 0) {
         history.push('/company/register');
@@ -76,7 +76,7 @@ const ChoseCompany: React.FC = () => {
   }, [history]);
 
   useEffect(() => {
-    api.get<IUserCompany[]>(`/usercompany?user=${user.id}`).then((response) => {
+    api.get<IUserCompany[]>(`/usercompany?user=${user.id}`).then(response => {
       console.log(response.data);
 
       setUserCompanies(response.data);
@@ -118,7 +118,7 @@ const ChoseCompany: React.FC = () => {
           </Options>
           <Companies>
             {userCompanies &&
-              userCompanies.map((comp) => (
+              userCompanies.map(comp => (
                 <Company key={comp.id} type="button" onClick={handleChoice}>
                   <HiOutlineOfficeBuilding size={24} />
                   <span>

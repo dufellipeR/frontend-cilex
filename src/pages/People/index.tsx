@@ -31,7 +31,7 @@ const People: React.FC = () => {
   const [people, setPeople] = useState<IPerson[]>([]);
 
   useEffect(() => {
-    api.get<IPerson[]>('/person').then((response) => {
+    api.get<IPerson[]>('/person').then(response => {
       setPeople(response.data);
     });
   }, []);
@@ -69,7 +69,7 @@ const People: React.FC = () => {
             <DefaultTable tbh={['Código', 'CNPJ/CPF', 'Razão Social/Nome']}>
               <tbody>
                 {people &&
-                  people.map((row) => (
+                  people.map(row => (
                     <tr key={row.id}>
                       <td>{row.code}</td>
                       <td>{row.cnpj || row.cpf}</td>

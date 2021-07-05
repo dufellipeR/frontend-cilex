@@ -1,6 +1,5 @@
 import React from 'react';
-import { Switch, useLocation } from 'react-router-dom';
-// import { useTransition, animated } from 'react-spring';
+import { Switch } from 'react-router-dom';
 
 import Route from './Route';
 import ForgotPassword from '../pages/ForgotPassword';
@@ -23,24 +22,24 @@ const Routes: React.FC = () => {
   return (
     <Switch>
       <Route path="/" exact component={SignIn} />
-  
+
       <Route path="/chosecompany" component={ChoseCompany} />
       <Route path="/home" exact component={Home} />
       <Route path="/dashboard" component={Dashboard} />
       <Route path="/menu" component={Menu} />
-  
+
       <Route path="/company" exact component={Company} />
       <Route path="/company/register" component={RegisterCompany} />
       <Route path="/company/:id" component={EditCompany} />
-  
+
       <Route path="/people" exact component={People} />
       <Route path="/people/register" component={RegisterPeople} />
       <Route path="/people/:id" component={EditPeople} />
-  
+
       <Route path="/group" exact component={Group} />
-  
+
       <Route path="/role" exact component={Role} />
-  
+
       <Route path="/forgot-password" component={ForgotPassword} />
       <Route path="/reset-password" component={ResetPassword} />
     </Switch>

@@ -15,7 +15,7 @@ const DefaultTable: React.FC<TableProps> = ({ children, tbh, ...rest }) => {
     <Table>
       <thead>
         <TableHead>
-          {tbh && tbh.map((item) => <th key={item}>{item}</th>)}
+          {tbh && tbh.map(item => <th key={item}>{item}</th>)}
         </TableHead>
       </thead>
       {children}
