@@ -64,12 +64,10 @@ const SignIn: React.FC = () => {
     <>
       <Container>
         <ShowOff>
-          <main>
-            <h1>Cilex</h1>
-            <p>O cilex aumenta sua produtividade</p>
+          <h1>Cilex</h1>
+          <p>O cilex aumenta sua produtividade</p>
 
-            <img src={solutionSvg} alt="" srcSet="" />
-          </main>
+          <img src={solutionSvg} alt="" srcSet="" />
         </ShowOff>
         <AnimationContainer>
           <Form ref={formRef} onSubmit={handleSubmit}>
@@ -91,9 +89,9 @@ const SignIn: React.FC = () => {
               <span
                 style={{
                   marginLeft: `${30}%`,
-                  alignSelf: 'center',
                   justifyContent: 'space-evenly',
                   maxWidth: `${35}%`,
+                  alignItems: 'center',
                 }}
               >
                 <FiLogIn size={24} /> Entrar
