@@ -13,8 +13,8 @@ import {
 import { Form } from '@unform/web';
 import { FormHandles } from '@unform/core';
 import { HiOutlineArrowLeft } from 'react-icons/hi';
-import { useAuth } from '../../hooks/auth';
 import { toast } from 'react-toastify';
+import { useAuth } from '../../hooks/auth';
 
 import Button from '../../components/Button';
 
@@ -76,7 +76,7 @@ const RegisterPeople: React.FC = () => {
           abortEarly: false,
         });
 
-        api.post('/company', data).then((response) => {
+        api.post('/company', data).then(response => {
           toast.success('Registrado com sucesso');
           history.push('/company');
         });
@@ -88,7 +88,9 @@ const RegisterPeople: React.FC = () => {
           return;
         }
 
-        toast.error('Erro no registro da empresa! Ocorreu um erro ao fazer login, cheque as credenciais');
+        toast.error(
+          'Erro no registro da empresa! Ocorreu um erro ao fazer login, cheque as credenciais',
+        );
       }
     },
     [history],

@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { shade, opacify } from 'polished';
+import { shade } from 'polished';
 
 export const Container = styled.button`
   background: #ff8700;
@@ -22,7 +22,6 @@ export const Container = styled.button`
 
   span {
     display: flex;
-    flex-direction: row;
     justify-content: space-evenly;
     line-height: 1.2;
   }

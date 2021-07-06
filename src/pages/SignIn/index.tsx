@@ -1,17 +1,15 @@
 import React, { useCallback, useRef } from 'react';
-
 import { FiLogIn, FiLock, FiUser } from 'react-icons/fi';
 import { Form } from '@unform/web';
 import * as Yup from 'yup';
-
 import { FormHandles } from '@unform/core';
 import { Link, useHistory } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 import solutionSvg from '../../assets/solution.svg';
 
 import getValidationErrors from '../../utils/getValidationErrors';
-import { useAuth } from '../../hooks/auth';
-import { toast } from 'react-toastify';
+// import { useAuth } from '../../hooks/auth';
 
 import Input from '../../components/Input';
 import Button from '../../components/Button';
@@ -30,49 +28,46 @@ const SignIn: React.FC = () => {
 
   // const { signIn } = useAuth();
 
-  const handleSubmit = useCallback(
-    async (data: SignInFormData) => {
-      try {
-        formRef.current?.setErrors({});
-        const schema = Yup.object().shape({
-          username: Yup.string().required('Username obrigatório'),
-          password: Yup.string().required('Senha obrigatória'),
-        });
+  const handleSubmit = useCallback(async (data: SignInFormData) => {
+    try {
+      formRef.current?.setErrors({});
+      const schema = Yup.object().shape({
+        username: Yup.string().required('Username obrigatório'),
+        password: Yup.string().required('Senha obrigatória'),
+      });
 
-        await schema.validate(data, {
-          abortEarly: false,
-        });
+      await schema.validate(data, {
+        abortEarly: false,
+      });
 
-        // await signIn({
-        //   username: data.username,
-        //   password: data.password,
-        // });
+      // await signIn({
+      //   username: data.username,
+      //   password: data.password,
+      // });
 
-        // history.push('/chosecompany');
-        toast.success('Autenticado!')
-      } catch (err) {
-        if (err instanceof Yup.ValidationError) {
-          const errors = getValidationErrors(err);
-          formRef.current?.setErrors(errors);
+      // history.push('/chosecompany');
+      toast.success('Autenticado!');
+    } catch (err) {
+      if (err instanceof Yup.ValidationError) {
+        const errors = getValidationErrors(err);
+        formRef.current?.setErrors(errors);
 
-          return;
-        }
-
-        toast.error('Erro na autenticação! Ocorreu um erro ao fazer login, cheque as credenciais')
+        return;
       }
-    },
-    [/* signIn, */ history],
-  );
+
+      toast.error(
+        'Erro na autenticação! Ocorreu um erro ao fazer login, cheque as credenciais',
+      );
+    }
+  }, []);
   return (
     <>
       <Container>
         <ShowOff>
-          <main>
-            <h1>Cilex</h1>
-            <p>O cilex aumenta sua produtividade</p>
+          <h1>Cilex</h1>
+          <p>O cilex aumenta sua produtividade</p>
 
-            <img src={solutionSvg} alt="" srcSet="" />
-          </main>
+          <img src={solutionSvg} alt="" srcSet="" />
         </ShowOff>
         <AnimationContainer>
           <Form ref={formRef} onSubmit={handleSubmit}>
@@ -94,9 +89,9 @@ const SignIn: React.FC = () => {
               <span
                 style={{
                   marginLeft: `${30}%`,
-                  alignSelf: 'center',
                   justifyContent: 'space-evenly',
                   maxWidth: `${35}%`,
+                  alignItems: 'center',
                 }}
               >
                 <FiLogIn size={24} /> Entrar

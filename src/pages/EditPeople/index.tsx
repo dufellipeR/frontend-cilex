@@ -12,8 +12,8 @@ import {
   HiOutlinePencilAlt,
   HiOutlineTrash,
 } from 'react-icons/hi';
-import { useAuth } from '../../hooks/auth';
 import { toast } from 'react-toastify';
+import { useAuth } from '../../hooks/auth';
 
 import Button from '../../components/Button';
 
@@ -75,7 +75,7 @@ const EditPeople: React.FC = () => {
   const [companies, setCompanies] = useState<IOpt[]>([]);
 
   useEffect(() => {
-    api.get<IRegisterForm | null>(`/company/${id}`).then((response) => {
+    api.get<IRegisterForm | null>(`/company/${id}`).then(response => {
       setCompany(response.data);
     });
   }, [id]);
@@ -126,15 +126,17 @@ const EditPeople: React.FC = () => {
           return;
         }
 
-        toast.error('Erro no registro da empresa! Ocorreu um erro ao fazer login, cheque as credenciais');
+        toast.error(
+          'Erro no registro da empresa! Ocorreu um erro ao fazer login, cheque as credenciais',
+        );
       }
     },
     [history, id],
   );
 
   useEffect(() => {
-    api.get<Icompany[]>('/company').then((response) => {
-      const formatData: any[] = response.data.map((item) => {
+    api.get<Icompany[]>('/company').then(response => {
+      const formatData: any[] = response.data.map(item => {
         return {
           value: item.id,
           label: `${item.cod} - ${item.razao_social}`,

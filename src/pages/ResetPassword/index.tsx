@@ -7,8 +7,8 @@ import * as Yup from 'yup';
 
 import { FormHandles } from '@unform/core';
 import { Link, useHistory, useLocation } from 'react-router-dom';
-import getValidationErrors from '../../utils/getValidationErrors';
 import { toast } from 'react-toastify';
+import getValidationErrors from '../../utils/getValidationErrors';
 
 import Input from '../../components/Input';
 import Button from '../../components/Button';
@@ -68,7 +68,9 @@ const ResetPassword: React.FC = () => {
           return;
         }
 
-        toast.info('Erro ao resetar senha! Ocorreu um erro ao resetar sua senha, tente novamente.')
+        toast.info(
+          'Erro ao resetar senha! Ocorreu um erro ao resetar sua senha, tente novamente.',
+        );
       }
     },
     [history, location.search],
