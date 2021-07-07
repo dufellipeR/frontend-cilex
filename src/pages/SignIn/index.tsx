@@ -4,13 +4,12 @@ import * as Yup from 'yup';
 import { FormHandles } from '@unform/core';
 import { Link, useHistory } from 'react-router-dom';
 import { toast } from 'react-toastify';
-// eslint-disable-next-line import/no-extraneous-dependencies
 import { Formik } from 'formik';
 
+import api from '../../services/api';
 import solutionSvg from '../../assets/solution.svg';
 
 import getValidationErrors from '../../utils/getValidationErrors';
-// import { useAuth } from '../../hooks/auth';
 
 import Input from '../../components/Input';
 import Button from '../../components/Button';
@@ -32,20 +31,21 @@ const SignIn: React.FC = () => {
 
   const history = useHistory();
 
-  // const { signIn } = useAuth();
-
   const handleSubmitForm = useCallback(async (data: SignInFormData) => {
     try {
-      console.log('Username: ', data.username);
-      console.log('Password: ', data.password);
+      const response = await api.get('/users');
 
-      // await signIn({
-      //   username: data.username,
-      //   password: data.password,
-      // });
+      const hasUser = response.data.users.find(
+        (user: SignInFormData) =>
+          user.username === data.username && user.password === data.password,
+      );
 
-      // history.push('/chosecompany');
-      toast.success('Autenticado!');
+      if (hasUser) {
+        toast.success('Autenticado!');
+        history.push('/chosecompany');
+      } else {
+        toast.error('Usuário e/ou senha incorreto!');
+      }
     } catch (err) {
       if (err instanceof Yup.ValidationError) {
         const errors = getValidationErrors(err);
