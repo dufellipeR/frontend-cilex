@@ -10,13 +10,12 @@ import { Form } from '@unform/web';
 import * as Yup from 'yup';
 import { Link, useHistory } from 'react-router-dom';
 
+import { toast } from 'react-toastify';
 import Input from '../../components/Input';
 import Button from '../../components/Button';
 
 import getValidationErrors from '../../utils/getValidationErrors';
 import api from '../../services/api';
-
-import { toast } from 'react-toastify';
 
 import { Container, Content, AvatarInput } from './styles';
 import { useAuth } from '../../hooks/auth';
@@ -47,13 +46,13 @@ const Profile: React.FC = () => {
             .email('Digite um e-mail válido'),
           old_password: Yup.string(),
           password: Yup.string().when('old_password', {
-            is: (val) => !!val.length,
+            is: val => !!val.length,
             then: Yup.string().required('Campo Obrigatório'),
             otherwise: Yup.string(),
           }),
           password_confirmation: Yup.string()
             .when('old_password', {
-              is: (val) => !!val.length,
+              is: val => !!val.length,
               then: Yup.string().required('Campo Obrigatório'),
               otherwise: Yup.string(),
             })
@@ -64,13 +63,8 @@ const Profile: React.FC = () => {
           abortEarly: false,
         });
 
-        const {
-          name,
-          email,
-          old_password,
-          password,
-          password_confirmation,
-        } = data;
+        const { name, email, old_password, password, password_confirmation } =
+          data;
 
         const formData = {
           name,
@@ -90,7 +84,9 @@ const Profile: React.FC = () => {
 
         history.push('/dashboard');
 
-        toast.success('Perfil atualizado com succeso! Suas informações do perfil foram atualizadas com sucesso!');
+        toast.success(
+          'Perfil atualizado com succeso! Suas informações do perfil foram atualizadas com sucesso!',
+        );
       } catch (err) {
         if (err instanceof Yup.ValidationError) {
           const errors = getValidationErrors(err);
@@ -99,28 +95,27 @@ const Profile: React.FC = () => {
           return;
         }
 
-        toast.error('Erro na atualização! Ocorreu um erro ao atualziar perfil, tente novamente.')
+        toast.error(
+          'Erro na atualização! Ocorreu um erro ao atualziar perfil, tente novamente.',
+        );
       }
     },
     [history],
   );
 
-  const handleAvatarChange = useCallback(
-    (e: ChangeEvent<HTMLInputElement>) => {
-      if (e.target.files) {
-        const data = new FormData();
+  const handleAvatarChange = useCallback((e: ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files) {
+      const data = new FormData();
 
-        data.append('avatar', e.target.files[0]);
+      data.append('avatar', e.target.files[0]);
 
-        api.patch('/users/avatar', data).then((response) => {
-          updateUser(response.data);
+      api.patch('/users/avatar', data).then(response => {
+        updateUser(response.data);
 
-          toast.success('Avatar atualizado!')
-        });
-      }
-    },
-    [],
-  );
+        toast.success('Avatar atualizado!');
+      });
+    }
+  }, []);
   return (
     <>
       <Container>
@@ -159,7 +154,6 @@ const Profile: React.FC = () => {
             />
 
             <Input
-              containerStyle={{ marginTop: 24 }}
               icon={FiLock}
               name="old_password"
               type="password"
