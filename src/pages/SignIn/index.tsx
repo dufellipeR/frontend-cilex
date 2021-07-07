@@ -1,10 +1,11 @@
 import React, { useCallback, useRef } from 'react';
 import { FiLogIn, FiLock, FiUser } from 'react-icons/fi';
-import { Form } from '@unform/web';
 import * as Yup from 'yup';
 import { FormHandles } from '@unform/core';
 import { Link, useHistory } from 'react-router-dom';
 import { toast } from 'react-toastify';
+// eslint-disable-next-line import/no-extraneous-dependencies
+import { Formik } from 'formik';
 
 import solutionSvg from '../../assets/solution.svg';
 
@@ -21,6 +22,11 @@ interface SignInFormData {
   password: string;
 }
 
+const formSchemaLogin = Yup.object().shape({
+  username: Yup.string().required('Username obrigatório'),
+  password: Yup.string().required('Senha obrigatória'),
+});
+
 const SignIn: React.FC = () => {
   const formRef = useRef<FormHandles>(null);
 
@@ -28,17 +34,10 @@ const SignIn: React.FC = () => {
 
   // const { signIn } = useAuth();
 
-  const handleSubmit = useCallback(async (data: SignInFormData) => {
+  const handleSubmitForm = useCallback(async (data: SignInFormData) => {
     try {
-      formRef.current?.setErrors({});
-      const schema = Yup.object().shape({
-        username: Yup.string().required('Username obrigatório'),
-        password: Yup.string().required('Senha obrigatória'),
-      });
-
-      await schema.validate(data, {
-        abortEarly: false,
-      });
+      console.log('Username: ', data.username);
+      console.log('Password: ', data.password);
 
       // await signIn({
       //   username: data.username,
@@ -70,36 +69,53 @@ const SignIn: React.FC = () => {
           <img src={solutionSvg} alt="" srcSet="" />
         </ShowOff>
         <AnimationContainer>
-          <Form ref={formRef} onSubmit={handleSubmit}>
-            <Input
-              icon={FiUser}
-              name="username"
-              type="text"
-              placeholder="Nome"
-            />
+          <Formik
+            initialValues={{
+              username: '',
+              password: '',
+            }}
+            validationSchema={formSchemaLogin}
+            onSubmit={handleSubmitForm}
+          >
+            {({ handleChange, values, errors, handleSubmit }) => (
+              <form onSubmit={handleSubmit}>
+                <Input
+                  icon={FiUser}
+                  name="username"
+                  type="text"
+                  placeholder="Nome"
+                  value={values.username}
+                  onChange={handleChange('username')}
+                  messageError={errors.username && errors.username}
+                />
 
-            <Input
-              icon={FiLock}
-              name="password"
-              type="password"
-              placeholder="Senha"
-            />
+                <Input
+                  icon={FiLock}
+                  name="password"
+                  type="password"
+                  placeholder="Senha"
+                  value={values.password}
+                  onChange={handleChange('password')}
+                  messageError={errors.password && errors.password}
+                />
 
-            <Button type="submit">
-              <span
-                style={{
-                  marginLeft: `${30}%`,
-                  justifyContent: 'space-evenly',
-                  maxWidth: `${35}%`,
-                  alignItems: 'center',
-                }}
-              >
-                <FiLogIn size={24} /> Entrar
-              </span>
-            </Button>
+                <Button type="submit">
+                  <span
+                    style={{
+                      marginLeft: `${30}%`,
+                      justifyContent: 'space-evenly',
+                      maxWidth: `${35}%`,
+                      alignItems: 'center',
+                    }}
+                  >
+                    <FiLogIn size={24} /> Entrar
+                  </span>
+                </Button>
 
-            <Link to="/forgot-password">Esqueceu a senha ?</Link>
-          </Form>
+                <Link to="/forgot-password">Esqueceu a senha ?</Link>
+              </form>
+            )}
+          </Formik>
         </AnimationContainer>
       </Container>
     </>
