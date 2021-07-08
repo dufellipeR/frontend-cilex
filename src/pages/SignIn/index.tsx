@@ -77,7 +77,7 @@ const SignIn: React.FC = () => {
             validationSchema={formSchemaLogin}
             onSubmit={handleSubmitForm}
           >
-            {({ handleChange, values, errors, handleSubmit }) => (
+            {({ handleChange, touched, values, errors, handleSubmit }) => (
               <form onSubmit={handleSubmit}>
                 <Input
                   icon={FiUser}
@@ -86,7 +86,9 @@ const SignIn: React.FC = () => {
                   placeholder="Nome"
                   value={values.username}
                   onChange={handleChange('username')}
-                  messageError={errors.username && errors.username}
+                  messageError={
+                    errors.username && touched.username ? errors.username : ''
+                  }
                 />
 
                 <Input
@@ -96,7 +98,9 @@ const SignIn: React.FC = () => {
                   placeholder="Senha"
                   value={values.password}
                   onChange={handleChange('password')}
-                  messageError={errors.password && errors.password}
+                  messageError={
+                    errors.password && touched.password ? errors.password : ''
+                  }
                 />
 
                 <Button type="submit">

@@ -1,7 +1,12 @@
 import styled, { css } from 'styled-components';
 import Tooltip from '../Tooltip';
 
-export const Container = styled.div`
+interface ContainerStatusProps {
+  isFocus: boolean;
+  isError: boolean;
+}
+
+export const Container = styled.div<ContainerStatusProps>`
   border: 2px solid #666360;
   border-radius: 10px;
 
@@ -10,6 +15,18 @@ export const Container = styled.div`
 
   display: flex;
   align-items: center;
+
+  ${props =>
+    props.isFocus &&
+    css`
+      border-color: var(--primary-color);
+    `}
+
+  ${props =>
+    props.isError &&
+    css`
+      border-color: #c53030;
+    `}
 
   & + div {
     margin-top: 0.5rem;
@@ -28,6 +45,18 @@ export const Container = styled.div`
 
   svg {
     margin-right: 16px;
+
+    ${props =>
+      props.isFocus &&
+      css`
+        color: var(--primary-color);
+      `}
+
+    ${props =>
+      props.isError &&
+      css`
+        color: #c53030;
+      `}
   }
 `;
 
