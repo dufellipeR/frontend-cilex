@@ -19,9 +19,9 @@ import {
   Header,
   Options,
   Greetings,
+  Main,
   Companies,
   Company,
-  Main,
 } from './styles';
 import OutlinedButton from '../../components/OutlinedButton';
 import api from '../../services/api';
@@ -82,6 +82,14 @@ const ChoseCompany: React.FC = () => {
   //     setUserCompanies(response.data);
   //   });
   // }, [user.id]);
+
+  useEffect(() => {
+    console.log('teste');
+    api.get(`/usercompany`).then(response => {
+      setUserCompanies(response.data.companies);
+      console.log(response.data.companies);
+    });
+  }, []);
 
   const handleLogout = useCallback((): void => {
     history.push('/');

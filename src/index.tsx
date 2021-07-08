@@ -6,6 +6,7 @@ import App from './App';
 createServer({
   models: {
     user: Model,
+    company: Model,
   },
 
   seeds(server) {
@@ -17,6 +18,18 @@ createServer({
           password: '123',
         },
       ],
+      companies: [
+        {
+          id: '1',
+          cod: '123',
+          razao_social: 'Exon',
+        },
+        {
+          id: '2',
+          cod: '456',
+          razao_social: 'Exon 2',
+        },
+      ],
     });
   },
 
@@ -25,6 +38,10 @@ createServer({
 
     this.get('/users', () => {
       return this.schema.all('user');
+    });
+
+    this.get('/usercompany', () => {
+      return this.schema.all('company');
     });
   },
 });
