@@ -31,20 +31,43 @@ export const Header = styled.div`
   display: grid;
   grid-template-columns: 0.2fr 1fr 0.3fr;
   text-align: center;
-  margin-top: 30px;
-  position: -webkit-sticky; /* Safari */
-  position: sticky;
-  top: 0;
-  background-color: #fefefe;
+  align-items: center;
+  margin-top: 1rem;
 
-  button {
-    max-width: 100px;
-  }
+  padding: 0 1rem;
 
   h1 {
     font-size: 2.5rem;
-    margin-bottom: 10px;
+    margin-bottom: 0.6rem;
     color: #ff7a00;
+  }
+
+  #container-buttons {
+    display: flex;
+    gap: 1rem;
+
+    button {
+      max-width: 6.25rem;
+      margin: 0 auto;
+    }
+  }
+`;
+
+export const Greetings = styled.div`
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+
+  h2 {
+    font-size: 2.5rem;
+    color: #161616;
+  }
+
+  @media (max-width: 900px) {
+    h2 {
+      font-size: 1.5rem;
+    }
   }
 `;
 
@@ -56,6 +79,7 @@ export const Main = styled.main`
   grid-row-gap: 20px;
   margin-left: 2%;
   margin-right: 1%;
+  justify-content: center;
 `;
 
 export const Module = styled(Link)`
@@ -77,19 +101,6 @@ export const Module = styled(Link)`
 
   &:hover {
     background-color: rgba(255, 122, 0, 0.3);
-  }
-`;
-
-export const Greetings = styled.div`
-  margin-right: 5px;
-  h2 {
-    margin-bottom: 5px;
-    font-size: 3vw;
-  }
-
-  h3 {
-    margin-bottom: 15px;
-    font-size: 1.5vw;
   }
 `;
 
