@@ -42,7 +42,7 @@ const Menu: React.FC = () => {
           <Greetings>
             <h2>Menu</h2>
           </Greetings>
-          <div style={{ display: 'flex', justifyContent: 'space-evenly' }}>
+          <div id="container-buttons">
             <Button onClick={() => handleHome()}>
               <FiHome size={24} />{' '}
             </Button>
