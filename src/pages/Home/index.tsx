@@ -73,7 +73,7 @@ const Home: React.FC = () => {
               <h3>{`${date[0]}, ${date[1]} de ${date[2]} de ${date[3]}`}</h3>
             )}
 
-            <p>O que vamos fazer hoje ? </p>
+            <p>O que vamos fazer hoje? </p>
           </Greetings>
           <OutlinedButton onClick={() => handleLogout()}>
             <FiPower size={24} />
@@ -81,17 +81,15 @@ const Home: React.FC = () => {
         </Header>
         <Options>
           <Button onClick={() => handleMenu()}>
-            <span>
-              <FiArrowLeft size={24} />
-              Sistema
-            </span>
+            <FiArrowLeft size={24} />
+            <span>Sistema</span>
           </Button>
-          <img src={chooseSvg} alt="" />
+          <div id="container-img">
+            <img src={chooseSvg} alt="" />
+          </div>
           <Button onClick={() => handleDashboard()}>
-            <span>
-              Dashboard
-              <FiArrowRight size={24} />
-            </span>
+            <span>Dashboard</span>
+            <FiArrowRight size={24} />
           </Button>
         </Options>
       </Container>

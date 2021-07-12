@@ -41,7 +41,6 @@ const SignIn: React.FC = () => {
       );
 
       if (hasUser) {
-        toast.success('Autenticado!');
         history.push('/chosecompany');
       } else {
         toast.error('Usuário e/ou senha incorreto!');
