@@ -2,7 +2,9 @@ import { createGlobalStyle } from 'styled-components';
 
 export default createGlobalStyle`
   :root {
-    --primary-color: #e57900;
+    --primary-color: #ff7a00;
+    --primary-color-hover: RGBA(255,122,0,0.2);
+    --green-color: #8DC73E;
   }
 
   * {
@@ -38,5 +40,21 @@ export default createGlobalStyle`
 
   button {
     cursor: pointer;
+  }
+
+  .button-filled {
+    background: var(--primary-color);
+    color: #fff;
+  }
+
+  .button-outline {
+    background: rgba(0, 0, 0, 0);
+    color: var(--primary-color);
+    border: 1px solid var(--primary-color);
+  }
+
+  .button-green {
+    background-color: var(--green-color);
+    color: #fff;
   }
 `;

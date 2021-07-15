@@ -98,7 +98,9 @@ const ResetPassword: React.FC = () => {
                 placeholder="Confirmação da senha"
               />
 
-              <Button type="submit"> Alterar Senha</Button>
+              <Button type="submit" layoutColor="button-filled">
+                Alterar Senha
+              </Button>
 
               <Link to="/forgot-password">Esqueci minha senha</Link>
             </Form>

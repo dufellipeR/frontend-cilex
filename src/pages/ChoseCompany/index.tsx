@@ -19,11 +19,10 @@ import {
   Header,
   Options,
   Greetings,
+  Main,
   Companies,
   Company,
-  Main,
 } from './styles';
-import OutlinedButton from '../../components/OutlinedButton';
 import api from '../../services/api';
 import { Icompany } from '../Company';
 
@@ -66,22 +65,29 @@ const ChoseCompany: React.FC = () => {
     ]);
   }, []);
 
-  useEffect(() => {
-    api.get<Icompany[]>('/company').then(response => {
-      setCompanies(response.data);
-      if (response.data.length === 0) {
-        history.push('/company/register');
-      }
-    });
-  }, [history]);
+  // useEffect(() => {
+  //   api.get<Icompany[]>('/company').then(response => {
+  //     setCompanies(response.data);
+  //     if (response.data.length === 0) {
+  //       history.push('/company/register');
+  //     }
+  //   });
+  // }, [history]);
+
+  // useEffect(() => {
+  //   api.get<IUserCompany[]>(`/usercompany?user=${user.id}`).then(response => {
+  //     console.log(response.data);
+
+  //     setUserCompanies(response.data);
+  //   });
+  // }, [user.id]);
 
   useEffect(() => {
-    api.get<IUserCompany[]>(`/usercompany?user=${user.id}`).then(response => {
-      console.log(response.data);
-
-      setUserCompanies(response.data);
+    api.get('/usercompany').then(response => {
+      setUserCompanies(response.data.companies);
+      console.log(response.data.companies);
     });
-  }, [user.id]);
+  }, []);
 
   const handleLogout = useCallback((): void => {
     history.push('/');
@@ -101,16 +107,17 @@ const ChoseCompany: React.FC = () => {
         <Header>
           <h1>Cilex</h1>
           <Greetings>
-            <h2>Bom Dia {user.name.split(' ')[0]} !</h2>
+            <h2>Bom Dia Arthur !</h2>
+            {/* <h2>Bom Dia {user.name.split(' ')[0]} !</h2> */}
             {date && (
               <h3>{`${date[0]}, ${date[1]} de ${date[2]} de ${date[3]}`}</h3>
             )}
 
             <p>Escolha a empresa </p>
           </Greetings>
-          <OutlinedButton onClick={() => handleLogout()}>
+          <Button onClick={() => handleLogout()} layoutColor="button-outline">
             <FiPower size={24} />
-          </OutlinedButton>
+          </Button>
         </Header>
         <Main>
           <Options>

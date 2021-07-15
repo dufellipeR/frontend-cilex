@@ -25,14 +25,25 @@ export const Header = styled.div`
   display: grid;
   grid-template-columns: 0.2fr 1fr 0.3fr;
   text-align: center;
-  margin-top: 30px;
-  button {
-    max-width: 100px;
-  }
+  align-items: center;
+  margin-top: 1rem;
+
+  padding: 0 1rem;
+
   h1 {
     font-size: 2.5rem;
-    margin-bottom: 10px;
+    margin-bottom: 0.6rem;
     color: #ff7a00;
+  }
+
+  #container-buttons {
+    display: flex;
+    gap: 1rem;
+
+    button {
+      max-width: 6.25rem;
+      margin: 0 auto;
+    }
   }
 `;
 
@@ -49,13 +60,24 @@ export const Greetings = styled.div`
   }
 `;
 
-export const FormCustom = styled(Form)`
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  grid-column-gap: 10px;
-`;
-
 export const Main = styled.main`
   text-align: -webkit-center;
   margin: 5%;
+`;
+
+export const FormCustom = styled.form`
+  #align-inputs {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-gap: 10px;
+
+    margin-bottom: 1rem;
+
+    @media (max-width: 900px) {
+      display: flex;
+      flex-direction: column;
+
+      margin-bottom: 1rem;
+    }
+  }
 `;

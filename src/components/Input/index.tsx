@@ -1,4 +1,4 @@
-import React, { InputHTMLAttributes } from 'react';
+import React, { InputHTMLAttributes, useState } from 'react';
 import { IconBaseProps } from 'react-icons';
 import { FiAlertCircle } from 'react-icons/fi';
 
@@ -10,10 +10,18 @@ interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
 }
 
 const Input: React.FC<InputProps> = ({ icon: Icon, messageError, ...rest }) => {
+  const [inputFocus, setInputFocus] = useState(false);
+
   return (
-    <Container>
+    <Container isFocus={inputFocus} isError={!!messageError}>
       {Icon && <Icon size={20} />}
-      <input {...rest} />
+
+      <input
+        onFocus={() => setInputFocus(true)}
+        onBlur={() => setInputFocus(false)}
+        {...rest}
+      />
+
       {messageError && (
         <Error title={messageError}>
           <FiAlertCircle color="#c53030" size={20} />

@@ -19,7 +19,6 @@ import { useAuth } from '../../hooks/auth';
 import Button from '../../components/Button';
 
 import { Container, Header, FormCustom, Greetings, Main } from './styles';
-import OutlinedButton from '../../components/OutlinedButton';
 import getValidationErrors from '../../utils/getValidationErrors';
 import FormInput from '../../components/FormInput';
 import CustomSelect from '../../components/Select';
@@ -105,12 +104,12 @@ const RegisterCompany: React.FC = () => {
             <p>Register Company</p>
           </Greetings>
           <div style={{ display: 'flex', justifyContent: 'space-evenly' }}>
-            <Button onClick={() => handleHome()}>
+            <Button onClick={() => handleHome()} layoutColor="button-filled">
               <FiHome size={24} />{' '}
             </Button>
-            <OutlinedButton onClick={() => handleLogout()}>
+            <Button onClick={() => handleLogout()} layoutColor="button-filled">
               <FiPower size={24} />
-            </OutlinedButton>
+            </Button>
           </div>
         </Header>
         <button
@@ -151,10 +150,7 @@ const RegisterCompany: React.FC = () => {
                 <FormInput name="uf" type="text" placeholder="Estado" />
                 <FormInput name="info" type="text" placeholder="Informações" />
               </div>
-              <Button
-                style={{ backgroundColor: '#8DC73E', color: '#fff' }}
-                type="submit"
-              >
+              <Button layoutColor="button-green" type="submit">
                 <span
                   style={{
                     marginLeft: `${30}%`,

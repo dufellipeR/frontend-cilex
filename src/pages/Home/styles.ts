@@ -1,5 +1,4 @@
 import styled, { keyframes } from 'styled-components';
-import { shade } from 'polished';
 
 const appearFromBottom = keyframes`
  from {
@@ -16,8 +15,8 @@ const appearFromBottom = keyframes`
 export const Container = styled.div`
   height: 100vh;
   display: grid;
-  grid-template-rows: 0.5fr 1fr;
-  grid-gap: 50px;
+  grid-template-rows: 0.3fr 1fr;
+  grid-gap: 1rem;
 
   animation: ${appearFromBottom} 0.6s;
 `;
@@ -26,43 +25,87 @@ export const Header = styled.div`
   display: grid;
   grid-template-columns: 0.2fr 1fr 0.3fr;
   text-align: center;
-  margin-top: 30px;
+  align-items: center;
+  margin-top: 1rem;
+
+  padding: 0 1rem;
+
   button {
-    max-width: 100px;
+    max-width: 6.25rem;
+    margin: 0 auto;
   }
 
   h1 {
     font-size: 2.5rem;
-    margin-bottom: 10px;
-    color: #ff7a00;
+    margin-bottom: 0.6rem;
+    color: var(--primary-color);
   }
 `;
 
 export const Greetings = styled.div`
-  margin-right: 5px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+
   h2 {
-    margin-bottom: 5px;
-    font-size: 3vw;
+    font-size: 2.5rem;
     color: #161616;
   }
 
   h3 {
-    margin-bottom: 15px;
-    font-size: 1.5vw;
+    font-size: 1.25rem;
+  }
+
+  @media (max-width: 900px) {
+    h2 {
+      font-size: 1.5rem;
+    }
+
+    h3 {
+      font-size: 1rem;
+    }
   }
 `;
 
 export const Options = styled.main`
   display: grid;
-  grid-template-columns: 0.3fr 0.4fr 0.3fr;
+  grid-template-columns: 0.3fr 1fr 0.3fr;
+  align-self: center;
 
   button {
-    max-width: 200px;
+    max-width: 12.5rem;
     margin: auto;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    gap: 1rem;
   }
 
-  img {
-    height: 400px;
-    margin: auto;
+  #container-img {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    img {
+      height: 25rem;
+      margin: auto;
+    }
+  }
+
+  @media (max-width: 900px) {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+
+    img {
+      display: none;
+    }
+
+    button {
+      max-width: 90%;
+    }
   }
 `;

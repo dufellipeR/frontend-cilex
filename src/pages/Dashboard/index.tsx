@@ -9,7 +9,6 @@ import { useAuth } from '../../hooks/auth';
 import Button from '../../components/Button';
 
 import { Container, Header, Options, Greetings } from './styles';
-import OutlinedButton from '../../components/OutlinedButton';
 
 const Dashboard: React.FC = () => {
   const history = useHistory();
@@ -34,12 +33,12 @@ const Dashboard: React.FC = () => {
             <p>Dashboard</p>
           </Greetings>
           <div style={{ display: 'flex', justifyContent: 'space-evenly' }}>
-            <Button onClick={() => handleHome()}>
+            <Button onClick={() => handleHome()} layoutColor="button-filled">
               <FiHome size={24} />{' '}
             </Button>
-            <OutlinedButton onClick={() => handleLogout()}>
+            <Button onClick={() => handleLogout()} layoutColor="button-outline">
               <FiPower size={24} />
-            </OutlinedButton>
+            </Button>
           </div>
         </Header>
       </Container>

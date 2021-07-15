@@ -8,7 +8,6 @@ import { useAuth } from '../../hooks/auth';
 import Button from '../../components/Button';
 
 import { Container, Header, Options, Greetings, Main, Data } from './styles';
-import OutlinedButton from '../../components/OutlinedButton';
 import CustomizedTables from '../../components/Table';
 import NewButton from '../../components/NewButton';
 import DefaultTable from '../../components/DefaultTable';
@@ -51,12 +50,12 @@ const Role: React.FC = () => {
             <p>Role</p>
           </Greetings>
           <div style={{ display: 'flex', justifyContent: 'space-evenly' }}>
-            <Button onClick={() => handleHome()}>
+            <Button onClick={() => handleHome()} layoutColor="button-filled">
               <FiHome size={24} />
             </Button>
-            <OutlinedButton onClick={() => handleLogout()}>
+            <Button onClick={() => handleLogout()} layoutColor="button-outline">
               <FiPower size={24} />
-            </OutlinedButton>
+            </Button>
           </div>
         </Header>
         <Options>

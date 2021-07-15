@@ -33,7 +33,6 @@ import {
   DeleteBtn,
   GroupInput,
 } from './styles';
-import OutlinedButton from '../../components/OutlinedButton';
 import getValidationErrors from '../../utils/getValidationErrors';
 import FormInput from '../../components/FormInput';
 import CustomSelect from '../../components/Select';
@@ -169,12 +168,12 @@ const EditCompany: React.FC = () => {
             <p>Edit Company</p>
           </Greetings>
           <div style={{ display: 'flex', justifyContent: 'space-evenly' }}>
-            <Button onClick={() => handleHome()}>
+            <Button onClick={() => handleHome()} layoutColor="button-filled">
               <FiHome size={24} />{' '}
             </Button>
-            <OutlinedButton onClick={() => handleLogout()}>
+            <Button onClick={() => handleLogout()} layoutColor="button-outline">
               <FiPower size={24} />
-            </OutlinedButton>
+            </Button>
           </div>
         </Header>
         {company && (
@@ -284,9 +283,8 @@ const EditCompany: React.FC = () => {
               </GroupInput>
 
               <Button
+                layoutColor="button-green"
                 style={{
-                  backgroundColor: '#8DC73E',
-                  color: '#fff',
                   maxWidth: 400,
                 }}
                 type="submit"
