@@ -1,5 +1,4 @@
 import styled, { keyframes } from 'styled-components';
-import { shade } from 'polished';
 
 const appearFromLeft = keyframes`
   from {
@@ -32,7 +31,7 @@ export const ShowOff = styled.div`
   h1 {
     font-size: 3rem;
     margin-bottom: 1rem;
-    color: #ff7a00;
+    color: var(--primary-color);
   }
 
   img {
@@ -58,15 +57,11 @@ export const AnimationContainer = styled.div`
     text-align: center;
 
     a {
-      color: #ff7a00;
+      color: var(--primary-color);
       display: block;
       margin-top: 1.5rem;
       text-decoration: none;
       transition: color 0.2s;
-
-      &:hover {
-        color: ${shade(0.1, '#FF7A00')};
-      }
     }
   }
 
@@ -75,4 +70,10 @@ export const AnimationContainer = styled.div`
       margin-top: 0;
     }
   }
+`;
+
+export const FormCustom = styled.form`
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.5rem;
 `;

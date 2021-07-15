@@ -14,7 +14,7 @@ import getValidationErrors from '../../utils/getValidationErrors';
 import Input from '../../components/Input';
 import Button from '../../components/Button';
 
-import { Container, ShowOff, AnimationContainer } from './styles';
+import { Container, ShowOff, AnimationContainer, FormCustom } from './styles';
 
 interface SignInFormData {
   username: string;
@@ -31,33 +31,37 @@ const SignIn: React.FC = () => {
 
   const history = useHistory();
 
-  const handleSubmitForm = useCallback(async (data: SignInFormData) => {
-    try {
-      const response = await api.get('/users');
+  const handleSubmitForm = useCallback(
+    async (data: SignInFormData) => {
+      try {
+        const response = await api.get('/users');
 
-      const hasUser = response.data.users.find(
-        (user: SignInFormData) =>
-          user.username === data.username && user.password === data.password,
-      );
+        const hasUser = response.data.users.find(
+          (user: SignInFormData) =>
+            user.username === data.username && user.password === data.password,
+        );
 
-      if (hasUser) {
-        history.push('/chosecompany');
-      } else {
-        toast.error('Usuário e/ou senha incorreto!');
+        if (hasUser) {
+          history.push('/chosecompany');
+        } else {
+          toast.error('Usuário e/ou senha incorreto!');
+        }
+      } catch (err) {
+        if (err instanceof Yup.ValidationError) {
+          const errors = getValidationErrors(err);
+          formRef.current?.setErrors(errors);
+
+          return;
+        }
+
+        toast.error(
+          'Erro na autenticação! Ocorreu um erro ao fazer login, cheque as credenciais',
+        );
       }
-    } catch (err) {
-      if (err instanceof Yup.ValidationError) {
-        const errors = getValidationErrors(err);
-        formRef.current?.setErrors(errors);
+    },
+    [history],
+  );
 
-        return;
-      }
-
-      toast.error(
-        'Erro na autenticação! Ocorreu um erro ao fazer login, cheque as credenciais',
-      );
-    }
-  }, []);
   return (
     <>
       <Container>
@@ -77,7 +81,7 @@ const SignIn: React.FC = () => {
             onSubmit={handleSubmitForm}
           >
             {({ handleChange, touched, values, errors, handleSubmit }) => (
-              <form onSubmit={handleSubmit}>
+              <FormCustom onSubmit={handleSubmit}>
                 <Input
                   icon={FiUser}
                   name="username"
@@ -102,21 +106,13 @@ const SignIn: React.FC = () => {
                   }
                 />
 
-                <Button type="submit">
-                  <span
-                    style={{
-                      marginLeft: `${30}%`,
-                      justifyContent: 'space-evenly',
-                      maxWidth: `${35}%`,
-                      alignItems: 'center',
-                    }}
-                  >
-                    <FiLogIn size={24} /> Entrar
-                  </span>
+                <Button type="submit" layoutColor="button-filled">
+                  <FiLogIn size={24} />
+                  <span>Entrar</span>
                 </Button>
 
                 <Link to="/forgot-password">Esqueceu a senha ?</Link>
-              </form>
+              </FormCustom>
             )}
           </Formik>
         </AnimationContainer>

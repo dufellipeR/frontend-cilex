@@ -1,5 +1,5 @@
 import styled, { keyframes } from 'styled-components';
-import { shade } from 'polished';
+import { shade, cssVar } from 'polished';
 import { Link } from 'react-router-dom';
 
 const appearFromLeft = keyframes`
@@ -39,7 +39,7 @@ export const Header = styled.div`
   h1 {
     font-size: 2.5rem;
     margin-bottom: 0.6rem;
-    color: #ff7a00;
+    color: var(--primary-color);
   }
 
   #container-buttons {
@@ -57,7 +57,8 @@ export const Greetings = styled.div`
   height: 100%;
   display: flex;
   flex-direction: column;
-  justify-content: space-around;
+  justify-content: center;
+  gap: 1rem;
 
   h2 {
     font-size: 2.5rem;
@@ -85,12 +86,11 @@ export const Main = styled.main`
 export const Module = styled(Link)`
   text-decoration: none;
   color: #6a6c72;
-  border: 1px solid rgba(255, 122, 0, 0.2);
+  border: 1px solid var(--primary-color-hover);
   border-radius: 5%;
   max-height: 250px;
   display: flex;
   flex-direction: column;
-  /* align-content: left; */
   padding: 10%;
   cursor: pointer;
 
@@ -100,7 +100,7 @@ export const Module = styled(Link)`
   }
 
   &:hover {
-    background-color: rgba(255, 122, 0, 0.3);
+    background-color: var(--primary-color-hover);
   }
 `;
 

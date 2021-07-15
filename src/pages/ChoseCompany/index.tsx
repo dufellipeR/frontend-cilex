@@ -23,7 +23,6 @@ import {
   Companies,
   Company,
 } from './styles';
-import OutlinedButton from '../../components/OutlinedButton';
 import api from '../../services/api';
 import { Icompany } from '../Company';
 
@@ -66,14 +65,14 @@ const ChoseCompany: React.FC = () => {
     ]);
   }, []);
 
-  useEffect(() => {
-    api.get<Icompany[]>('/company').then(response => {
-      setCompanies(response.data);
-      if (response.data.length === 0) {
-        history.push('/company/register');
-      }
-    });
-  }, [history]);
+  // useEffect(() => {
+  //   api.get<Icompany[]>('/company').then(response => {
+  //     setCompanies(response.data);
+  //     if (response.data.length === 0) {
+  //       history.push('/company/register');
+  //     }
+  //   });
+  // }, [history]);
 
   // useEffect(() => {
   //   api.get<IUserCompany[]>(`/usercompany?user=${user.id}`).then(response => {
@@ -84,8 +83,7 @@ const ChoseCompany: React.FC = () => {
   // }, [user.id]);
 
   useEffect(() => {
-    console.log('teste');
-    api.get(`/usercompany`).then(response => {
+    api.get('/usercompany').then(response => {
       setUserCompanies(response.data.companies);
       console.log(response.data.companies);
     });
@@ -117,9 +115,9 @@ const ChoseCompany: React.FC = () => {
 
             <p>Escolha a empresa </p>
           </Greetings>
-          <OutlinedButton onClick={() => handleLogout()}>
+          <Button onClick={() => handleLogout()} layoutColor="button-outline">
             <FiPower size={24} />
-          </OutlinedButton>
+          </Button>
         </Header>
         <Main>
           <Options>

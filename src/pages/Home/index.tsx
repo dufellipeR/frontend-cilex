@@ -20,7 +20,6 @@ import { useAuth } from '../../hooks/auth';
 import Button from '../../components/Button';
 
 import { Container, Header, Options, Greetings } from './styles';
-import OutlinedButton from '../../components/OutlinedButton';
 
 interface User {
   id: string;
@@ -75,19 +74,19 @@ const Home: React.FC = () => {
 
             <p>O que vamos fazer hoje? </p>
           </Greetings>
-          <OutlinedButton onClick={() => handleLogout()}>
+          <Button onClick={() => handleLogout()} layoutColor="button-outline">
             <FiPower size={24} />
-          </OutlinedButton>
+          </Button>
         </Header>
         <Options>
-          <Button onClick={() => handleMenu()}>
+          <Button onClick={() => handleMenu()} layoutColor="button-filled">
             <FiArrowLeft size={24} />
             <span>Sistema</span>
           </Button>
           <div id="container-img">
             <img src={chooseSvg} alt="" />
           </div>
-          <Button onClick={() => handleDashboard()}>
+          <Button onClick={() => handleDashboard()} layoutColor="button-filled">
             <span>Dashboard</span>
             <FiArrowRight size={24} />
           </Button>

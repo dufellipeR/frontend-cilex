@@ -38,7 +38,7 @@ export const Header = styled.div`
   h1 {
     font-size: 2.5rem;
     margin-bottom: 0.6rem;
-    color: #ff7a00;
+    color: var(--primary-color);
   }
 `;
 

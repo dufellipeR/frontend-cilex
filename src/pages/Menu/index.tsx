@@ -18,10 +18,11 @@ import {
 } from 'react-icons/hi';
 import { useAuth } from '../../hooks/auth';
 
+import { theme } from '../../App';
+
 import Button from '../../components/Button';
 
 import { Container, Header, Main, Greetings, Module } from './styles';
-import OutlinedButton from '../../components/OutlinedButton';
 
 const Menu: React.FC = () => {
   const history = useHistory();
@@ -43,101 +44,107 @@ const Menu: React.FC = () => {
             <h2>Menu</h2>
           </Greetings>
           <div id="container-buttons">
-            <Button onClick={() => handleHome()}>
+            <Button onClick={() => handleHome()} layoutColor="button-filled">
               <FiHome size={24} />{' '}
             </Button>
-            <OutlinedButton onClick={() => handleLogout()}>
+            <Button onClick={() => handleLogout()} layoutColor="button-outline">
               <FiPower size={24} />
-            </OutlinedButton>
+            </Button>
           </div>
         </Header>
         <Main>
           <Module to="/">
-            <FiDollarSign size={44} color="#ff7a00" />
+            <FiDollarSign size={44} color={theme.palette.primary.main} />
             <h3>Financeiro</h3>
             <p>Controle seu financeiro facilmente</p>
           </Module>
           <Module to="/">
-            <FiTruck size={44} color="#ff7a00" />
+            <FiTruck size={44} color={theme.palette.primary.main} />
             <h3>Logistica</h3>
             <p>Monitore seus produtos</p>
           </Module>
           <Module to="/">
-            <HiOutlineShoppingBag size={44} color="#ff7a00" />
+            <HiOutlineShoppingBag
+              size={44}
+              color={theme.palette.primary.main}
+            />
             <h3>CRM</h3>
             <p>Acompanhe seus clientes</p>
           </Module>
           <Module to="/people">
-            <HiOutlineUser size={44} color="#ff7a00" />
+            <HiOutlineUser size={44} color={theme.palette.primary.main} />
             <h3>Pessoas</h3>
             <p>Gerencie as pessoas</p>
           </Module>
           <Module to="/company">
-            <HiOutlineOfficeBuilding size={44} color="#ff7a00" />
+            <HiOutlineOfficeBuilding
+              size={44}
+              color={theme.palette.primary.main}
+            />
             <h3>Empresas</h3>
             <p>Registre suas empresas</p>
           </Module>
           <Module to="/">
-            <HiOutlineGlobeAlt size={44} color="#ff7a00" />
+            <HiOutlineGlobeAlt size={44} color={theme.palette.primary.main} />
             <h3>Parâmetros Gerais</h3>
             <p>Defina os parâmetros do sistema</p>
           </Module>
 
           <Module to="/role">
-            <HiOutlineUserGroup size={44} color="#ff7a00" />
+            <HiOutlineUserGroup size={44} color={theme.palette.primary.main} />
             <h3>Cargos e Funções</h3>
             <p>Adicione novos cargos</p>
           </Module>
           <Module to="/group">
-            <HiOutlineUserGroup size={44} color="#ff7a00" />
+            <HiOutlineUserGroup size={44} color={theme.palette.primary.main} />
             <h3>Grupo de Pessoas</h3>
             <p>Agrupe as pessoas</p>
           </Module>
-          <Module to="/">
-            <HiOutlineUserGroup size={44} color="#ff7a00" />
+          {/* <Module to="/">
+            <HiOutlineUserGroup size={44} color={theme.palette.primary.main} />
             <h3>Pessoas</h3>
             <p>gerencie as pessoas</p>
           </Module>
           <Module to="/">
-            <HiOutlineUserGroup size={44} color="#ff7a00" />
+            <HiOutlineUserGroup size={44} color={theme.palette.primary.main} />
             <h3>Pessoas</h3>
             <p>gerencie as pessoas</p>
           </Module>
           <Module to="/">
-            <HiOutlineUserGroup size={44} color="#ff7a00" />
+            <HiOutlineUserGroup size={44} color={theme.palette.primary.main} />
             <h3>Pessoas</h3>
             <p>gerencie as pessoas</p>
           </Module>
           <Module to="/">
-            <HiOutlineUserGroup size={44} color="#ff7a00" />
+            <HiOutlineUserGroup size={44} color={theme.palette.primary.main} />
             <h3>Pessoas</h3>
             <p>gerencie as pessoas</p>
           </Module>
           <Module to="/">
-            <HiOutlineUserGroup size={44} color="#ff7a00" />
+            <HiOutlineUserGroup size={44} color={theme.palette.primary.main} />
             <h3>Pessoas</h3>
             <p>gerencie as pessoas</p>
           </Module>
           <Module to="/">
-            <HiOutlineUserGroup size={44} color="#ff7a00" />
+            <HiOutlineUserGroup size={44} color={theme.palette.primary.main} />
             <h3>Pessoas</h3>
             <p>gerencie as pessoas</p>
           </Module>
           <Module to="/">
-            <HiOutlineUserGroup size={44} color="#ff7a00" />
+            <HiOutlineUserGroup size={44} color={theme.palette.primary.main} />
             <h3>Pessoas</h3>
             <p>gerencie as pessoas</p>
           </Module>
           <Module to="/">
-            <HiOutlineUserGroup size={44} color="#ff7a00" />
+            <HiOutlineUserGroup size={44} color={theme.palette.primary.main} />
             <h3>Pessoas</h3>
             <p>gerencie as pessoas</p>
           </Module>
           <Module to="/">
-            <HiOutlineUserGroup size={44} color="#ff7a00" />
+            <HiOutlineUserGroup size={44} color={theme.palette.primary.main} />
             <h3>Pessoas</h3>
             <p>gerencie as pessoas</p>
-          </Module>
+          </Module> */}
         </Main>
       </Container>
     </>

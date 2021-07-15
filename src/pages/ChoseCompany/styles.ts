@@ -38,7 +38,7 @@ export const Header = styled.div`
   h1 {
     font-size: 2.5rem;
     margin-bottom: 0.6rem;
-    color: #ff7a00;
+    color: var(--primary-color);
   }
 `;
 
@@ -106,7 +106,7 @@ export const Companies = styled.div`
 export const Company = styled.button`
   display: flex;
   align-items: center;
-  border: 1px solid #ffa700;
+  border: 1px solid var(--primary-color);
   border-radius: 3rem;
   padding: 1rem;
   margin-bottom: 1rem;
@@ -117,11 +117,11 @@ export const Company = styled.button`
   }
 
   svg {
-    color: #ffa700;
+    color: var(--primary-color);
   }
 
   &:hover {
-    background-color: #ffa700;
+    background-color: var(--primary-color);
     color: white;
 
     svg {

@@ -7,8 +7,7 @@ import { useAuth } from '../../hooks/auth';
 
 import Button from '../../components/Button';
 
-import { Container, Header, Options, Greetings, Main, Data } from './styles';
-import OutlinedButton from '../../components/OutlinedButton';
+import { Container, Header, Greetings, Main } from './styles';
 import CustomizedTables from '../../components/Table';
 import NewButton from '../../components/NewButton';
 import DefaultTable from '../../components/DefaultTable';
@@ -31,9 +30,14 @@ const People: React.FC = () => {
   const [people, setPeople] = useState<IPerson[]>([]);
 
   useEffect(() => {
-    api.get<IPerson[]>('/person').then(response => {
-      setPeople(response.data);
+    api.get('/peoples').then(response => {
+      setPeople(response.data.people);
+      console.log('Fez o get: ', response.data);
     });
+
+    // api.get<IPerson[]>('/person').then(response => {
+    //   setPeople(response.data);
+    // });
   }, []);
 
   const handleLogout = useCallback((): void => {
@@ -52,43 +56,40 @@ const People: React.FC = () => {
           <Greetings>
             <p>People</p>
           </Greetings>
-          <div style={{ display: 'flex', justifyContent: 'space-evenly' }}>
-            <Button onClick={() => handleHome()}>
+          <div id="container-buttons">
+            <Button onClick={() => handleHome()} layoutColor="button-filled">
               <FiHome size={24} />
             </Button>
-            <OutlinedButton onClick={() => handleLogout()}>
+            <Button onClick={() => handleLogout()} layoutColor="button-outline">
               <FiPower size={24} />
-            </OutlinedButton>
+            </Button>
           </div>
         </Header>
-        <Options>
-          <NewButton to="/people/register">Novo</NewButton>
-        </Options>
         <Main>
-          <Data>
+          <div id="align-content">
+            <NewButton to="/people/register">Novo</NewButton>
             <DefaultTable tbh={['Código', 'CNPJ/CPF', 'Razão Social/Nome']}>
               <tbody>
                 {people &&
                   people.map(row => (
-                    <tr key={row.id}>
+                    <tr key={row.code}>
                       <td>{row.code}</td>
                       <td>{row.cnpj || row.cpf}</td>
                       <td>{row.razao_social || row.nome}</td>
 
                       <td>
-                        {' '}
                         <Link
                           style={{ textDecoration: 'none' }}
                           to={`/people/${row.id}`}
                         >
                           <FiEye size={24} color="#ff7a00" />
-                        </Link>{' '}
+                        </Link>
                       </td>
                     </tr>
                   ))}
               </tbody>
             </DefaultTable>
-          </Data>
+          </div>
         </Main>
       </Container>
       <ChangeCompany />

@@ -28,10 +28,6 @@ export const Container = styled.div<ContainerStatusProps>`
       border-color: #c53030;
     `}
 
-  & + div {
-    margin-top: 0.5rem;
-  }
-
   input {
     flex: 1;
     background: transparent;

@@ -1,35 +1,21 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { createServer, Model } from 'miragejs';
+import { datas } from './mirageData';
 import App from './App';
 
 createServer({
   models: {
     user: Model,
     company: Model,
+    people: Model,
   },
 
   seeds(server) {
     server.db.loadData({
-      users: [
-        {
-          id: 1,
-          username: 'Arthur',
-          password: '123',
-        },
-      ],
-      companies: [
-        {
-          id: '1',
-          cod: '123',
-          razao_social: 'Exon',
-        },
-        {
-          id: '2',
-          cod: '456',
-          razao_social: 'Exon 2',
-        },
-      ],
+      users: datas.users,
+      companies: datas.companies,
+      peoples: datas.companies,
     });
   },
 
@@ -42,6 +28,18 @@ createServer({
 
     this.get('/usercompany', () => {
       return this.schema.all('company');
+    });
+
+    this.get('/peoples', () => {
+      return this.schema.all('people');
+    });
+
+    this.post('/peoples', (schema, request) => {
+      const data = JSON.parse(request.requestBody);
+
+      console.log('DATA INDEX: ', data);
+
+      return schema.create('people', data);
     });
   },
 });
