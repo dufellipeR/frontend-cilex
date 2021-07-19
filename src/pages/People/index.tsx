@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useState } from 'react';
 
 import { Link, useHistory } from 'react-router-dom';
 
-import { FiEye, FiHome, FiPower } from 'react-icons/fi';
+import { FiEye, FiHome, FiPower, FiShare2 } from 'react-icons/fi';
 import { useAuth } from '../../hooks/auth';
 
 import Button from '../../components/Button';
@@ -32,7 +32,6 @@ const People: React.FC = () => {
   useEffect(() => {
     api.get('/peoples').then(response => {
       setPeople(response.data.people);
-      console.log('Fez o get: ', response.data);
     });
 
     // api.get<IPerson[]>('/person').then(response => {
@@ -77,7 +76,10 @@ const People: React.FC = () => {
                       <td>{row.cnpj || row.cpf}</td>
                       <td>{row.razao_social || row.nome}</td>
 
-                      <td>
+                      <td id="td-options">
+                        <button type="button" id="share">
+                          <FiShare2 size={24} color="#ff7a00" />
+                        </button>
                         <Link
                           style={{ textDecoration: 'none' }}
                           to={`/people/${row.id}`}

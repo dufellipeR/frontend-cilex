@@ -75,4 +75,15 @@ export const Main = styled.main`
     flex-direction: column;
     gap: 1rem;
   }
+
+  td#td-options {
+    display: flex;
+    margin-left: 1rem;
+    gap: 1rem;
+
+    #share {
+      background-color: transparent;
+      border: none;
+    }
+  }
 `;

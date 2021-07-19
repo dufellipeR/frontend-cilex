@@ -29,7 +29,7 @@ export default createGlobalStyle`
     -webkit-font-smoothing: antialiased;
   }
 
-  body, input, button {
+  body, input, button, select {
     font-family: 'Sora', sans-serif;
     font-size: 1rem;
   }

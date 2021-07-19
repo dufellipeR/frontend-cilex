@@ -62,7 +62,21 @@ export const Greetings = styled.div`
 
 export const Main = styled.main`
   text-align: -webkit-center;
-  margin: 5%;
+  padding: 0 2rem 2rem 2rem;
+
+  #align-switch {
+    display: grid;
+    grid-template-columns: 0.2fr 1fr 0.2fr;
+    align-items: center;
+    margin: 3rem;
+
+    #container-switch {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 2rem;
+    }
+  }
 `;
 
 export const FormCustom = styled.form`
@@ -80,4 +94,21 @@ export const FormCustom = styled.form`
       margin-bottom: 1rem;
     }
   }
+
+  #align-button-save {
+    width: 50%;
+    margin-right: auto;
+
+    @media (max-width: 900px) {
+      width: 100%;
+    }
+  }
+`;
+
+export const Select = styled.select`
+  border: 2px solid #666360;
+  border-radius: 10px;
+
+  padding: 1rem;
+  width: 100%;
 `;
