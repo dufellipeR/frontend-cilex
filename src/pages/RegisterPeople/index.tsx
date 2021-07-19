@@ -12,43 +12,68 @@ import { useAuth } from '../../hooks/auth';
 
 import Button from '../../components/Button';
 
-import { Container, Header, FormCustom, Greetings, Main } from './styles';
+import {
+  Container,
+  Header,
+  FormCustom,
+  Greetings,
+  Main,
+  Select,
+} from './styles';
 import Input from '../../components/Input';
 import api from '../../services/api';
 
 interface IRegisterForm {
   cod: number | string;
-  cnpj: string;
-  razao_social: string;
-  nome_fantasia: string;
   email: string;
   tel: string;
   endereco: string;
   cep: string;
   estado: string;
   info: string;
+  type: string;
 
-  cpf: string;
-  nome: string;
+  cnpj?: string;
+  razao_social?: string;
+  nome_fantasia?: string;
+
+  cpf?: string;
+  nome?: string;
 }
 
-const formSchemaLogin = Yup.object().shape({
-  cod: Yup.number().required('Código Obrigatório'),
-  cnpj: Yup.string().required('CNPJ obrigatório'),
-  razao_social: Yup.string().required('Razão Social obrigatória'),
-  nome_fantasia: Yup.string().required('Nome Fantasia obrigatório'),
-  email: Yup.string().required('E-mail obrigatório'),
-  tel: Yup.string(),
-  endereco: Yup.string(),
-  cep: Yup.string(),
-  uf: Yup.string(),
-  info: Yup.string(),
-  cpf: Yup.string(),
-  nome: Yup.string(),
-});
+const optionsSelect = [
+  { value: '', label: 'Tipo' },
+  { value: 'fornecedor', label: 'Fornecedor' },
+  { value: 'cliente', label: 'Cliente' },
+  { value: 'colaborador', label: 'Colaborador' },
+];
 
 const RegisterPeople: React.FC = () => {
   const [checked, setChecked] = useState(false);
+
+  const formSchemaLogin = Yup.object().shape({
+    cod: Yup.number().required('Código obrigatório'),
+    email: Yup.string().required('E-mail obrigatório'),
+    tel: Yup.string(),
+    endereco: Yup.string(),
+    cep: Yup.string(),
+    uf: Yup.string(),
+    info: Yup.string(),
+    type: Yup.string(),
+
+    // Jurídica
+    cnpj: checked ? Yup.string() : Yup.string().required('CNPJ obrigatório'),
+    razao_social: checked
+      ? Yup.string()
+      : Yup.string().required('Razão Social obrigatório'),
+    nome_fantasia: checked
+      ? Yup.string()
+      : Yup.string().required('Nome Fantasia obrigatório'),
+
+    // Fisica
+    cpf: checked ? Yup.string() : Yup.string().required('CPF obrigatório'),
+    nome: checked ? Yup.string() : Yup.string().required('Nome obrigatório'),
+  });
 
   const history = useHistory();
   const { user } = useAuth();
@@ -71,43 +96,28 @@ const RegisterPeople: React.FC = () => {
         api
           .post('/peoples', {
             cod: data.cod,
-            cnpj: data.cnpj,
-            razao_social: data.razao_social,
-            nome_fantasia: data.nome_fantasia,
             email: data.email,
             tel: data.tel,
             endereco: data.endereco,
             cep: data.cep,
             estado: data.estado,
             info: data.info,
+            type: data.type,
+
+            cnpj: data.cnpj,
+            razao_social: data.razao_social,
+            nome_fantasia: data.nome_fantasia,
+
+            cpf: data.cpf,
+            nome: data.nome,
           })
-          .then(response => {
-            console.log('Cadastrou: ', data);
-            console.log('Response', response);
+          .then(() => {
             toast.success('Registrado com sucesso');
-            history.push('/company');
+            history.push('/people');
           });
-
-        // api.post('/peoples', {
-        //   cod: '2',
-        //   cnpj: 'Nova Pessoa',
-        //   razao_social: 'Nova Pessoa',
-        //   nome_fantasia: 'Nova Pessoa',
-        //   email: 'Nova Pessoa',
-        //   tel: 'Nova Pessoa',
-        //   endereco: 'Nova Pessoa',
-        //   cep: 'Nova Pessoa',
-        //   estado: 'Nova Pessoa',
-        //   info: 'Nova Pessoa',
-        // });
-
-        // api.post('/company', data).then(response => {
-        //   toast.success('Registrado com sucesso');
-        //   history.push('/company');
-        // });
       } catch (err) {
         toast.error(
-          'Erro no registro da empresa! Ocorreu um erro ao fazer login, cheque as credenciais',
+          'Erro no registro da empresa! Ocorreu um erro ao cadastrar, cheque as informações',
         );
       }
     },
@@ -131,25 +141,31 @@ const RegisterPeople: React.FC = () => {
             </Button>
           </div>
         </Header>
-        <button
-          type="button"
-          style={{ backgroundColor: 'transparent', border: 0, maxWidth: 150 }}
-          onClick={() => handleBack()}
-        >
-          <HiOutlineArrowLeft size={42} color="#ff7a00" />
-        </button>
         <Main>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 20 }}>
-            <p>Pessoa Jurídica</p>
-            <Switch
-              onChange={() => setChecked(!checked)}
-              checked={checked}
-              checkedIcon={false}
-              uncheckedIcon={false}
-              onColor="#ff7a00"
-              offColor="#ff7a00"
-            />
-            <p>Pessoa Física</p>
+          <div id="align-switch">
+            <button
+              type="button"
+              style={{
+                backgroundColor: 'transparent',
+                border: 0,
+                maxWidth: 150,
+              }}
+              onClick={() => handleBack()}
+            >
+              <HiOutlineArrowLeft size={42} color="#ff7a00" />
+            </button>
+            <div id="container-switch">
+              <p>Pessoa Jurídica</p>
+              <Switch
+                onChange={() => setChecked(!checked)}
+                checked={checked}
+                checkedIcon={false}
+                uncheckedIcon={false}
+                onColor="#ff7a00"
+                offColor="#ff7a00"
+              />
+              <p>Pessoa Física</p>
+            </div>
           </div>
           <Formik
             initialValues={{
@@ -166,6 +182,7 @@ const RegisterPeople: React.FC = () => {
               estado: '',
               cpf: '',
               nome: '',
+              type: '',
             }}
             validationSchema={formSchemaLogin}
             onSubmit={handleSubmitForm}
@@ -197,7 +214,7 @@ const RegisterPeople: React.FC = () => {
                       />
                       <Input
                         name="nome"
-                        type="number"
+                        type="text"
                         placeholder="Nome"
                         value={values.nome}
                         onChange={handleChange('nome')}
@@ -288,6 +305,15 @@ const RegisterPeople: React.FC = () => {
                     onChange={handleChange('uf')}
                     messageError={errors.uf && touched.uf ? errors.uf : ''}
                   />
+                  <Select
+                    name="type"
+                    value={values.type}
+                    onChange={handleChange('type')}
+                  >
+                    {optionsSelect.map(option => (
+                      <option value={option.value}>{option.label}</option>
+                    ))}
+                  </Select>
                   <Input
                     name="info"
                     type="text"
@@ -299,19 +325,12 @@ const RegisterPeople: React.FC = () => {
                     }
                   />
                 </div>
-                <Button layoutColor="button-green" type="submit">
-                  <span
-                    style={{
-                      marginLeft: `${30}%`,
-                      alignSelf: 'center',
-                      justifyContent: 'space-evenly',
-                      maxWidth: `${35}%`,
-                      lineHeight: 1.5,
-                    }}
-                  >
-                    <FiSave size={24} /> Salvar
-                  </span>
-                </Button>
+                <div id="align-button-save">
+                  <Button layoutColor="button-green" type="submit">
+                    <FiSave size={24} />
+                    <span>Salvar</span>
+                  </Button>
+                </div>
               </FormCustom>
             )}
           </Formik>
