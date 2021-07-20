@@ -87,3 +87,34 @@ export const Main = styled.main`
     }
   }
 `;
+
+// MODAL SHARE
+export const ContentModalShare = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+`;
+
+export const ContainerContentModalShare = styled.div`
+  width: 100%;
+  margin: 2rem 0;
+
+  max-height: 50vh;
+  overflow-y: scroll;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+
+  #row-share {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+
+    padding: 0 1rem;
+
+    .MuiCheckbox-colorPrimary:hover {
+      background-color: transparent;
+    }
+  }
+`;
