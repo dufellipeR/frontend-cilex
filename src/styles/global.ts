@@ -45,6 +45,10 @@ export default createGlobalStyle`
   .button-filled {
     background: var(--primary-color);
     color: #fff;
+
+    &:hover {
+      background-color: var(--primary-color-hover);
+    }
   }
 
   .button-outline {

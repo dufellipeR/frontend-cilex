@@ -1,18 +1,18 @@
 import React, { useCallback, useEffect, useState } from 'react';
-
 import { Link, useHistory } from 'react-router-dom';
-
 import { FiEye, FiHome, FiPower } from 'react-icons/fi';
+
 import { useAuth } from '../../hooks/auth';
+import api from '../../services/api';
 
 import Button from '../../components/Button';
-
-import { Container, Header, Options, Greetings, Main, Data } from './styles';
 import CustomizedTables from '../../components/Table';
 import NewButton from '../../components/NewButton';
 import DefaultTable from '../../components/DefaultTable';
-import api from '../../services/api';
 import ChangeCompany from '../../components/ChangeCompany';
+import Header from '../../components/Header';
+
+import { Container, Options, Main, Data } from './styles';
 
 export interface Icompany {
   id: string;
@@ -45,20 +45,7 @@ const Company: React.FC = () => {
   return (
     <>
       <Container>
-        <Header>
-          <h1>Cilex</h1>
-          <Greetings>
-            <p>Company</p>
-          </Greetings>
-          <div style={{ display: 'flex', justifyContent: 'space-evenly' }}>
-            <Button onClick={() => handleHome()} layoutColor="button-filled">
-              <FiHome size={24} />
-            </Button>
-            <Button onClick={() => handleLogout()} layoutColor="button-outline">
-              <FiPower size={24} />
-            </Button>
-          </div>
-        </Header>
+        <Header pageName="Empresas" />
         <Options>
           <NewButton to="/company/register">Novo</NewButton>
         </Options>

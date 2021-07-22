@@ -17,7 +17,7 @@ const ChangeCompany: React.FC<ButtonProps> = ({ ...rest }) => {
 
   return (
     <Container type="button" onClick={() => handleClick()} {...rest}>
-      <HiOutlineSwitchVertical size={32} color="white" />
+      <HiOutlineSwitchVertical size={28} color="#FFF" />
     </Container>
   );
 };

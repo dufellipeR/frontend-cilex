@@ -1,8 +1,8 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
-import { Link, useHistory } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
-import { FiEye, FiHome, FiPower, FiShare2 } from 'react-icons/fi';
+import { FiEye, FiShare2 } from 'react-icons/fi';
 import { Checkbox } from '@material-ui/core';
 import { useAuth } from '../../hooks/auth';
 
@@ -13,11 +13,10 @@ import DefaultTable from '../../components/DefaultTable';
 import api from '../../services/api';
 import ChangeCompany from '../../components/ChangeCompany';
 import Modal from '../../components/Modal';
+import Header from '../../components/Header';
 
 import {
   Container,
-  Header,
-  Greetings,
   Main,
   ContainerContentModalShare,
   ContentModalShare,
@@ -39,7 +38,6 @@ interface IUserCompany {
 }
 
 const People: React.FC = () => {
-  const history = useHistory();
   const { user } = useAuth();
 
   const [people, setPeople] = useState<IPerson[]>([]);
@@ -56,14 +54,6 @@ const People: React.FC = () => {
     // });
   }, []);
 
-  const handleLogout = useCallback((): void => {
-    history.push('/');
-  }, [history]);
-
-  const handleHome = useCallback((): void => {
-    history.push('/home');
-  }, [history]);
-
   useEffect(() => {
     api.get('/usercompany').then(response => {
       setUserCompanies(response.data.companies);
@@ -74,20 +64,7 @@ const People: React.FC = () => {
   return (
     <>
       <Container>
-        <Header>
-          <h1>Cilex</h1>
-          <Greetings>
-            <p>People</p>
-          </Greetings>
-          <div id="container-buttons">
-            <Button onClick={() => handleHome()} layoutColor="button-filled">
-              <FiHome size={24} />
-            </Button>
-            <Button onClick={() => handleLogout()} layoutColor="button-outline">
-              <FiPower size={24} />
-            </Button>
-          </div>
-        </Header>
+        <Header pageName="Pessoas" />
         <Main>
           <div id="align-content">
             <NewButton to="/people/register">Novo</NewButton>

@@ -11,6 +11,7 @@ import { FiPower } from 'react-icons/fi';
 import { HiOutlineOfficeBuilding } from 'react-icons/hi';
 import chooseSvg from '../../assets/town.svg';
 import { useAuth } from '../../hooks/auth';
+import { useCompanySelected } from '../../hooks/useCompanySelected';
 
 import Button from '../../components/Button';
 
@@ -42,15 +43,20 @@ interface IUserCompany {
 
 const ChoseCompany: React.FC = () => {
   const history = useHistory();
+  const { updateCompany } = useCompanySelected();
   const { user } = useAuth();
 
   const [date, setDate] = useState<string[]>([]);
   const [companies, setCompanies] = useState<Icompany[]>([]);
   const [userCompanies, setUserCompanies] = useState<IUserCompany[]>([]);
 
-  const handleChoice = useCallback(() => {
-    history.push('home');
-  }, [history]);
+  const handleChoice = useCallback(
+    company => {
+      updateCompany(company);
+      history.push('home');
+    },
+    [history, updateCompany],
+  );
 
   useEffect(() => {
     const data = new Date();
@@ -126,7 +132,11 @@ const ChoseCompany: React.FC = () => {
           <Companies>
             {userCompanies &&
               userCompanies.map(comp => (
-                <Company key={comp.id} type="button" onClick={handleChoice}>
+                <Company
+                  key={comp.id}
+                  type="button"
+                  onClick={() => handleChoice(comp)}
+                >
                   <HiOutlineOfficeBuilding size={24} />
                   <span>
                     {comp.cod} - {comp.razao_social}

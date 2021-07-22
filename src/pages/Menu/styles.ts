@@ -1,5 +1,4 @@
 import styled, { keyframes } from 'styled-components';
-import { shade, cssVar } from 'polished';
 import { Link } from 'react-router-dom';
 
 const appearFromLeft = keyframes`
@@ -16,60 +15,12 @@ const appearFromLeft = keyframes`
 
 export const Container = styled.div`
   height: 100vh;
-  display: grid;
-  grid-template-rows: 0.3fr 1fr;
-  grid-gap: 50px;
 
   hr {
     opacity: 0.2;
   }
 
   animation: ${appearFromLeft} 1s;
-`;
-
-export const Header = styled.div`
-  display: grid;
-  grid-template-columns: 0.2fr 1fr 0.3fr;
-  text-align: center;
-  align-items: center;
-  margin-top: 1rem;
-
-  padding: 0 1rem;
-
-  h1 {
-    font-size: 2.5rem;
-    margin-bottom: 0.6rem;
-    color: var(--primary-color);
-  }
-
-  #container-buttons {
-    display: flex;
-    gap: 1rem;
-
-    button {
-      max-width: 6.25rem;
-      margin: 0 auto;
-    }
-  }
-`;
-
-export const Greetings = styled.div`
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  gap: 1rem;
-
-  h2 {
-    font-size: 2.5rem;
-    color: #161616;
-  }
-
-  @media (max-width: 900px) {
-    h2 {
-      font-size: 1.5rem;
-    }
-  }
 `;
 
 export const Main = styled.main`
