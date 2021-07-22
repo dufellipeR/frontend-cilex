@@ -1,14 +1,6 @@
-import React, { useCallback } from 'react';
+import React from 'react';
 
-import { Link, useHistory } from 'react-router-dom';
-
-import {
-  FiDollarSign,
-  FiHome,
-  FiPackage,
-  FiPower,
-  FiTruck,
-} from 'react-icons/fi';
+import { FiDollarSign, FiTruck } from 'react-icons/fi';
 import {
   HiOutlineGlobeAlt,
   HiOutlineOfficeBuilding,
@@ -20,38 +12,15 @@ import { useAuth } from '../../hooks/auth';
 
 import { theme } from '../../App';
 
-import Button from '../../components/Button';
+import Header from '../../components/Header';
 
-import { Container, Header, Main, Greetings, Module } from './styles';
+import { Container, Main, Module } from './styles';
 
 const Menu: React.FC = () => {
-  const history = useHistory();
-
-  const handleLogout = useCallback((): void => {
-    history.push('/');
-  }, [history]);
-
-  const handleHome = useCallback((): void => {
-    history.push('/home');
-  }, [history]);
-
   return (
     <>
       <Container>
-        <Header>
-          <h1>Cilex</h1>
-          <Greetings>
-            <h2>Menu</h2>
-          </Greetings>
-          <div id="container-buttons">
-            <Button onClick={() => handleHome()} layoutColor="button-filled">
-              <FiHome size={24} />{' '}
-            </Button>
-            <Button onClick={() => handleLogout()} layoutColor="button-outline">
-              <FiPower size={24} />
-            </Button>
-          </div>
-        </Header>
+        <Header pageName="Menu" />
         <Main>
           <Module to="/">
             <FiDollarSign size={44} color={theme.palette.primary.main} />
