@@ -1,6 +1,6 @@
-import React, { useCallback, useEffect, useState } from 'react';
-import { Link, useHistory } from 'react-router-dom';
-import { FiEye, FiHome, FiPower } from 'react-icons/fi';
+import React, { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
+import { FiEye } from 'react-icons/fi';
 
 import { useAuth } from '../../hooks/auth';
 import api from '../../services/api';
@@ -12,7 +12,7 @@ import DefaultTable from '../../components/DefaultTable';
 import ChangeCompany from '../../components/ChangeCompany';
 import Header from '../../components/Header';
 
-import { Container, Options, Main, Data } from './styles';
+import { Container, Main } from './styles';
 
 export interface Icompany {
   id: string;
@@ -23,34 +23,23 @@ export interface Icompany {
 }
 
 const Company: React.FC = () => {
-  const history = useHistory();
   const { user } = useAuth();
 
   const [companies, setCompanies] = useState<Icompany[]>([]);
 
-  useEffect(() => {
-    api.get<Icompany[]>('/company').then(response => {
-      setCompanies(response.data);
-    });
-  }, []);
-
-  const handleLogout = useCallback((): void => {
-    history.push('/');
-  }, [history]);
-
-  const handleHome = useCallback((): void => {
-    history.push('/home');
-  }, [history]);
+  // useEffect(() => {
+  //   api.get<Icompany[]>('/company').then(response => {
+  //     setCompanies(response.data);
+  //   });
+  // }, []);
 
   return (
     <>
       <Container>
         <Header pageName="Empresas" />
-        <Options>
-          <NewButton to="/company/register">Novo</NewButton>
-        </Options>
         <Main>
-          <Data>
+          <div id="align-content">
+            <NewButton to="/company/register">Novo</NewButton>
             <DefaultTable
               tbh={['Código', 'CNPJ', 'Razão Social', 'Nome Fantasia']}
             >
@@ -63,19 +52,18 @@ const Company: React.FC = () => {
                       <td>{row.razao_social}</td>
                       <td>{row.nome_fantasia}</td>
                       <td>
-                        {' '}
                         <Link
                           style={{ textDecoration: 'none' }}
                           to={`/company/${row.id}`}
                         >
                           <FiEye size={24} color="#ff7a00" />
-                        </Link>{' '}
+                        </Link>
                       </td>
                     </tr>
                   ))}
               </tbody>
             </DefaultTable>
-          </Data>
+          </div>
         </Main>
       </Container>
       <ChangeCompany />
