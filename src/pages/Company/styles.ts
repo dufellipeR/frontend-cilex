@@ -16,12 +16,31 @@ export const Container = styled.div`
   height: 100vh;
 `;
 
-export const Options = styled.div`
-  margin-left: 70px;
-`;
-
-export const Data = styled.div``;
-
 export const Main = styled.main`
-  text-align: -webkit-center;
+  display: flex;
+  flex-direction: column;
+
+  margin-top: 2rem;
+
+  #align-content {
+    width: 95%;
+
+    padding: 0 2rem;
+
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  td#td-options {
+    display: flex;
+    margin-left: 1rem;
+    gap: 1rem;
+
+    #share {
+      background-color: transparent;
+      border: none;
+    }
+  }
 `;
