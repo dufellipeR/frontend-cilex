@@ -71,40 +71,25 @@ const ChoseCompany: React.FC = () => {
     ]);
   }, []);
 
-  // useEffect(() => {
-  //   api.get<Icompany[]>('/company').then(response => {
-  //     setCompanies(response.data);
-  //     if (response.data.length === 0) {
-  //       history.push('/company/register');
-  //     }
-  //   });
-  // }, [history]);
+  useEffect(() => {
+    api.get<IUserCompany[]>(`/usercompany?user=${user.id}`).then(response => {
+      console.log(response.data);
 
-  // useEffect(() => {
-  //   api.get<IUserCompany[]>(`/usercompany?user=${user.id}`).then(response => {
-  //     console.log(response.data);
-
-  //     setUserCompanies(response.data);
-  //   });
-  // }, [user.id]);
+      setUserCompanies(response.data);
+    });
+  }, [user.id]);
 
   useEffect(() => {
-    api.get('/usercompany').then(response => {
-      setUserCompanies(response.data.companies);
-      console.log(response.data.companies);
+    api.get<Icompany[]>('/company').then(response => {
+      setCompanies(response.data);
+      if (response.data.length === 0) {
+        history.push('/company/register');
+      }
     });
-  }, []);
+  }, [history]);
 
   const handleLogout = useCallback((): void => {
     history.push('/');
-  }, [history]);
-
-  const handleDashboard = useCallback((): void => {
-    history.push('/dashboard');
-  }, [history]);
-
-  const handleMenu = useCallback((): void => {
-    history.push('/menu');
   }, [history]);
 
   return (

@@ -1,16 +1,14 @@
 import React, { useEffect, useState } from 'react';
-
 import { Link } from 'react-router-dom';
-
 import { FiEye, FiShare2 } from 'react-icons/fi';
 import { Checkbox } from '@material-ui/core';
+
 import { useAuth } from '../../hooks/auth';
+import api from '../../services/api';
 
 import Button from '../../components/Button';
-import CustomizedTables from '../../components/Table';
 import NewButton from '../../components/NewButton';
 import DefaultTable from '../../components/DefaultTable';
-import api from '../../services/api';
 import ChangeCompany from '../../components/ChangeCompany';
 import Modal from '../../components/Modal';
 import Header from '../../components/Header';
@@ -22,7 +20,7 @@ import {
   ContentModalShare,
 } from './styles';
 
-export interface IPerson {
+export interface Person {
   id: string;
   code: string;
   cnpj: string;
@@ -31,7 +29,7 @@ export interface IPerson {
   razao_social: string;
 }
 
-interface IUserCompany {
+interface UserCompany {
   id: string;
   cod: string;
   razao_social: string;
@@ -40,26 +38,21 @@ interface IUserCompany {
 const People: React.FC = () => {
   const { user } = useAuth();
 
-  const [people, setPeople] = useState<IPerson[]>([]);
-  const [userCompanies, setUserCompanies] = useState<IUserCompany[]>([]);
+  const [people, setPeople] = useState<Person[]>([]);
+  const [userCompanies, setUserCompanies] = useState<UserCompany[]>([]);
   const [visibleModalShare, setVisibleModalShare] = useState(false);
 
   useEffect(() => {
-    api.get('/peoples').then(response => {
-      setPeople(response.data.people);
+    api.get<Person[]>('/person').then(response => {
+      setPeople(response.data);
     });
-
-    // api.get<IPerson[]>('/person').then(response => {
-    //   setPeople(response.data);
-    // });
   }, []);
 
   useEffect(() => {
-    api.get('/usercompany').then(response => {
-      setUserCompanies(response.data.companies);
-      console.log(response.data.companies);
+    api.get<UserCompany[]>(`/usercompany?user=${user.id}`).then(response => {
+      setUserCompanies(response.data);
     });
-  }, []);
+  }, [user.id]);
 
   return (
     <>

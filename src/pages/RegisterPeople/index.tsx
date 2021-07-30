@@ -1,37 +1,30 @@
 import React, { useCallback, useState } from 'react';
-
 import { useHistory } from 'react-router-dom';
 import * as Yup from 'yup';
+import { Formik } from 'formik';
 import Switch from 'react-switch';
-
-import { FiHome, FiPower, FiSave } from 'react-icons/fi';
+import { FiSave } from 'react-icons/fi';
 import { HiOutlineArrowLeft } from 'react-icons/hi';
 import { toast } from 'react-toastify';
-import { Formik } from 'formik';
+
 import { useAuth } from '../../hooks/auth';
-
-import Button from '../../components/Button';
-
-import {
-  Container,
-  Header,
-  FormCustom,
-  Greetings,
-  Main,
-  Select,
-} from './styles';
-import Input from '../../components/Input';
 import api from '../../services/api';
 
-interface IRegisterForm {
-  cod: number | string;
+import Button from '../../components/Button';
+import Header from '../../components/Header';
+import Input from '../../components/Input';
+
+import { Container, FormCustom, Main, Select } from './styles';
+
+interface RegisterPeopleForm {
+  code: number | string;
   email: string;
   tel: string;
   endereco: string;
   cep: string;
-  estado: string;
+  uf: string;
   info: string;
-  type: string;
+  tipo: string;
 
   cnpj?: string;
   razao_social?: string;
@@ -51,15 +44,15 @@ const optionsSelect = [
 const RegisterPeople: React.FC = () => {
   const [checked, setChecked] = useState(false);
 
-  const formSchemaLogin = Yup.object().shape({
-    cod: Yup.number().required('Código obrigatório'),
+  const formSchemaPeople = Yup.object().shape({
+    code: Yup.number().required('Código obrigatório'),
     email: Yup.string().required('E-mail obrigatório'),
     tel: Yup.string(),
     endereco: Yup.string(),
     cep: Yup.string(),
     uf: Yup.string(),
     info: Yup.string(),
-    type: Yup.string(),
+    tipo: Yup.string(),
 
     // Jurídica
     cnpj: checked ? Yup.string() : Yup.string().required('CNPJ obrigatório'),
@@ -71,76 +64,73 @@ const RegisterPeople: React.FC = () => {
       : Yup.string().required('Nome Fantasia obrigatório'),
 
     // Fisica
-    cpf: checked ? Yup.string() : Yup.string().required('CPF obrigatório'),
-    nome: checked ? Yup.string() : Yup.string().required('Nome obrigatório'),
+    cpf: checked ? Yup.string().required('CPF obrigatório') : Yup.string(),
+    nome: checked ? Yup.string().required('Nome obrigatório') : Yup.string(),
   });
 
   const history = useHistory();
   const { user } = useAuth();
-
-  const handleLogout = useCallback((): void => {
-    history.push('/');
-  }, [history]);
-
-  const handleHome = useCallback((): void => {
-    history.push('/home');
-  }, [history]);
 
   const handleBack = useCallback((): void => {
     history.goBack();
   }, [history]);
 
   const handleSubmitForm = useCallback(
-    async (data: IRegisterForm) => {
+    async (data: RegisterPeopleForm) => {
       try {
-        api
-          .post('/peoples', {
-            cod: data.cod,
-            email: data.email,
-            tel: data.tel,
-            endereco: data.endereco,
-            cep: data.cep,
-            estado: data.estado,
-            info: data.info,
-            type: data.type,
+        if (checked) {
+          api
+            .post('/person', {
+              code: String(data.code),
+              email: data.email,
+              tel: data.tel,
+              endereco: data.endereco,
+              cep: data.cep,
+              uf: data.uf,
+              info: data.info,
+              tipo: data.tipo,
 
-            cnpj: data.cnpj,
-            razao_social: data.razao_social,
-            nome_fantasia: data.nome_fantasia,
+              cpf: String(data.cpf),
+              nome: data.nome,
+            })
+            .then(() => {
+              toast.success('Registrado com sucesso');
+              history.push('/people');
+            });
+        } else {
+          api
+            .post('/person', {
+              code: String(data.code),
+              email: data.email,
+              tel: data.tel,
+              endereco: data.endereco,
+              cep: data.cep,
+              uf: data.uf,
+              info: data.info,
+              tipo: data.tipo,
 
-            cpf: data.cpf,
-            nome: data.nome,
-          })
-          .then(() => {
-            toast.success('Registrado com sucesso');
-            history.push('/people');
-          });
+              cnpj: String(data.cnpj),
+              razao_social: data.razao_social,
+              nome_fantasia: data.nome_fantasia,
+            })
+            .then(() => {
+              toast.success('Registrado com sucesso');
+              history.push('/people');
+            });
+        }
       } catch (err) {
         toast.error(
-          'Erro no registro da empresa! Ocorreu um erro ao cadastrar, cheque as informações',
+          'Erro no registro da pessoa! Ocorreu um erro ao cadastrar, cheque as informações',
         );
       }
     },
-    [history],
+    [history, checked],
   );
 
   return (
     <>
       <Container>
-        <Header>
-          <h1>Cilex</h1>
-          <Greetings>
-            <p>Register People</p>
-          </Greetings>
-          <div id="container-buttons">
-            <Button onClick={() => handleHome()} layoutColor="button-filled">
-              <FiHome size={24} />{' '}
-            </Button>
-            <Button onClick={() => handleLogout()} layoutColor="button-outline">
-              <FiPower size={24} />
-            </Button>
-          </div>
-        </Header>
+        <Header pageName="Registro de Pessoa" />
         <Main>
           <div id="align-switch">
             <button
@@ -169,7 +159,7 @@ const RegisterPeople: React.FC = () => {
           </div>
           <Formik
             initialValues={{
-              cod: '',
+              code: '',
               cnpj: '',
               razao_social: '',
               nome_fantasia: '',
@@ -179,26 +169,27 @@ const RegisterPeople: React.FC = () => {
               cep: '',
               uf: '',
               info: '',
-              estado: '',
               cpf: '',
               nome: '',
-              type: '',
+              tipo: '',
             }}
-            validationSchema={formSchemaLogin}
+            validationSchema={formSchemaPeople}
             onSubmit={handleSubmitForm}
           >
             {({ handleChange, touched, values, errors, handleSubmit }) => (
               <FormCustom onSubmit={handleSubmit}>
                 <div id="align-inputs">
                   <Input
-                    name="cod"
+                    name="code"
                     min={1000}
                     max={9999}
                     type="number"
                     placeholder="Código"
-                    value={values.cod}
-                    onChange={handleChange('cod')}
-                    messageError={errors.cod && touched.cod ? errors.cod : ''}
+                    value={values.code}
+                    onChange={handleChange('code')}
+                    messageError={
+                      errors.code && touched.code ? errors.code : ''
+                    }
                   />
                   {checked ? (
                     <>
@@ -306,9 +297,9 @@ const RegisterPeople: React.FC = () => {
                     messageError={errors.uf && touched.uf ? errors.uf : ''}
                   />
                   <Select
-                    name="type"
-                    value={values.type}
-                    onChange={handleChange('type')}
+                    name="tipo"
+                    value={values.tipo}
+                    onChange={handleChange('tipo')}
                   >
                     {optionsSelect.map(option => (
                       <option value={option.value}>{option.label}</option>

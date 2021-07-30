@@ -1,121 +1,107 @@
-import styled, { keyframes } from 'styled-components';
-import { shade } from 'polished';
-import { Form } from '@unform/web';
+import styled from 'styled-components';
 
-const appearFromLeft = keyframes`
- from {
-  opacity: 0;
-  transform: translateX(-100px);
+export const Container = styled.div``;
 
- }
- to {
-  opacity:1;
-  transform: translateX(0)
- }
-`;
+export const Main = styled.main``;
 
-export const Container = styled.div`
-  height: 100vh;
-  display: grid;
-  grid-template-rows: 0.5fr 0.2fr;
-  /* grid-gap: 10px; */
-`;
-
-export const Header = styled.div`
-  display: grid;
-  grid-template-columns: 0.2fr 1fr 0.3fr;
-  text-align: center;
-  margin-top: 30px;
-  button {
-    max-width: 100px;
-  }
-  h1 {
-    font-size: 2.5rem;
-    margin-bottom: 10px;
-    color: #ff7a00;
-  }
-`;
-
-export const Greetings = styled.div`
-  margin-right: 5px;
-  h2 {
-    margin-bottom: 5px;
-    font-size: 3vw;
-  }
-
-  h3 {
-    margin-bottom: 15px;
-    font-size: 1.5vw;
-  }
-`;
-
-export const Info = styled.div`
+export const HeaderContent = styled.div`
   display: flex;
-  flex-direction: column;
-  justify-content: center;
-  margin: 2%;
-  text-align: center;
-`;
+  justify-content: space-between;
+  align-items: center;
 
-export const InfoHeader = styled.div`
-  /* display: flex;
-  flex-direction: row;
-  justify-content: center; */
-  margin-bottom: 30px;
-  h3 {
-    color: #6a6c72;
+  margin: 4rem 2rem;
+
+  #container-arrow {
+    width: 10rem;
+
+    display: flex;
+    justify-content: center;
+
+    button {
+      border: 0;
+      background-color: transparent;
+    }
+  }
+
+  #company-titles {
+    display: flex;
+    align-items: center;
+    gap: 4rem;
+
+    text-align: center;
+
+    @media (max-width: 900px) {
+      svg {
+        display: none;
+      }
+    }
+  }
+
+  #container-buttons-actions {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
   }
 `;
 
-export const Options = styled.div`
-  line-height: 0.1;
-`;
-
-export const EditBtn = styled.button`
-  background-color: #ff7a00;
-  border: 1px solid #ff7a00;
-  padding: 5px;
-  border-radius: 10%;
-  margin-left: 10px;
-  color: #fefefe;
-`;
-
-export const DeleteBtn = styled.button`
-  background-color: transparent;
-  border: 1px solid #ff7a00;
-  padding: 5px;
-  border-radius: 10%;
-  margin-left: 10px;
-  color: #fefefe;
-`;
-
-export const InfoBody = styled.div`
+export const ContainerCompanyData = styled.div`
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-columns: repeat(3, 30%);
+  justify-content: space-around;
+  align-items: center;
+
+  margin: 4rem 2rem;
 `;
 
 export const InfoCard = styled.div`
   display: flex;
   flex-direction: column;
-  /* border: 1px solid #ff7a00; */
+  align-items: center;
+
+  h4 {
+    font-weight: bold;
+    color: var(--primary-color);
+  }
+
+  span {
+    max-width: 100%;
+    word-break: break-all;
+    text-align: center;
+  }
 `;
 
 export const Badge = styled.span`
   background-color: transparent;
-  border: 1px solid #ff7a00;
-  color: #ff7a00;
+  border: 1px solid var(--primary-color);
+  color: var(--primary-color);
   padding: 5px;
+
+  @media (max-width: 900px) {
+    display: none;
+  }
 `;
 
-export const FormCustom = styled(Form)``;
+export const Select = styled.select`
+  border: 2px solid #666360;
+  border-radius: 10px;
 
-export const GroupInput = styled.div`
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  grid-column-gap: 10px;
+  padding: 1rem;
+  width: 100%;
 `;
 
-export const Main = styled.main`
-  text-align: -webkit-center;
-  margin: 5%;
+export const FormCustom = styled.form`
+  margin: 2rem 4rem;
+
+  #align-inputs {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-gap: 10px;
+
+    @media (max-width: 900px) {
+      display: flex;
+      flex-direction: column;
+
+      margin-bottom: 1rem;
+    }
+  }
 `;
