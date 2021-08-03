@@ -9,6 +9,20 @@ export const Container = styled.div`
 
   padding: 1rem 2rem;
 
+  #container-logo {
+    @media (max-width: 900px) {
+      img {
+        width: 15vw;
+      }
+    }
+
+    @media (min-width: 900px) {
+      img {
+        width: 10vw;
+      }
+    }
+  }
+
   #container-texts {
     display: flex;
     flex-direction: column;

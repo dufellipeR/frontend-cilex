@@ -27,11 +27,11 @@ const Company: React.FC = () => {
 
   const [companies, setCompanies] = useState<Icompany[]>([]);
 
-  // useEffect(() => {
-  //   api.get<Icompany[]>('/company').then(response => {
-  //     setCompanies(response.data);
-  //   });
-  // }, []);
+  useEffect(() => {
+    api.get<Icompany[]>('/company').then(response => {
+      setCompanies(response.data);
+    });
+  }, []);
 
   return (
     <>
