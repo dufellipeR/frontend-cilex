@@ -79,26 +79,6 @@ const EditCompany: React.FC = () => {
     });
   }, [id]);
 
-  const handleBack = useCallback((): void => {
-    history.goBack();
-  }, [history]);
-
-  const handleSubmitForm = useCallback(
-    async (data: IRegisterForm) => {
-      try {
-        api.put(`/company/${id}`, data).then(() => {
-          toast.success('Atualizado com sucesso');
-          history.push('/company');
-        });
-      } catch (err) {
-        toast.error(
-          'Erro no registro da empresa! Ocorreu um erro ao fazer login, cheque as credenciais',
-        );
-      }
-    },
-    [history, id],
-  );
-
   useEffect(() => {
     api.get<Icompany[]>('/company').then(response => {
       const formatData: any[] = response.data.map(item => {
@@ -110,6 +90,65 @@ const EditCompany: React.FC = () => {
       setCompanies(formatData);
     });
   }, []);
+
+  const handleBack = useCallback((): void => {
+    history.goBack();
+  }, [history]);
+
+  const handleSubmitForm = useCallback(
+    async (data: IRegisterForm) => {
+      try {
+        const {
+          cod,
+          cnpj,
+          razao_social,
+          nome_fantasia,
+          email,
+          tel,
+          endereco,
+          cep,
+          uf,
+          info,
+          matriz_id,
+        } = data;
+
+        api
+          .put(`/company/${id}`, {
+            cod: String(cod),
+            cnpj: String(cnpj),
+            razao_social,
+            nome_fantasia,
+            email,
+            tel,
+            endereco,
+            cep,
+            uf,
+            info,
+            matriz_id: matriz_id || '',
+          })
+          .then(() => {
+            toast.success('Atualizado com sucesso');
+            history.push('/company');
+          });
+      } catch (err) {
+        toast.error('Ocorreu um erro na atualização da Empresa!');
+      }
+    },
+    [history, id],
+  );
+
+  const handleDeleteCompany = () => {
+    api
+      .delete(`/company/${id}`)
+      .then(() => {
+        toast.success('Deletada com Sucesso');
+        history.push('/company');
+      })
+      .catch(() => {
+        toast.success('Erro ao deletar Empresa');
+        history.push('/company');
+      });
+  };
 
   return (
     <>
@@ -129,10 +168,10 @@ const EditCompany: React.FC = () => {
                   <h2>{company.razao_social}</h2>
                   <p>{company.nome_fantasia}</p>
                 </div>
-                {company.matriz_id !== null ? (
-                  <Badge>Filial</Badge>
-                ) : (
+                {company.matriz_id ? (
                   <Badge>Matriz</Badge>
+                ) : (
+                  <Badge>Filial</Badge>
                 )}
               </div>
               <div id="container-buttons-actions">
@@ -142,7 +181,10 @@ const EditCompany: React.FC = () => {
                 >
                   <HiOutlinePencilAlt size={24} color="#fefefe" />
                 </Button>
-                <Button layoutColor="button-outline">
+                <Button
+                  layoutColor="button-outline"
+                  onClick={handleDeleteCompany}
+                >
                   <HiOutlineTrash size={24} color="#ff7a00" />
                 </Button>
               </div>
@@ -179,7 +221,7 @@ const EditCompany: React.FC = () => {
                   cep: company.cep,
                   uf: company.uf,
                   info: company.info,
-                  matriz_id: company.matriz_id,
+                  matriz_id: company.matriz_id ? company.matriz_id : '',
                 }}
                 validationSchema={formSchemaCompanyEdit}
                 onSubmit={handleSubmitForm}
@@ -189,11 +231,14 @@ const EditCompany: React.FC = () => {
                     <div id="align-inputs">
                       <Select
                         name="matriz_id"
-                        value={values.matriz_id}
+                        value={values.matriz_id ? values.matriz_id : ''}
                         onChange={handleChange('matriz_id')}
                       >
                         {companies.map(companyMap => (
-                          <option value={companyMap.value}>
+                          <option
+                            key={companyMap.value}
+                            value={companyMap.value}
+                          >
                             {companyMap.label}
                           </option>
                         ))}
@@ -219,6 +264,7 @@ const EditCompany: React.FC = () => {
                         messageError={
                           errors.cnpj && touched.cnpj ? errors.cnpj : ''
                         }
+                        maxLength={18}
                       />
                       <Input
                         name="razao_social"
@@ -304,7 +350,7 @@ const EditCompany: React.FC = () => {
                           errors.info && touched.info ? errors.info : ''
                         }
                       />
-                      <Button layoutColor="button-green">
+                      <Button layoutColor="button-green" type="submit">
                         <FiSave size={24} />
                         <span>Salvar</span>
                       </Button>

@@ -83,9 +83,7 @@ const RegisterCompany: React.FC = () => {
             history.push('/company');
           });
       } catch (err) {
-        toast.error(
-          'Erro no registro da empresa! Ocorreu um erro ao fazer login, cheque as credenciais',
-        );
+        toast.error('Ocorreu um erro no registro da Empresa!');
       }
     },
     [history],
@@ -141,6 +139,7 @@ const RegisterCompany: React.FC = () => {
                     messageError={
                       errors.cnpj && touched.cnpj ? errors.cnpj : ''
                     }
+                    maxLength={18}
                   />
                   <Input
                     name="razao_social"

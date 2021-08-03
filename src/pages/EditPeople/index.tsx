@@ -17,8 +17,6 @@ import api from '../../services/api';
 import Header from '../../components/Header';
 import Button from '../../components/Button';
 
-import { Icompany } from '../Company';
-
 import {
   Container,
   Main,
@@ -30,11 +28,6 @@ import {
   FormCustom,
 } from './styles';
 import Input from '../../components/Input';
-
-interface IOpt {
-  value: string;
-  label: string;
-}
 
 interface IRegisterForm {
   code: number | string;
@@ -59,14 +52,12 @@ const EditPeople: React.FC = () => {
   const { user } = useAuth();
   const { id }: any = useParams();
 
-  const [companies, setCompanies] = useState<IOpt[]>([]);
   const [editting, setEditting] = useState<boolean>(false);
   const [person, setPerson] = useState<IRegisterForm | null>(null);
 
   useEffect(() => {
     api.get<IRegisterForm | null>(`/person/${id}`).then(response => {
       setPerson(response.data);
-      console.log(response.data);
     });
   }, [id]);
 
@@ -77,30 +68,67 @@ const EditPeople: React.FC = () => {
   const handleSubmitForm = useCallback(
     async (data: IRegisterForm) => {
       try {
-        api.put(`/company/${id}`, data).then(() => {
-          toast.success('Atualizado com sucesso');
-          history.push('/company');
-        });
+        if (data.cnpj) {
+          const {
+            code,
+            email,
+            tel,
+            endereco,
+            cep,
+            uf,
+            info,
+            tipo,
+            cnpj,
+            razao_social,
+            nome_fantasia,
+          } = data;
+
+          api
+            .put(`/person/${id}`, {
+              code: String(code),
+              cnpj: String(cnpj),
+              razao_social,
+              nome_fantasia,
+              email,
+              tel,
+              endereco,
+              cep,
+              uf,
+              info,
+              tipo,
+            })
+            .then(() => {
+              toast.success('Atualizado com sucesso');
+              history.push('/people');
+            });
+        } else {
+          const { code, email, tel, endereco, cep, uf, info, tipo, cpf, nome } =
+            data;
+
+          api
+            .put(`/person/${id}`, {
+              code: String(code),
+              email,
+              tel,
+              endereco,
+              cep,
+              uf,
+              info,
+              tipo,
+              cpf: String(cpf),
+              nome,
+            })
+            .then(() => {
+              toast.success('Atualizado com sucesso');
+              history.push('/people');
+            });
+        }
       } catch (err) {
-        toast.error(
-          'Erro no registro da empresa! Ocorreu um erro ao fazer login, cheque as credenciais',
-        );
+        toast.error('Ocorreu um erro na atualização da Empresa!');
       }
     },
     [history, id],
   );
-
-  useEffect(() => {
-    api.get<Icompany[]>('/company').then(response => {
-      const formatData: any[] = response.data.map(item => {
-        return {
-          value: item.id,
-          label: `${item.cod} - ${item.razao_social}`,
-        };
-      });
-      setCompanies(formatData);
-    });
-  }, []);
 
   const formSchemaPersonEdit = Yup.object().shape({
     code: Yup.number().required('Código obrigatório'),
@@ -137,6 +165,19 @@ const EditPeople: React.FC = () => {
     { value: 'colaborador', label: 'Colaborador' },
   ];
 
+  const handleDeletePerson = () => {
+    api
+      .delete(`/person/${id}`)
+      .then(() => {
+        toast.success('Deletado com Sucesso');
+        history.push('/people');
+      })
+      .catch(() => {
+        toast.success('Erro ao deletar Pessoa');
+        history.push('/people');
+      });
+  };
+
   return (
     <>
       <Container>
@@ -164,7 +205,10 @@ const EditPeople: React.FC = () => {
                 >
                   <HiOutlinePencilAlt size={24} color="#fefefe" />
                 </Button>
-                <Button layoutColor="button-outline">
+                <Button
+                  layoutColor="button-outline"
+                  onClick={handleDeletePerson}
+                >
                   <HiOutlineTrash size={24} color="#ff7a00" />
                 </Button>
               </div>
@@ -342,7 +386,9 @@ const EditPeople: React.FC = () => {
                         onChange={handleChange('tipo')}
                       >
                         {optionsSelect.map(option => (
-                          <option value={option.value}>{option.label}</option>
+                          <option key={option.value} value={option.value}>
+                            {option.label}
+                          </option>
                         ))}
                       </Select>
                       <Input
@@ -355,6 +401,10 @@ const EditPeople: React.FC = () => {
                           errors.info && touched.info ? errors.info : ''
                         }
                       />
+                      <Button layoutColor="button-green" type="submit">
+                        <FiSave size={24} />
+                        <span>Salvar</span>
+                      </Button>
                     </div>
                   </FormCustom>
                 )}
@@ -362,83 +412,6 @@ const EditPeople: React.FC = () => {
             )}
           </Main>
         )}
-
-        {/* {editting && company && (
-          <Main>
-            <FormCustom
-              initialData={company}
-              ref={formRef}
-              onSubmit={handleSubmit}
-            >
-              <GroupInput>
-                <div>
-                  <Select
-                    name="matriz_id"
-                    options={companies}
-                    placeholder="Matriz"
-                  />
-                </div>
-
-                <div>
-                  <FormInput
-                    name="cod"
-                    min={1000}
-                    max={9999}
-                    type="number"
-                    placeholder="Código"
-                  />
-                  <FormInput name="cnpj" type="number" placeholder="CNPJ" />
-                  <FormInput
-                    name="razao_social"
-                    type="text"
-                    placeholder="Razão Social"
-                  />
-                  <FormInput
-                    name="nome_fantasia"
-                    type="text"
-                    placeholder="Nome Fantasia"
-                  />
-                  <FormInput name="email" type="email" placeholder="E-mail" />
-                </div>
-                <div>
-                  <FormInput name="tel" type="text" placeholder="Telefone" />
-                  <FormInput
-                    name="endereco"
-                    type="text"
-                    placeholder="Endereço"
-                  />
-                  <FormInput name="cep" type="text" placeholder="CEP" />
-                  <FormInput name="uf" type="text" placeholder="Estado" />
-                  <FormInput
-                    name="info"
-                    type="text"
-                    placeholder="Informações"
-                  />
-                </div>
-              </GroupInput>
-
-              <Button
-                layoutColor="button-green"
-                style={{
-                  maxWidth: 400,
-                }}
-                type="submit"
-              >
-                <span
-                  style={{
-                    marginLeft: `${30}%`,
-                    alignSelf: 'center',
-                    justifyContent: 'space-evenly',
-                    maxWidth: `${35}%`,
-                    lineHeight: 1.5,
-                  }}
-                >
-                  <FiSave size={24} /> Salvar
-                </span>
-              </Button>
-            </FormCustom>
-          </Main>
-        )} */}
       </Container>
     </>
   );

@@ -79,39 +79,54 @@ const RegisterPeople: React.FC = () => {
     async (data: RegisterPeopleForm) => {
       try {
         if (checked) {
+          const { code, email, tel, endereco, cep, uf, info, tipo, cpf, nome } =
+            data;
+
           api
             .post('/person', {
-              code: String(data.code),
-              email: data.email,
-              tel: data.tel,
-              endereco: data.endereco,
-              cep: data.cep,
-              uf: data.uf,
-              info: data.info,
-              tipo: data.tipo,
-
-              cpf: String(data.cpf),
-              nome: data.nome,
+              code: String(code),
+              email,
+              tel,
+              endereco,
+              cep,
+              uf,
+              info,
+              tipo,
+              cpf: String(cpf),
+              nome,
             })
             .then(() => {
               toast.success('Registrado com sucesso');
               history.push('/people');
             });
         } else {
+          const {
+            code,
+            email,
+            tel,
+            endereco,
+            cep,
+            uf,
+            info,
+            tipo,
+            cnpj,
+            razao_social,
+            nome_fantasia,
+          } = data;
+
           api
             .post('/person', {
-              code: String(data.code),
-              email: data.email,
-              tel: data.tel,
-              endereco: data.endereco,
-              cep: data.cep,
-              uf: data.uf,
-              info: data.info,
-              tipo: data.tipo,
-
-              cnpj: String(data.cnpj),
-              razao_social: data.razao_social,
-              nome_fantasia: data.nome_fantasia,
+              code: String(code),
+              email,
+              tel,
+              endereco,
+              cep,
+              uf,
+              info,
+              tipo,
+              cnpj: String(cnpj),
+              razao_social,
+              nome_fantasia,
             })
             .then(() => {
               toast.success('Registrado com sucesso');
@@ -119,9 +134,7 @@ const RegisterPeople: React.FC = () => {
             });
         }
       } catch (err) {
-        toast.error(
-          'Erro no registro da pessoa! Ocorreu um erro ao cadastrar, cheque as informações',
-        );
+        toast.error('Ocorreu um erro no registro da Empresa!');
       }
     },
     [history, checked],
