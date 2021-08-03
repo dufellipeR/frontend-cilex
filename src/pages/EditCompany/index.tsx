@@ -13,6 +13,7 @@ import { toast } from 'react-toastify';
 
 import { useAuth } from '../../hooks/auth';
 import api from '../../services/api';
+import { theme } from '../../App';
 
 import Header from '../../components/Header';
 import Button from '../../components/Button';
@@ -159,11 +160,17 @@ const EditCompany: React.FC = () => {
             <HeaderContent>
               <div id="container-arrow">
                 <button type="button" onClick={() => handleBack()}>
-                  <HiOutlineArrowLeft size={42} color="#ff7a00" />
+                  <HiOutlineArrowLeft
+                    size={42}
+                    color={theme.palette.primary.main}
+                  />
                 </button>
               </div>
               <div id="company-titles">
-                <HiOutlineOfficeBuilding size={32} color="#ff7a00" />
+                <HiOutlineOfficeBuilding
+                  size={32}
+                  color={theme.palette.primary.main}
+                />
                 <div>
                   <h2>{company.razao_social}</h2>
                   <p>{company.nome_fantasia}</p>
@@ -185,7 +192,10 @@ const EditCompany: React.FC = () => {
                   layoutColor="button-outline"
                   onClick={handleDeleteCompany}
                 >
-                  <HiOutlineTrash size={24} color="#ff7a00" />
+                  <HiOutlineTrash
+                    size={24}
+                    color={theme.palette.primary.main}
+                  />
                 </Button>
               </div>
             </HeaderContent>

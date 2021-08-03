@@ -5,6 +5,7 @@ import { Checkbox } from '@material-ui/core';
 
 import { useAuth } from '../../hooks/auth';
 import api from '../../services/api';
+import { theme } from '../../App';
 
 import Button from '../../components/Button';
 import NewButton from '../../components/NewButton';
@@ -76,13 +77,16 @@ const People: React.FC = () => {
                           id="share"
                           onClick={() => setVisibleModalShare(true)}
                         >
-                          <FiShare2 size={24} color="#ff7a00" />
+                          <FiShare2
+                            size={24}
+                            color={theme.palette.primary.main}
+                          />
                         </button>
                         <Link
                           style={{ textDecoration: 'none' }}
                           to={`/people/${row.id}`}
                         >
-                          <FiEye size={24} color="#ff7a00" />
+                          <FiEye size={24} color={theme.palette.primary.main} />
                         </Link>
                       </td>
                     </tr>

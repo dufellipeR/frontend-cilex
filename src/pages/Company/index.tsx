@@ -4,6 +4,7 @@ import { FiEye } from 'react-icons/fi';
 
 import { useAuth } from '../../hooks/auth';
 import api from '../../services/api';
+import { theme } from '../../App';
 
 import Button from '../../components/Button';
 import CustomizedTables from '../../components/Table';
@@ -56,7 +57,7 @@ const Company: React.FC = () => {
                           style={{ textDecoration: 'none' }}
                           to={`/company/${row.id}`}
                         >
-                          <FiEye size={24} color="#ff7a00" />
+                          <FiEye size={24} color={theme.palette.primary.main} />
                         </Link>
                       </td>
                     </tr>

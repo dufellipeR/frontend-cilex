@@ -9,6 +9,7 @@ import { toast } from 'react-toastify';
 
 import { useAuth } from '../../hooks/auth';
 import api from '../../services/api';
+import { theme } from '../../App';
 
 import Button from '../../components/Button';
 import Header from '../../components/Header';
@@ -155,7 +156,10 @@ const RegisterPeople: React.FC = () => {
               }}
               onClick={() => handleBack()}
             >
-              <HiOutlineArrowLeft size={42} color="#ff7a00" />
+              <HiOutlineArrowLeft
+                size={42}
+                color={theme.palette.primary.main}
+              />
             </button>
             <div id="container-switch">
               <p>Pessoa Jurídica</p>
@@ -164,8 +168,8 @@ const RegisterPeople: React.FC = () => {
                 checked={checked}
                 checkedIcon={false}
                 uncheckedIcon={false}
-                onColor="#ff7a00"
-                offColor="#ff7a00"
+                onColor={theme.palette.primary.main}
+                offColor={theme.palette.primary.main}
               />
               <p>Pessoa Física</p>
             </div>
