@@ -8,6 +8,7 @@ import { toast } from 'react-toastify';
 
 import { useAuth } from '../../hooks/auth';
 import api from '../../services/api';
+import { theme } from '../../App';
 
 import Button from '../../components/Button';
 import Header from '../../components/Header';
@@ -98,7 +99,7 @@ const RegisterCompany: React.FC = () => {
           style={{ backgroundColor: 'transparent', border: 0, maxWidth: 150 }}
           onClick={() => handleBack()}
         >
-          <HiOutlineArrowLeft size={42} color="#ff7a00" />
+          <HiOutlineArrowLeft size={42} color={theme.palette.primary.main} />
         </button>
         <Main>
           <Formik
