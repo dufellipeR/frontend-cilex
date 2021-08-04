@@ -56,7 +56,9 @@ const RegisterPeople: React.FC = () => {
     tipo: Yup.string(),
 
     // Jurídica
-    cnpj: checked ? Yup.string() : Yup.string().required('CNPJ obrigatório'),
+    cnpj: checked
+      ? Yup.string()
+      : Yup.string().required('CNPJ obrigatório').min(14).max(18),
     razao_social: checked
       ? Yup.string()
       : Yup.string().required('Razão Social obrigatório'),
@@ -242,6 +244,8 @@ const RegisterPeople: React.FC = () => {
                         messageError={
                           errors.cnpj && touched.cnpj ? errors.cnpj : ''
                         }
+                        minLength={14}
+                        maxLength={18}
                       />
                       <Input
                         name="razao_social"

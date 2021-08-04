@@ -144,7 +144,7 @@ const EditPeople: React.FC = () => {
     // Jurídica
     cnpj: person?.cpf
       ? Yup.string()
-      : Yup.string().required('CNPJ obrigatório'),
+      : Yup.string().required('CNPJ obrigatório').min(14).max(18),
     razao_social: person?.cpf
       ? Yup.string()
       : Yup.string().required('Razão Social obrigatório'),
@@ -303,13 +303,15 @@ const EditPeople: React.FC = () => {
                         <>
                           <Input
                             name="cnpj"
-                            type="number"
+                            type="text"
                             placeholder="CNPJ"
                             value={values.cnpj}
                             onChange={handleChange('cnpj')}
                             messageError={
                               errors.cnpj && touched.cnpj ? errors.cnpj : ''
                             }
+                            minLength={14}
+                            maxLength={18}
                           />
                           <Input
                             name="razao_social"

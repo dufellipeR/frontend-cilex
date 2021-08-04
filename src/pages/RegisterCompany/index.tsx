@@ -35,7 +35,7 @@ const RegisterCompany: React.FC = () => {
 
   const formSchemaCompany = Yup.object().shape({
     cod: Yup.string().required('Código Obrigatório'),
-    cnpj: Yup.string().required('CNPJ obrigatório'),
+    cnpj: Yup.string().required('CNPJ obrigatório').min(14).max(18),
     razao_social: Yup.string().required('Razão Social obrigatória'),
     nome_fantasia: Yup.string().required('Nome Fantasia obrigatório'),
     email: Yup.string().required('E-mail obrigatório'),
@@ -140,6 +140,7 @@ const RegisterCompany: React.FC = () => {
                     messageError={
                       errors.cnpj && touched.cnpj ? errors.cnpj : ''
                     }
+                    minLength={14}
                     maxLength={18}
                   />
                   <Input
