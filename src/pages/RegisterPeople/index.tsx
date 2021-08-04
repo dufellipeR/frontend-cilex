@@ -4,7 +4,6 @@ import * as Yup from 'yup';
 import { Formik } from 'formik';
 import Switch from 'react-switch';
 import { FiSave } from 'react-icons/fi';
-import { HiOutlineArrowLeft } from 'react-icons/hi';
 import { toast } from 'react-toastify';
 
 import { useAuth } from '../../hooks/auth';
@@ -14,6 +13,7 @@ import { theme } from '../../App';
 import Button from '../../components/Button';
 import Header from '../../components/Header';
 import Input from '../../components/Input';
+import ButtonBack from '../../components/ButtonBack';
 
 import { Container, FormCustom, Main, Select } from './styles';
 
@@ -43,6 +43,9 @@ const optionsSelect = [
 ];
 
 const RegisterPeople: React.FC = () => {
+  const history = useHistory();
+  const { user } = useAuth();
+
   const [checked, setChecked] = useState(false);
 
   const formSchemaPeople = Yup.object().shape({
@@ -70,13 +73,6 @@ const RegisterPeople: React.FC = () => {
     cpf: checked ? Yup.string().required('CPF obrigatório') : Yup.string(),
     nome: checked ? Yup.string().required('Nome obrigatório') : Yup.string(),
   });
-
-  const history = useHistory();
-  const { user } = useAuth();
-
-  const handleBack = useCallback((): void => {
-    history.goBack();
-  }, [history]);
 
   const handleSubmitForm = useCallback(
     async (data: RegisterPeopleForm) => {
@@ -149,20 +145,7 @@ const RegisterPeople: React.FC = () => {
         <Header pageName="Registro de Pessoa" />
         <Main>
           <div id="align-switch">
-            <button
-              type="button"
-              style={{
-                backgroundColor: 'transparent',
-                border: 0,
-                maxWidth: 150,
-              }}
-              onClick={() => handleBack()}
-            >
-              <HiOutlineArrowLeft
-                size={42}
-                color={theme.palette.primary.main}
-              />
-            </button>
+            <ButtonBack />
             <div id="container-switch">
               <p>Pessoa Jurídica</p>
               <Switch

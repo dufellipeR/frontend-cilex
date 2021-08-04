@@ -6,8 +6,7 @@ import { useAuth } from '../../hooks/auth';
 import api from '../../services/api';
 import { theme } from '../../App';
 
-import Button from '../../components/Button';
-import CustomizedTables from '../../components/Table';
+import ButtonBack from '../../components/ButtonBack';
 import NewButton from '../../components/NewButton';
 import DefaultTable from '../../components/DefaultTable';
 import ChangeCompany from '../../components/ChangeCompany';
@@ -40,6 +39,7 @@ const Company: React.FC = () => {
         <Header pageName="Empresas" />
         <Main>
           <div id="align-content">
+            <ButtonBack />
             <NewButton to="/company/register">Novo</NewButton>
             <DefaultTable
               tbh={['Código', 'CNPJ', 'Razão Social', 'Nome Fantasia']}
