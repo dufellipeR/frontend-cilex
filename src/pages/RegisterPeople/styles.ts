@@ -59,3 +59,12 @@ export const Select = styled.select`
   padding: 1rem;
   width: 100%;
 `;
+
+export const CheckboxContainer = styled.div`
+  margin: auto;
+
+  div {
+    display: flex;
+    gap: 5rem;
+  }
+`;

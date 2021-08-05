@@ -17,6 +17,7 @@ import { theme } from '../../App';
 
 import Header from '../../components/Header';
 import Button from '../../components/Button';
+import Checkbox from '../../components/Checkbox';
 
 import {
   Container,
@@ -27,6 +28,7 @@ import {
   ContainerCompanyData,
   Select,
   FormCustom,
+  CheckboxContainer,
 } from './styles';
 import Input from '../../components/Input';
 
@@ -39,6 +41,7 @@ interface IRegisterForm {
   uf: string;
   info: string;
   tipo: string;
+  isUser: boolean;
 
   cnpj?: string;
   razao_social?: string;
@@ -79,6 +82,7 @@ const EditPeople: React.FC = () => {
             uf,
             info,
             tipo,
+            isUser,
             cnpj,
             razao_social,
             nome_fantasia,
@@ -97,14 +101,26 @@ const EditPeople: React.FC = () => {
               uf,
               info,
               tipo,
+              isUser,
             })
             .then(() => {
               toast.success('Atualizado com sucesso');
               history.push('/people');
             });
         } else {
-          const { code, email, tel, endereco, cep, uf, info, tipo, cpf, nome } =
-            data;
+          const {
+            code,
+            email,
+            tel,
+            endereco,
+            cep,
+            uf,
+            info,
+            tipo,
+            isUser,
+            cpf,
+            nome,
+          } = data;
 
           api
             .put(`/person/${id}`, {
@@ -116,6 +132,7 @@ const EditPeople: React.FC = () => {
               uf,
               info,
               tipo,
+              isUser,
               cpf: String(cpf),
               nome,
             })
@@ -140,6 +157,7 @@ const EditPeople: React.FC = () => {
     uf: Yup.string(),
     info: Yup.string(),
     tipo: Yup.string(),
+    isUser: Yup.boolean(),
 
     // Jurídica
     cnpj: person?.cpf
@@ -257,6 +275,7 @@ const EditPeople: React.FC = () => {
                   cpf: person.cpf ? person.cpf : '',
                   nome: person.nome ? person.nome : '',
                   tipo: person.tipo,
+                  isUser: person.isUser,
                 }}
                 validationSchema={formSchemaPersonEdit}
                 onSubmit={handleSubmitForm}
@@ -410,6 +429,9 @@ const EditPeople: React.FC = () => {
                           errors.info && touched.info ? errors.info : ''
                         }
                       />
+                      <CheckboxContainer>
+                        <Checkbox name="isUser" label="É usuário ?" />
+                      </CheckboxContainer>
                       <Button layoutColor="button-green" type="submit">
                         <FiSave size={24} />
                         <span>Salvar</span>

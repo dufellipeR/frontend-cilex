@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/label-has-for */
 import React, { useCallback, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import * as Yup from 'yup';
@@ -14,8 +15,15 @@ import Button from '../../components/Button';
 import Header from '../../components/Header';
 import Input from '../../components/Input';
 import ButtonBack from '../../components/ButtonBack';
+import Checkbox from '../../components/Checkbox';
 
-import { Container, FormCustom, Main, Select } from './styles';
+import {
+  CheckboxContainer,
+  Container,
+  FormCustom,
+  Main,
+  Select,
+} from './styles';
 
 interface RegisterPeopleForm {
   code: number | string;
@@ -26,6 +34,7 @@ interface RegisterPeopleForm {
   uf: string;
   info: string;
   tipo: string;
+  isUser: boolean;
 
   cnpj?: string;
   razao_social?: string;
@@ -46,7 +55,7 @@ const RegisterPeople: React.FC = () => {
   const history = useHistory();
   const { user } = useAuth();
 
-  const [checked, setChecked] = useState(false);
+  const [isPhysicalPerson, setIsPhysicalPerson] = useState(false);
 
   const formSchemaPeople = Yup.object().shape({
     code: Yup.number().required('Código obrigatório'),
@@ -57,29 +66,45 @@ const RegisterPeople: React.FC = () => {
     uf: Yup.string(),
     info: Yup.string(),
     tipo: Yup.string(),
+    isUser: Yup.boolean(),
 
     // Jurídica
-    cnpj: checked
+    cnpj: isPhysicalPerson
       ? Yup.string()
       : Yup.string().required('CNPJ obrigatório').min(14).max(18),
-    razao_social: checked
+    razao_social: isPhysicalPerson
       ? Yup.string()
       : Yup.string().required('Razão Social obrigatório'),
-    nome_fantasia: checked
+    nome_fantasia: isPhysicalPerson
       ? Yup.string()
       : Yup.string().required('Nome Fantasia obrigatório'),
 
     // Fisica
-    cpf: checked ? Yup.string().required('CPF obrigatório') : Yup.string(),
-    nome: checked ? Yup.string().required('Nome obrigatório') : Yup.string(),
+    cpf: isPhysicalPerson
+      ? Yup.string().required('CPF obrigatório')
+      : Yup.string(),
+    nome: isPhysicalPerson
+      ? Yup.string().required('Nome obrigatório')
+      : Yup.string(),
   });
 
   const handleSubmitForm = useCallback(
     async (data: RegisterPeopleForm) => {
       try {
-        if (checked) {
-          const { code, email, tel, endereco, cep, uf, info, tipo, cpf, nome } =
-            data;
+        if (isPhysicalPerson) {
+          const {
+            code,
+            email,
+            tel,
+            endereco,
+            cep,
+            uf,
+            info,
+            tipo,
+            cpf,
+            nome,
+            isUser,
+          } = data;
 
           api
             .post('/person', {
@@ -91,6 +116,7 @@ const RegisterPeople: React.FC = () => {
               uf,
               info,
               tipo,
+              isUser,
               cpf: String(cpf),
               nome,
             })
@@ -111,6 +137,7 @@ const RegisterPeople: React.FC = () => {
             cnpj,
             razao_social,
             nome_fantasia,
+            isUser,
           } = data;
 
           api
@@ -123,6 +150,7 @@ const RegisterPeople: React.FC = () => {
               uf,
               info,
               tipo,
+              isUser,
               cnpj: String(cnpj),
               razao_social,
               nome_fantasia,
@@ -136,7 +164,7 @@ const RegisterPeople: React.FC = () => {
         toast.error('Ocorreu um erro no registro da Empresa!');
       }
     },
-    [history, checked],
+    [history, isPhysicalPerson],
   );
 
   return (
@@ -149,8 +177,8 @@ const RegisterPeople: React.FC = () => {
             <div id="container-switch">
               <p>Pessoa Jurídica</p>
               <Switch
-                onChange={() => setChecked(!checked)}
-                checked={checked}
+                onChange={() => setIsPhysicalPerson(!isPhysicalPerson)}
+                checked={isPhysicalPerson}
                 checkedIcon={false}
                 uncheckedIcon={false}
                 onColor={theme.palette.primary.main}
@@ -162,18 +190,19 @@ const RegisterPeople: React.FC = () => {
           <Formik
             initialValues={{
               code: '',
-              cnpj: '',
-              razao_social: '',
-              nome_fantasia: '',
               email: '',
               tel: '',
               endereco: '',
               cep: '',
               uf: '',
               info: '',
+              tipo: '',
+              isUser: false,
+              cnpj: '',
+              razao_social: '',
+              nome_fantasia: '',
               cpf: '',
               nome: '',
-              tipo: '',
             }}
             validationSchema={formSchemaPeople}
             onSubmit={handleSubmitForm}
@@ -193,7 +222,7 @@ const RegisterPeople: React.FC = () => {
                       errors.code && touched.code ? errors.code : ''
                     }
                   />
-                  {checked ? (
+                  {isPhysicalPerson ? (
                     <>
                       <Input
                         name="cpf"
@@ -319,6 +348,9 @@ const RegisterPeople: React.FC = () => {
                       errors.info && touched.info ? errors.info : ''
                     }
                   />
+                  <CheckboxContainer>
+                    <Checkbox name="isUser" label="É usuário ?" />
+                  </CheckboxContainer>
                 </div>
                 <div id="align-button-save">
                   <Button layoutColor="button-green" type="submit">
