@@ -62,7 +62,7 @@ const EditCompany: React.FC = () => {
 
   const formSchemaCompanyEdit = Yup.object().shape({
     cod: Yup.string().required('Código Obrigatório'),
-    cnpj: Yup.string().required('CNPJ obrigatório'),
+    cnpj: Yup.string().required('CNPJ obrigatório').min(14).max(18),
     razao_social: Yup.string().required('Razão Social obrigatória'),
     nome_fantasia: Yup.string().required('Nome Fantasia obrigatório'),
     email: Yup.string().required('E-mail obrigatório'),
@@ -176,9 +176,9 @@ const EditCompany: React.FC = () => {
                   <p>{company.nome_fantasia}</p>
                 </div>
                 {company.matriz_id ? (
-                  <Badge>Matriz</Badge>
-                ) : (
                   <Badge>Filial</Badge>
+                ) : (
+                  <Badge>Matriz</Badge>
                 )}
               </div>
               <div id="container-buttons-actions">
@@ -244,6 +244,7 @@ const EditCompany: React.FC = () => {
                         value={values.matriz_id ? values.matriz_id : ''}
                         onChange={handleChange('matriz_id')}
                       >
+                        <option value="">Matriz</option>
                         {companies.map(companyMap => (
                           <option
                             key={companyMap.value}
@@ -267,13 +268,14 @@ const EditCompany: React.FC = () => {
                       />
                       <Input
                         name="cnpj"
-                        type="number"
+                        type="text"
                         placeholder="CNPJ"
                         value={values.cnpj}
                         onChange={handleChange('cnpj')}
                         messageError={
                           errors.cnpj && touched.cnpj ? errors.cnpj : ''
                         }
+                        minLength={14}
                         maxLength={18}
                       />
                       <Input

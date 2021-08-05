@@ -8,6 +8,7 @@ import api from '../../services/api';
 import { theme } from '../../App';
 
 import Button from '../../components/Button';
+import ButtonBack from '../../components/ButtonBack';
 import NewButton from '../../components/NewButton';
 import DefaultTable from '../../components/DefaultTable';
 import ChangeCompany from '../../components/ChangeCompany';
@@ -61,6 +62,7 @@ const People: React.FC = () => {
         <Header pageName="Pessoas" />
         <Main>
           <div id="align-content">
+            <ButtonBack />
             <NewButton to="/people/register">Novo</NewButton>
             <DefaultTable tbh={['Código', 'CNPJ/CPF', 'Razão Social/Nome']}>
               <tbody>

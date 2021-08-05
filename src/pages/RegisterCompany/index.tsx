@@ -13,6 +13,7 @@ import { theme } from '../../App';
 import Button from '../../components/Button';
 import Header from '../../components/Header';
 import Input from '../../components/Input';
+import ButtonBack from '../../components/ButtonBack';
 
 import { Container, FormCustom, Main } from './styles';
 
@@ -35,7 +36,7 @@ const RegisterCompany: React.FC = () => {
 
   const formSchemaCompany = Yup.object().shape({
     cod: Yup.string().required('Código Obrigatório'),
-    cnpj: Yup.string().required('CNPJ obrigatório'),
+    cnpj: Yup.string().required('CNPJ obrigatório').min(14).max(18),
     razao_social: Yup.string().required('Razão Social obrigatória'),
     nome_fantasia: Yup.string().required('Nome Fantasia obrigatório'),
     email: Yup.string().required('E-mail obrigatório'),
@@ -45,10 +46,6 @@ const RegisterCompany: React.FC = () => {
     uf: Yup.string(),
     info: Yup.string(),
   });
-
-  const handleBack = useCallback((): void => {
-    history.goBack();
-  }, [history]);
 
   const handleSubmitForm = useCallback(
     async (data: RegisterCompanyForm) => {
@@ -94,13 +91,7 @@ const RegisterCompany: React.FC = () => {
     <>
       <Container>
         <Header pageName="Registro de Empresa" />
-        <button
-          type="button"
-          style={{ backgroundColor: 'transparent', border: 0, maxWidth: 150 }}
-          onClick={() => handleBack()}
-        >
-          <HiOutlineArrowLeft size={42} color={theme.palette.primary.main} />
-        </button>
+        <ButtonBack />
         <Main>
           <Formik
             initialValues={{
@@ -140,6 +131,7 @@ const RegisterCompany: React.FC = () => {
                     messageError={
                       errors.cnpj && touched.cnpj ? errors.cnpj : ''
                     }
+                    minLength={14}
                     maxLength={18}
                   />
                   <Input
