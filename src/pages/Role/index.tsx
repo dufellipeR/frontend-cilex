@@ -4,6 +4,7 @@ import { FiEye } from 'react-icons/fi';
 
 import { useAuth } from '../../hooks/auth';
 import api from '../../services/api';
+import { theme } from '../../App';
 
 import NewButton from '../../components/NewButton';
 import DefaultTable from '../../components/DefaultTable';
@@ -38,7 +39,7 @@ const Role: React.FC = () => {
         <Main>
           <div id="align-content">
             <ButtonBack />
-            <NewButton to="/people/register">Novo</NewButton>
+            <NewButton to="/role/register">Novo</NewButton>
             <DefaultTable tbh={['Código', 'Cargo', 'Função']}>
               <tbody>
                 {roles &&
@@ -47,13 +48,12 @@ const Role: React.FC = () => {
                       <td>{role.code}</td>
                       <td>{role.role}</td>
                       <td>{role.description}</td>
-
                       <td>
                         <Link
                           style={{ textDecoration: 'none' }}
                           to={`/people/${role.id}`}
                         >
-                          <FiEye size={24} color="#ff7a00" />
+                          <FiEye size={24} color={theme.palette.primary.main} />
                         </Link>
                       </td>
                     </tr>

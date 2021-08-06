@@ -17,6 +17,7 @@ import EditPeople from '../pages/EditPeople';
 import RegisterPeople from '../pages/RegisterPeople';
 import Group from '../pages/Group';
 import Role from '../pages/Role';
+import RegisterRole from '../pages/RegisterRole';
 
 const Routes: React.FC = () => {
   return (
@@ -39,6 +40,7 @@ const Routes: React.FC = () => {
       <Route path="/group" exact component={Group} />
 
       <Route path="/role" exact component={Role} />
+      <Route path="/role/register" exact component={RegisterRole} />
 
       <Route path="/forgot-password" component={ForgotPassword} />
       <Route path="/reset-password" component={ResetPassword} />
