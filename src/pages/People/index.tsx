@@ -40,13 +40,13 @@ interface UserCompany {
 const People: React.FC = () => {
   const { user } = useAuth();
 
-  const [people, setPeople] = useState<Person[]>([]);
+  const [peoples, setPeoples] = useState<Person[]>([]);
   const [userCompanies, setUserCompanies] = useState<UserCompany[]>([]);
   const [visibleModalShare, setVisibleModalShare] = useState(false);
 
   useEffect(() => {
     api.get<Person[]>('/person').then(response => {
-      setPeople(response.data);
+      setPeoples(response.data);
     });
   }, []);
 
@@ -66,12 +66,12 @@ const People: React.FC = () => {
             <NewButton to="/people/register">Novo</NewButton>
             <DefaultTable tbh={['Código', 'CNPJ/CPF', 'Razão Social/Nome']}>
               <tbody>
-                {people &&
-                  people.map(row => (
-                    <tr key={row.code}>
-                      <td>{row.code}</td>
-                      <td>{row.cnpj || row.cpf}</td>
-                      <td>{row.razao_social || row.nome}</td>
+                {peoples &&
+                  peoples.map(people => (
+                    <tr key={people.code}>
+                      <td>{people.code}</td>
+                      <td>{people.cnpj || people.cpf}</td>
+                      <td>{people.razao_social || people.nome}</td>
 
                       <td id="td-options">
                         <button
@@ -86,7 +86,7 @@ const People: React.FC = () => {
                         </button>
                         <Link
                           style={{ textDecoration: 'none' }}
-                          to={`/people/${row.id}`}
+                          to={`/people/${people.id}`}
                         >
                           <FiEye size={24} color={theme.palette.primary.main} />
                         </Link>
