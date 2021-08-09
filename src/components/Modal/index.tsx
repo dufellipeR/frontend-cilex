@@ -28,7 +28,7 @@ const Modal: React.FC<ModalProps> = ({
             setVisible(false);
           }}
         >
-          <MdClose size={20} color={theme.palette.primary.main} />
+          <MdClose size={20} color={theme.main} />
         </button>
         {children}
       </Content>

@@ -79,16 +79,13 @@ const People: React.FC = () => {
                           id="share"
                           onClick={() => setVisibleModalShare(true)}
                         >
-                          <FiShare2
-                            size={24}
-                            color={theme.palette.primary.main}
-                          />
+                          <FiShare2 size={24} color={theme.main} />
                         </button>
                         <Link
                           style={{ textDecoration: 'none' }}
                           to={`/people/${people.id}`}
                         >
-                          <FiEye size={24} color={theme.palette.primary.main} />
+                          <FiEye size={24} color={theme.main} />
                         </Link>
                       </td>
                     </tr>

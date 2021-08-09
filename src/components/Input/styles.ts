@@ -19,7 +19,7 @@ export const Container = styled.div<ContainerStatusProps>`
   ${props =>
     props.isFocus &&
     css`
-      border-color: var(--primary-color);
+      border-color: ${props.theme.main};
     `}
 
   ${props =>
@@ -45,7 +45,7 @@ export const Container = styled.div<ContainerStatusProps>`
     ${props =>
       props.isFocus &&
       css`
-        color: var(--primary-color);
+        color: ${props.theme.main};
       `}
 
     ${props =>

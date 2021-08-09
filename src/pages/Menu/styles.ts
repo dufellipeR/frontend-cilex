@@ -37,7 +37,7 @@ export const Main = styled.main`
 export const Module = styled(Link)`
   text-decoration: none;
   color: #6a6c72;
-  border: 1px solid var(--primary-color-hover);
+  border: 1px solid ${props => props.theme.mainHover};
   border-radius: 5%;
   max-height: 250px;
   display: flex;
@@ -51,7 +51,7 @@ export const Module = styled(Link)`
   }
 
   &:hover {
-    background-color: var(--primary-color-hover);
+    background-color: ${props => props.theme.mainHover};
   }
 `;
 

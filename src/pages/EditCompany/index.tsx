@@ -160,17 +160,11 @@ const EditCompany: React.FC = () => {
             <HeaderContent>
               <div id="container-arrow">
                 <button type="button" onClick={() => handleBack()}>
-                  <HiOutlineArrowLeft
-                    size={42}
-                    color={theme.palette.primary.main}
-                  />
+                  <HiOutlineArrowLeft size={42} color={theme.main} />
                 </button>
               </div>
               <div id="company-titles">
-                <HiOutlineOfficeBuilding
-                  size={32}
-                  color={theme.palette.primary.main}
-                />
+                <HiOutlineOfficeBuilding size={32} color={theme.main} />
                 <div>
                   <h2>{company.razao_social}</h2>
                   <p>{company.nome_fantasia}</p>
@@ -192,10 +186,7 @@ const EditCompany: React.FC = () => {
                   layoutColor="button-outline"
                   onClick={handleDeleteCompany}
                 >
-                  <HiOutlineTrash
-                    size={24}
-                    color={theme.palette.primary.main}
-                  />
+                  <HiOutlineTrash size={24} color={theme.main} />
                 </Button>
               </div>
             </HeaderContent>

@@ -31,7 +31,7 @@ export const ShowOff = styled.div`
   h1 {
     font-size: 3rem;
     margin-bottom: 1rem;
-    color: var(--primary-color);
+    color: ${props => props.theme.main};
   }
 
   img {
@@ -57,7 +57,7 @@ export const AnimationContainer = styled.div`
     text-align: center;
 
     a {
-      color: var(--primary-color);
+      color: ${props => props.theme.main};
       display: block;
       margin-top: 1.5rem;
       text-decoration: none;

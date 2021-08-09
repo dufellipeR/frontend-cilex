@@ -57,7 +57,7 @@ const Company: React.FC = () => {
                           style={{ textDecoration: 'none' }}
                           to={`/company/${company.id}`}
                         >
-                          <FiEye size={24} color={theme.palette.primary.main} />
+                          <FiEye size={24} color={theme.main} />
                         </Link>
                       </td>
                     </tr>
