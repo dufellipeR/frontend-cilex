@@ -23,7 +23,7 @@ export const HeaderContent = styled.div`
     }
   }
 
-  #company-titles {
+  #container-titles {
     display: flex;
     align-items: center;
     gap: 4rem;

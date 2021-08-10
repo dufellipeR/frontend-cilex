@@ -51,7 +51,7 @@ const Role: React.FC = () => {
                       <td>
                         <Link
                           style={{ textDecoration: 'none' }}
-                          to={`/people/${role.id}`}
+                          to={`/role/${role.id}`}
                         >
                           <FiEye size={24} color={theme.main} />
                         </Link>
