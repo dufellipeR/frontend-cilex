@@ -1,12 +1,14 @@
 import { createGlobalStyle } from 'styled-components';
 
-export default createGlobalStyle`
-  :root {
-    --primary-color: #ff7a00;
-    --primary-color-hover: RGBA(255,122,0,0.2);
-    --green-color: #8DC73E;
-  }
+interface ThemeProps {
+  theme: {
+    main: string;
+    mainHover: string;
+    greenColor: string;
+  };
+}
 
+export default createGlobalStyle<ThemeProps>`
   * {
     margin: 0;
     padding: 0;
@@ -43,22 +45,22 @@ export default createGlobalStyle`
   }
 
   .button-filled {
-    background: var(--primary-color);
+    background: ${props => props.theme.main};
     color: #fff;
 
     &:hover {
-      background-color: var(--primary-color-hover);
+      background-color: ${props => props.theme.mainHover};
     }
   }
 
   .button-outline {
     background: rgba(0, 0, 0, 0);
-    color: var(--primary-color);
-    border: 1px solid var(--primary-color);
+    color: ${props => props.theme.main};
+    border: 1px solid ${props => props.theme.main};
   }
 
   .button-green {
-    background-color: var(--green-color);
+    background-color: ${props => props.theme.greenColor};
     color: #fff;
   }
 `;

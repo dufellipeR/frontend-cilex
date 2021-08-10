@@ -2,13 +2,9 @@ import styled from 'styled-components';
 
 export const Container = styled.div`
   height: 100vh;
-  display: grid;
-  grid-template-rows: 0.5fr 1fr;
-  grid-gap: 10px;
 `;
 
 export const Main = styled.main`
-  text-align: -webkit-center;
   padding: 0 2rem 2rem 2rem;
 
   #align-switch {

@@ -18,6 +18,7 @@ import { theme } from '../../App';
 import Header from '../../components/Header';
 import Button from '../../components/Button';
 import Checkbox from '../../components/Checkbox';
+import Input from '../../components/Input';
 
 import {
   Container,
@@ -30,7 +31,6 @@ import {
   FormCustom,
   CheckboxContainer,
 } from './styles';
-import Input from '../../components/Input';
 
 interface IRegisterForm {
   code: number | string;
@@ -206,14 +206,11 @@ const EditPeople: React.FC = () => {
             <HeaderContent>
               <div id="container-arrow">
                 <button type="button" onClick={() => handleBack()}>
-                  <HiOutlineArrowLeft
-                    size={42}
-                    color={theme.palette.primary.main}
-                  />
+                  <HiOutlineArrowLeft size={42} color={theme.main} />
                 </button>
               </div>
-              <div id="company-titles">
-                <HiOutlineUser size={32} color={theme.palette.primary.main} />
+              <div id="container-titles">
+                <HiOutlineUser size={32} color={theme.main} />
                 <div>
                   <h2>{person.nome ? person.nome : person.nome_fantasia}</h2>
                   {person.razao_social && <p>{person.razao_social}</p>}
@@ -231,10 +228,7 @@ const EditPeople: React.FC = () => {
                   layoutColor="button-outline"
                   onClick={handleDeletePerson}
                 >
-                  <HiOutlineTrash
-                    size={24}
-                    color={theme.palette.primary.main}
-                  />
+                  <HiOutlineTrash size={24} color={theme.main} />
                 </Button>
               </div>
             </HeaderContent>

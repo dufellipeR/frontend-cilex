@@ -15,7 +15,7 @@ const Button: React.FC = () => {
 
   return (
     <Container type="button" onClick={() => handleBack()}>
-      <HiOutlineArrowLeft size={42} color={theme.palette.primary.main} />
+      <HiOutlineArrowLeft size={42} color={theme.main} />
     </Container>
   );
 };

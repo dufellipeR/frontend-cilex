@@ -46,18 +46,18 @@ const Company: React.FC = () => {
             >
               <tbody>
                 {companies &&
-                  companies.map(row => (
-                    <tr key={row.id}>
-                      <td>{row.cod}</td>
-                      <td>{row.cnpj}</td>
-                      <td>{row.razao_social}</td>
-                      <td>{row.nome_fantasia}</td>
+                  companies.map(company => (
+                    <tr key={company.id}>
+                      <td>{company.cod}</td>
+                      <td>{company.cnpj}</td>
+                      <td>{company.razao_social}</td>
+                      <td>{company.nome_fantasia}</td>
                       <td>
                         <Link
                           style={{ textDecoration: 'none' }}
-                          to={`/company/${row.id}`}
+                          to={`/company/${company.id}`}
                         >
-                          <FiEye size={24} color={theme.palette.primary.main} />
+                          <FiEye size={24} color={theme.main} />
                         </Link>
                       </td>
                     </tr>

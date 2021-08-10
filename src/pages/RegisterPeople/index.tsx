@@ -181,8 +181,8 @@ const RegisterPeople: React.FC = () => {
                 checked={isPhysicalPerson}
                 checkedIcon={false}
                 uncheckedIcon={false}
-                onColor={theme.palette.primary.main}
-                offColor={theme.palette.primary.main}
+                onColor={theme.main}
+                offColor={theme.main}
               />
               <p>Pessoa Física</p>
             </div>

@@ -32,6 +32,7 @@ export const Container = styled.div`
     h3 {
       font-size: 1.5rem;
       color: #161616;
+      text-align: center;
     }
 
     p {

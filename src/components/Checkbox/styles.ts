@@ -14,7 +14,7 @@ export const Container = styled.div`
   }
 
   input[type='checkbox']:checked {
-    border-color: var(--primary-color);
-    background: var(--primary-color-hover);
+    border-color: ${props => props.theme.main};
+    background: ${props => props.theme.mainHover};
   }
 `;

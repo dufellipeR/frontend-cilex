@@ -1,9 +1,9 @@
 import styled from 'styled-components';
 
 export const Container = styled.div`
-  height: 100vh;
+  height: 85vh;
   display: grid;
-  grid-template-rows: 0.5fr 1fr;
+  grid-template-rows: 0.5fr 1fr 1fr;
   grid-gap: 10px;
 `;
 

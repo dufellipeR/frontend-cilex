@@ -8,15 +8,22 @@ import SignIn from '../pages/SignIn';
 import Home from '../pages/Home';
 import Dashboard from '../pages/Dashboard';
 import Menu from '../pages/Menu';
+
+import ChoseCompany from '../pages/ChoseCompany';
+
 import Company from '../pages/Company';
 import RegisterCompany from '../pages/RegisterCompany';
 import EditCompany from '../pages/EditCompany';
-import ChoseCompany from '../pages/ChoseCompany';
+
 import People from '../pages/People';
-import EditPeople from '../pages/EditPeople';
 import RegisterPeople from '../pages/RegisterPeople';
+import EditPeople from '../pages/EditPeople';
+
 import Group from '../pages/Group';
+
 import Role from '../pages/Role';
+import RegisterRole from '../pages/RegisterRole';
+import EditRole from '../pages/EditRole';
 
 const Routes: React.FC = () => {
   return (
@@ -39,6 +46,8 @@ const Routes: React.FC = () => {
       <Route path="/group" exact component={Group} />
 
       <Route path="/role" exact component={Role} />
+      <Route path="/role/register" exact component={RegisterRole} />
+      <Route path="/role/:id" component={EditRole} />
 
       <Route path="/forgot-password" component={ForgotPassword} />
       <Route path="/reset-password" component={ResetPassword} />

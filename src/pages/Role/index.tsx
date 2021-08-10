@@ -1,18 +1,18 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
+import { FiEye } from 'react-icons/fi';
 
-import { Link, useHistory } from 'react-router-dom';
-
-import { FiEye, FiHome, FiPower } from 'react-icons/fi';
 import { useAuth } from '../../hooks/auth';
+import api from '../../services/api';
+import { theme } from '../../App';
 
-import Button from '../../components/Button';
-
-import { Container, Header, Options, Greetings, Main, Data } from './styles';
-import CustomizedTables from '../../components/Table';
 import NewButton from '../../components/NewButton';
 import DefaultTable from '../../components/DefaultTable';
-import api from '../../services/api';
 import ChangeCompany from '../../components/ChangeCompany';
+import Header from '../../components/Header';
+import ButtonBack from '../../components/ButtonBack';
+
+import { Container, Main } from './styles';
 
 export interface IRole {
   id: string;
@@ -22,70 +22,45 @@ export interface IRole {
 }
 
 const Role: React.FC = () => {
-  const history = useHistory();
   const { user } = useAuth();
 
-  const [items, setItems] = useState<IRole[]>([]);
+  const [roles, setRoles] = useState<IRole[]>([]);
 
   useEffect(() => {
     api.get<IRole[]>('/role').then(response => {
-      setItems(response.data);
+      setRoles(response.data);
     });
   }, []);
-
-  const handleLogout = useCallback((): void => {
-    history.push('/');
-  }, [history]);
-
-  const handleHome = useCallback((): void => {
-    history.push('/home');
-  }, [history]);
 
   return (
     <>
       <Container>
-        <Header>
-          <h1>Cilex</h1>
-          <Greetings>
-            <p>Role</p>
-          </Greetings>
-          <div style={{ display: 'flex', justifyContent: 'space-evenly' }}>
-            <Button onClick={() => handleHome()} layoutColor="button-filled">
-              <FiHome size={24} />
-            </Button>
-            <Button onClick={() => handleLogout()} layoutColor="button-outline">
-              <FiPower size={24} />
-            </Button>
-          </div>
-        </Header>
-        <Options>
-          <NewButton to="/people/register">Novo</NewButton>
-        </Options>
+        <Header pageName="Cargos e Funções" />
         <Main>
-          <Data>
+          <div id="align-content">
+            <ButtonBack />
+            <NewButton to="/role/register">Novo</NewButton>
             <DefaultTable tbh={['Código', 'Cargo', 'Função']}>
               <tbody>
-                {items &&
-                  items.map(row => (
-                    <tr key={row.id}>
-                      <td>{row.code}</td>
-                      <td>{row.role}</td>
-                      <td>{row.description}</td>
-
+                {roles &&
+                  roles.map(role => (
+                    <tr key={role.id}>
+                      <td>{role.code}</td>
+                      <td>{role.role}</td>
+                      <td>{role.description}</td>
                       <td>
-                        {' '}
                         <Link
                           style={{ textDecoration: 'none' }}
-                          to={`/people/${row.id}`}
+                          to={`/role/${role.id}`}
                         >
-                          <FiEye size={24} color="#ff7a00" />
-                        </Link>{' '}
+                          <FiEye size={24} color={theme.main} />
+                        </Link>
                       </td>
                     </tr>
                   ))}
               </tbody>
             </DefaultTable>
-          </Data>
+          </div>
         </Main>
       </Container>
       <ChangeCompany />
