@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import * as Yup from 'yup';
 import { Formik } from 'formik';
@@ -15,27 +15,42 @@ import Header from '../../components/Header';
 import Input from '../../components/Input';
 import ButtonBack from '../../components/ButtonBack';
 
-import { Container, FormCustom, Main } from './styles';
+import { Container, FormCustom, Main, Select } from './styles';
 
 interface RegisterCompanyForm {
-  cod: string;
+  code: string;
   cnpj: string;
   razao_social: string;
   nome_fantasia: string;
   email: string;
-  tel: string;
-  endereco: string;
-  cep: string;
-  uf: string;
-  info: string;
+  tel?: string;
+  endereco?: string;
+  cep?: string;
+  uf?: string;
+  info?: string;
+  matriz_id?: string;
+}
+
+interface MatrizID {
+  id: string;
+  code: string;
+  nome_fantasia: string;
 }
 
 const RegisterCompany: React.FC = () => {
   const history = useHistory();
   const { user } = useAuth();
 
+  const [matrizCompanies, setMatrizCompanies] = useState<MatrizID[]>([]);
+
+  useEffect(() => {
+    api.get<MatrizID[]>('/company?isMatriz=true').then(response => {
+      setMatrizCompanies(response.data);
+    });
+  }, []);
+
   const formSchemaCompany = Yup.object().shape({
-    cod: Yup.string().required('Código Obrigatório'),
+    code: Yup.string().required('Código Obrigatório'),
     cnpj: Yup.string().required('CNPJ obrigatório').min(14).max(18),
     razao_social: Yup.string().required('Razão Social obrigatória'),
     nome_fantasia: Yup.string().required('Nome Fantasia obrigatório'),
@@ -45,13 +60,14 @@ const RegisterCompany: React.FC = () => {
     cep: Yup.string(),
     uf: Yup.string(),
     info: Yup.string(),
+    matriz_id: Yup.string(),
   });
 
   const handleSubmitForm = useCallback(
     async (data: RegisterCompanyForm) => {
       try {
         const {
-          cod,
+          code,
           cnpj,
           razao_social,
           nome_fantasia,
@@ -61,11 +77,12 @@ const RegisterCompany: React.FC = () => {
           cep,
           uf,
           info,
+          matriz_id,
         } = data;
 
         api
           .post('/company', {
-            cod: String(cod),
+            code: String(code),
             cnpj: String(cnpj),
             razao_social,
             nome_fantasia,
@@ -75,6 +92,7 @@ const RegisterCompany: React.FC = () => {
             cep,
             uf,
             info,
+            matriz_id: matriz_id || undefined,
           })
           .then(() => {
             toast.success('Registrado com sucesso');
@@ -95,7 +113,7 @@ const RegisterCompany: React.FC = () => {
         <Main>
           <Formik
             initialValues={{
-              cod: '',
+              code: '',
               cnpj: '',
               razao_social: '',
               nome_fantasia: '',
@@ -105,6 +123,7 @@ const RegisterCompany: React.FC = () => {
               cep: '',
               uf: '',
               info: '',
+              matriz_id: '',
             }}
             validationSchema={formSchemaCompany}
             onSubmit={handleSubmitForm}
@@ -113,15 +132,29 @@ const RegisterCompany: React.FC = () => {
               <FormCustom onSubmit={handleSubmit}>
                 <div id="align-inputs">
                   <Input
-                    name="cod"
+                    name="code"
                     min={1000}
                     max={9999}
                     type="number"
                     placeholder="Código"
-                    value={values.cod}
-                    onChange={handleChange('cod')}
-                    messageError={errors.cod && touched.cod ? errors.cod : ''}
+                    value={values.code}
+                    onChange={handleChange('code')}
+                    messageError={
+                      errors.code && touched.code ? errors.code : ''
+                    }
                   />
+                  <Select
+                    name="matriz_id"
+                    value={values.matriz_id}
+                    onChange={handleChange('matriz_id')}
+                  >
+                    <option value="">Matriz</option>
+                    {matrizCompanies.map(companyMatriz => (
+                      <option value={companyMatriz.id}>
+                        {companyMatriz.code} - {companyMatriz.nome_fantasia}
+                      </option>
+                    ))}
+                  </Select>
                   <Input
                     name="cnpj"
                     type="number"

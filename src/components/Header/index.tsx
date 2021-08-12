@@ -33,7 +33,7 @@ const Header: React.FC<HeaderProps> = ({ pageName }) => {
       <div id="container-texts">
         <h3>{pageName}</h3>
         <p>
-          {companySelected.cod} - {companySelected.razao_social}
+          {companySelected.code} - {companySelected.razao_social}
         </p>
       </div>
 

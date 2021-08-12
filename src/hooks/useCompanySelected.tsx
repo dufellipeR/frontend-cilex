@@ -7,7 +7,7 @@ interface CompanySelectedProviderProps {
 
 interface CompanySelectProps {
   id: string;
-  cod: string;
+  code: string;
   razao_social: string;
 }
 
