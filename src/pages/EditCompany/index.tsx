@@ -38,17 +38,23 @@ interface IOpt {
 }
 
 interface IRegisterForm {
-  cod: string;
+  code: string;
   cnpj: string;
   razao_social: string;
   nome_fantasia: string;
   email: string;
-  tel: string;
-  endereco: string;
-  cep: string;
-  uf: string;
-  info: string;
+  tel?: string;
+  endereco?: string;
+  cep?: string;
+  uf?: string;
+  info?: string;
   matriz_id?: string;
+}
+
+interface MatrizID {
+  id: string;
+  code: string;
+  nome_fantasia: string;
 }
 
 const EditCompany: React.FC = () => {
@@ -59,9 +65,10 @@ const EditCompany: React.FC = () => {
   const [companies, setCompanies] = useState<IOpt[]>([]);
   const [editting, setEditting] = useState<boolean>(false);
   const [company, setCompany] = useState<IRegisterForm | null>(null);
+  const [matrizCompanies, setMatrizCompanies] = useState<MatrizID[]>([]);
 
   const formSchemaCompanyEdit = Yup.object().shape({
-    cod: Yup.string().required('Código Obrigatório'),
+    code: Yup.string().required('Código Obrigatório'),
     cnpj: Yup.string().required('CNPJ obrigatório').min(14).max(18),
     razao_social: Yup.string().required('Razão Social obrigatória'),
     nome_fantasia: Yup.string().required('Nome Fantasia obrigatório'),
@@ -81,11 +88,17 @@ const EditCompany: React.FC = () => {
   }, [id]);
 
   useEffect(() => {
+    api.get<MatrizID[]>('/company?isMatriz=true').then(response => {
+      setMatrizCompanies(response.data);
+    });
+  }, []);
+
+  useEffect(() => {
     api.get<Icompany[]>('/company').then(response => {
       const formatData: any[] = response.data.map(item => {
         return {
           value: item.id,
-          label: `${item.cod} - ${item.razao_social}`,
+          label: `${item.code} - ${item.razao_social}`,
         };
       });
       setCompanies(formatData);
@@ -100,7 +113,7 @@ const EditCompany: React.FC = () => {
     async (data: IRegisterForm) => {
       try {
         const {
-          cod,
+          code,
           cnpj,
           razao_social,
           nome_fantasia,
@@ -115,7 +128,7 @@ const EditCompany: React.FC = () => {
 
         api
           .put(`/company/${id}`, {
-            cod: String(cod),
+            code: String(code),
             cnpj: String(cnpj),
             razao_social,
             nome_fantasia,
@@ -125,7 +138,7 @@ const EditCompany: React.FC = () => {
             cep,
             uf,
             info,
-            matriz_id: matriz_id || '',
+            matriz_id: matriz_id || undefined,
           })
           .then(() => {
             toast.success('Atualizado com sucesso');
@@ -199,7 +212,7 @@ const EditCompany: React.FC = () => {
               </InfoCard>
               <InfoCard>
                 <h4>Dados</h4>
-                <span>{company.cod}</span>
+                <span>{company.code}</span>
                 <span>{company.cnpj}</span>
               </InfoCard>
               <InfoCard>
@@ -212,7 +225,7 @@ const EditCompany: React.FC = () => {
             {editting && (
               <Formik
                 initialValues={{
-                  cod: company.cod,
+                  code: company.code,
                   cnpj: company.cnpj,
                   razao_social: company.razao_social,
                   nome_fantasia: company.nome_fantasia,
@@ -230,33 +243,30 @@ const EditCompany: React.FC = () => {
                 {({ handleChange, touched, values, errors, handleSubmit }) => (
                   <FormCustom onSubmit={handleSubmit}>
                     <div id="align-inputs">
-                      <Select
-                        name="matriz_id"
-                        value={values.matriz_id ? values.matriz_id : ''}
-                        onChange={handleChange('matriz_id')}
-                      >
-                        <option value="">Matriz</option>
-                        {companies.map(companyMap => (
-                          <option
-                            key={companyMap.value}
-                            value={companyMap.value}
-                          >
-                            {companyMap.label}
-                          </option>
-                        ))}
-                      </Select>
                       <Input
-                        name="cod"
+                        name="code"
                         min={1000}
                         max={9999}
                         type="number"
                         placeholder="Código"
-                        value={values.cod}
-                        onChange={handleChange('cod')}
+                        value={values.code}
+                        onChange={handleChange('code')}
                         messageError={
-                          errors.cod && touched.cod ? errors.cod : ''
+                          errors.code && touched.code ? errors.code : ''
                         }
                       />
+                      <Select
+                        name="matriz_id"
+                        value={values.matriz_id}
+                        onChange={handleChange('matriz_id')}
+                      >
+                        <option value="">Matriz</option>
+                        {matrizCompanies.map(companyMatriz => (
+                          <option value={companyMatriz.id}>
+                            {companyMatriz.code} - {companyMatriz.nome_fantasia}
+                          </option>
+                        ))}
+                      </Select>
                       <Input
                         name="cnpj"
                         type="text"

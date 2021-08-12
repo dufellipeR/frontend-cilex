@@ -1,5 +1,5 @@
 /* eslint-disable jsx-a11y/label-has-for */
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import * as Yup from 'yup';
 import { Formik } from 'formik';
@@ -35,6 +35,7 @@ interface RegisterPeopleForm {
   info: string;
   tipo: string;
   isUser: boolean;
+  role_id: string;
 
   cnpj?: string;
   razao_social?: string;
@@ -42,6 +43,13 @@ interface RegisterPeopleForm {
 
   cpf?: string;
   nome?: string;
+}
+
+export interface IRole {
+  id: string;
+  code: string;
+  role: string;
+  description: string;
 }
 
 const optionsSelect = [
@@ -56,6 +64,13 @@ const RegisterPeople: React.FC = () => {
   const { user } = useAuth();
 
   const [isPhysicalPerson, setIsPhysicalPerson] = useState(false);
+  const [roles, setRoles] = useState<IRole[]>([]);
+
+  useEffect(() => {
+    api.get<IRole[]>('/role').then(response => {
+      setRoles(response.data);
+    });
+  }, []);
 
   const formSchemaPeople = Yup.object().shape({
     code: Yup.number().required('Código obrigatório'),
@@ -67,6 +82,7 @@ const RegisterPeople: React.FC = () => {
     info: Yup.string(),
     tipo: Yup.string(),
     isUser: Yup.boolean(),
+    role_id: Yup.string(),
 
     // Jurídica
     cnpj: isPhysicalPerson
@@ -91,9 +107,27 @@ const RegisterPeople: React.FC = () => {
   const handleSubmitForm = useCallback(
     async (data: RegisterPeopleForm) => {
       try {
-        if (isPhysicalPerson) {
-          const {
-            code,
+        const {
+          code,
+          email,
+          tel,
+          endereco,
+          cep,
+          uf,
+          info,
+          tipo,
+          isUser,
+          role_id,
+          cpf,
+          nome,
+          cnpj,
+          razao_social,
+          nome_fantasia,
+        } = data;
+
+        api
+          .post('/person', {
+            code: String(code),
             email,
             tel,
             endereco,
@@ -101,70 +135,23 @@ const RegisterPeople: React.FC = () => {
             uf,
             info,
             tipo,
-            cpf,
-            nome,
             isUser,
-          } = data;
-
-          api
-            .post('/person', {
-              code: String(code),
-              email,
-              tel,
-              endereco,
-              cep,
-              uf,
-              info,
-              tipo,
-              isUser,
-              cpf: String(cpf),
-              nome,
-            })
-            .then(() => {
-              toast.success('Registrado com sucesso');
-              history.push('/people');
-            });
-        } else {
-          const {
-            code,
-            email,
-            tel,
-            endereco,
-            cep,
-            uf,
-            info,
-            tipo,
-            cnpj,
-            razao_social,
-            nome_fantasia,
-            isUser,
-          } = data;
-
-          api
-            .post('/person', {
-              code: String(code),
-              email,
-              tel,
-              endereco,
-              cep,
-              uf,
-              info,
-              tipo,
-              isUser,
-              cnpj: String(cnpj),
-              razao_social,
-              nome_fantasia,
-            })
-            .then(() => {
-              toast.success('Registrado com sucesso');
-              history.push('/people');
-            });
-        }
+            role_id: role_id || undefined,
+            cpf: String(cpf) || undefined,
+            nome: nome || undefined,
+            cnpj: String(cnpj) || undefined,
+            razao_social: razao_social || undefined,
+            nome_fantasia: nome_fantasia || undefined,
+          })
+          .then(() => {
+            toast.success('Registrado com sucesso');
+            history.push('/people');
+          });
       } catch (err) {
         toast.error('Ocorreu um erro no registro da Empresa!');
       }
     },
-    [history, isPhysicalPerson],
+    [history],
   );
 
   return (
@@ -172,21 +159,6 @@ const RegisterPeople: React.FC = () => {
       <Container>
         <Header pageName="Registro de Pessoa" />
         <Main>
-          <div id="align-switch">
-            <ButtonBack />
-            <div id="container-switch">
-              <p>Pessoa Jurídica</p>
-              <Switch
-                onChange={() => setIsPhysicalPerson(!isPhysicalPerson)}
-                checked={isPhysicalPerson}
-                checkedIcon={false}
-                uncheckedIcon={false}
-                onColor={theme.main}
-                offColor={theme.main}
-              />
-              <p>Pessoa Física</p>
-            </div>
-          </div>
           <Formik
             initialValues={{
               code: '',
@@ -198,6 +170,7 @@ const RegisterPeople: React.FC = () => {
               info: '',
               tipo: '',
               isUser: false,
+              role_id: '',
               cnpj: '',
               razao_social: '',
               nome_fantasia: '',
@@ -209,6 +182,24 @@ const RegisterPeople: React.FC = () => {
           >
             {({ handleChange, touched, values, errors, handleSubmit }) => (
               <FormCustom onSubmit={handleSubmit}>
+                <div id="align-switch">
+                  <ButtonBack />
+                  <div id="container-switch">
+                    <p>Pessoa Jurídica</p>
+                    <Switch
+                      onChange={() => setIsPhysicalPerson(!isPhysicalPerson)}
+                      checked={isPhysicalPerson}
+                      checkedIcon={false}
+                      uncheckedIcon={false}
+                      onColor={theme.main}
+                      offColor={theme.main}
+                    />
+                    <p>Pessoa Física</p>
+                  </div>
+                  <CheckboxContainer>
+                    <Checkbox name="isUser" label="É usuário ?" />
+                  </CheckboxContainer>
+                </div>
                 <div id="align-inputs">
                   <Input
                     name="code"
@@ -330,6 +321,16 @@ const RegisterPeople: React.FC = () => {
                     messageError={errors.uf && touched.uf ? errors.uf : ''}
                   />
                   <Select
+                    name="role_id"
+                    value={values.role_id}
+                    onChange={handleChange('role_id')}
+                  >
+                    <option value="">Cargo</option>
+                    {roles.map(role => (
+                      <option value={role.id}>{role.role}</option>
+                    ))}
+                  </Select>
+                  <Select
                     name="tipo"
                     value={values.tipo}
                     onChange={handleChange('tipo')}
@@ -348,9 +349,6 @@ const RegisterPeople: React.FC = () => {
                       errors.info && touched.info ? errors.info : ''
                     }
                   />
-                  <CheckboxContainer>
-                    <Checkbox name="isUser" label="É usuário ?" />
-                  </CheckboxContainer>
                 </div>
                 <div id="align-button-save">
                   <Button layoutColor="button-green" type="submit">

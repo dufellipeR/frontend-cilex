@@ -103,6 +103,13 @@ export const FormCustom = styled.form`
 
       margin-bottom: 1rem;
     }
+
+    #container-switch {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 2rem;
+    }
   }
 `;
 

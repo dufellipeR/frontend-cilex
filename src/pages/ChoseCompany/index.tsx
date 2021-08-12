@@ -37,7 +37,7 @@ interface User {
 
 interface IUserCompany {
   id: string;
-  cod: string;
+  code: string;
   razao_social: string;
 }
 
@@ -124,7 +124,7 @@ const ChoseCompany: React.FC = () => {
                 >
                   <HiOutlineOfficeBuilding size={24} />
                   <span>
-                    {comp.cod} - {comp.razao_social}
+                    {comp.code} - {comp.razao_social}
                   </span>
                 </Company>
               ))}

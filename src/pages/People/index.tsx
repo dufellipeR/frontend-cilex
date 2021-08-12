@@ -33,7 +33,7 @@ export interface Person {
 
 interface UserCompany {
   id: string;
-  cod: string;
+  code: string;
   razao_social: string;
 }
 

@@ -2,6 +2,7 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { useHistory, useParams } from 'react-router-dom';
 import * as Yup from 'yup';
 import { Formik } from 'formik';
+import Switch from 'react-switch';
 import { FiSave } from 'react-icons/fi';
 import {
   HiOutlineArrowLeft,
@@ -42,6 +43,7 @@ interface IRegisterForm {
   info: string;
   tipo: string;
   isUser: boolean;
+  role_id: string;
 
   cnpj?: string;
   razao_social?: string;
@@ -51,6 +53,13 @@ interface IRegisterForm {
   nome?: string;
 }
 
+export interface IRole {
+  id: string;
+  code: string;
+  role: string;
+  description: string;
+}
+
 const EditPeople: React.FC = () => {
   const history = useHistory();
   const { user } = useAuth();
@@ -58,12 +67,22 @@ const EditPeople: React.FC = () => {
 
   const [editting, setEditting] = useState<boolean>(false);
   const [person, setPerson] = useState<IRegisterForm | null>(null);
+  const [isPhysicalPerson, setIsPhysicalPerson] = useState(false);
+  const [roles, setRoles] = useState<IRole[]>([]);
 
   useEffect(() => {
     api.get<IRegisterForm | null>(`/person/${id}`).then(response => {
       setPerson(response.data);
+
+      if (person?.cpf) setIsPhysicalPerson(true);
     });
-  }, [id]);
+  }, [id, person?.cpf]);
+
+  useEffect(() => {
+    api.get<IRole[]>('/role').then(response => {
+      setRoles(response.data);
+    });
+  }, []);
 
   const handleBack = useCallback((): void => {
     history.goBack();
@@ -72,44 +91,33 @@ const EditPeople: React.FC = () => {
   const handleSubmitForm = useCallback(
     async (data: IRegisterForm) => {
       try {
-        if (data.cnpj) {
-          const {
-            code,
-            email,
-            tel,
-            endereco,
-            cep,
-            uf,
-            info,
-            tipo,
-            isUser,
-            cnpj,
-            razao_social,
-            nome_fantasia,
-          } = data;
+        const {
+          code,
+          email,
+          tel,
+          endereco,
+          cep,
+          uf,
+          info,
+          tipo,
+          isUser,
+          role_id,
+        } = data;
 
-          api
-            .put(`/person/${id}`, {
-              code: String(code),
-              cnpj: String(cnpj),
-              razao_social,
-              nome_fantasia,
-              email,
-              tel,
-              endereco,
-              cep,
-              uf,
-              info,
-              tipo,
-              isUser,
-            })
-            .then(() => {
-              toast.success('Atualizado com sucesso');
-              history.push('/people');
-            });
+        let { cpf, nome, cnpj, razao_social, nome_fantasia } = data;
+
+        if (isPhysicalPerson) {
+          cnpj = '';
+          razao_social = '';
+          nome_fantasia = '';
         } else {
-          const {
-            code,
+          cpf = '';
+          nome = '';
+        }
+
+        api
+          .put(`/person/${id}`, {
+            code: String(code),
             email,
             tel,
             endereco,
@@ -118,34 +126,22 @@ const EditPeople: React.FC = () => {
             info,
             tipo,
             isUser,
-            cpf,
-            nome,
-          } = data;
-
-          api
-            .put(`/person/${id}`, {
-              code: String(code),
-              email,
-              tel,
-              endereco,
-              cep,
-              uf,
-              info,
-              tipo,
-              isUser,
-              cpf: String(cpf),
-              nome,
-            })
-            .then(() => {
-              toast.success('Atualizado com sucesso');
-              history.push('/people');
-            });
-        }
+            role_id: role_id || undefined,
+            cpf: String(cpf) || undefined,
+            nome: nome || undefined,
+            cnpj: String(cnpj) || undefined,
+            razao_social: razao_social || undefined,
+            nome_fantasia: nome_fantasia || undefined,
+          })
+          .then(() => {
+            toast.success('Atualizado com sucesso');
+            history.push('/people');
+          });
       } catch (err) {
         toast.error('Ocorreu um erro na atualização da Empresa!');
       }
     },
-    [history, id],
+    [history, id, isPhysicalPerson],
   );
 
   const formSchemaPersonEdit = Yup.object().shape({
@@ -158,30 +154,33 @@ const EditPeople: React.FC = () => {
     info: Yup.string(),
     tipo: Yup.string(),
     isUser: Yup.boolean(),
+    role_id: Yup.string(),
 
     // Jurídica
-    cnpj: person?.cpf
+    cnpj: isPhysicalPerson
       ? Yup.string()
       : Yup.string().required('CNPJ obrigatório').min(14).max(18),
-    razao_social: person?.cpf
+    razao_social: isPhysicalPerson
       ? Yup.string()
       : Yup.string().required('Razão Social obrigatório'),
-    nome_fantasia: person?.cpf
+    nome_fantasia: isPhysicalPerson
       ? Yup.string()
       : Yup.string().required('Nome Fantasia obrigatório'),
 
     // Fisica
-    cpf: person?.cpf ? Yup.string().required('CPF obrigatório') : Yup.string(),
-    nome: person?.cpf
+    cpf: isPhysicalPerson
+      ? Yup.string().required('CPF obrigatório')
+      : Yup.string(),
+    nome: isPhysicalPerson
       ? Yup.string().required('Nome obrigatório')
       : Yup.string(),
   });
 
   const optionsSelect = [
     { value: '', label: 'Tipo' },
-    { value: 'fornecedor', label: 'Fornecedor' },
-    { value: 'cliente', label: 'Cliente' },
-    { value: 'colaborador', label: 'Colaborador' },
+    { value: 'Fornecedor', label: 'Fornecedor' },
+    { value: 'Cliente', label: 'Cliente' },
+    { value: 'Colaborador', label: 'Colaborador' },
   ];
 
   const handleDeletePerson = () => {
@@ -243,6 +242,7 @@ const EditPeople: React.FC = () => {
                 <h4>Dados</h4>
                 <span>{person.code}</span>
                 <span>{person.cpf ? person.cpf : person.cnpj}</span>
+                <span>{person.tipo}</span>
               </InfoCard>
               <InfoCard>
                 <h4>Contato</h4>
@@ -268,8 +268,9 @@ const EditPeople: React.FC = () => {
                   info: person.info,
                   cpf: person.cpf ? person.cpf : '',
                   nome: person.nome ? person.nome : '',
-                  tipo: person.tipo,
                   isUser: person.isUser,
+                  tipo: person.tipo ? person.tipo : '',
+                  role_id: person.role_id ? person.role_id : '',
                 }}
                 validationSchema={formSchemaPersonEdit}
                 onSubmit={handleSubmitForm}
@@ -277,6 +278,23 @@ const EditPeople: React.FC = () => {
                 {({ handleChange, touched, values, errors, handleSubmit }) => (
                   <FormCustom onSubmit={handleSubmit}>
                     <div id="align-inputs">
+                      <div id="container-switch">
+                        <p>Pessoa Jurídica</p>
+                        <Switch
+                          onChange={() =>
+                            setIsPhysicalPerson(!isPhysicalPerson)
+                          }
+                          checked={isPhysicalPerson}
+                          checkedIcon={false}
+                          uncheckedIcon={false}
+                          onColor={theme.main}
+                          offColor={theme.main}
+                        />
+                        <p>Pessoa Física</p>
+                      </div>
+                      <CheckboxContainer>
+                        <Checkbox name="isUser" label="É usuário ?" />
+                      </CheckboxContainer>
                       <Input
                         name="code"
                         min={1000}
@@ -289,7 +307,7 @@ const EditPeople: React.FC = () => {
                           errors.code && touched.code ? errors.code : ''
                         }
                       />
-                      {person.cpf ? (
+                      {isPhysicalPerson ? (
                         <>
                           <Input
                             name="cpf"
@@ -316,7 +334,7 @@ const EditPeople: React.FC = () => {
                         <>
                           <Input
                             name="cnpj"
-                            type="text"
+                            type="number"
                             placeholder="CNPJ"
                             value={values.cnpj}
                             onChange={handleChange('cnpj')}
@@ -403,6 +421,18 @@ const EditPeople: React.FC = () => {
                         messageError={errors.uf && touched.uf ? errors.uf : ''}
                       />
                       <Select
+                        name="role_id"
+                        value={values.role_id}
+                        onChange={handleChange('role_id')}
+                      >
+                        <option value="">Cargo</option>
+                        {roles.map(role => (
+                          <option key={role.id} value={role.id}>
+                            {role.role}
+                          </option>
+                        ))}
+                      </Select>
+                      <Select
                         name="tipo"
                         value={values.tipo}
                         onChange={handleChange('tipo')}
@@ -423,9 +453,6 @@ const EditPeople: React.FC = () => {
                           errors.info && touched.info ? errors.info : ''
                         }
                       />
-                      <CheckboxContainer>
-                        <Checkbox name="isUser" label="É usuário ?" />
-                      </CheckboxContainer>
                       <Button layoutColor="button-green" type="submit">
                         <FiSave size={24} />
                         <span>Salvar</span>

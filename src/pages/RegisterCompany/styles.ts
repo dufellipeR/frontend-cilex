@@ -36,3 +36,11 @@ export const FormCustom = styled.form`
     }
   }
 `;
+
+export const Select = styled.select`
+  border: 2px solid #666360;
+  border-radius: 10px;
+
+  padding: 1rem;
+  width: 100%;
+`;

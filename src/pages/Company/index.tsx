@@ -16,7 +16,7 @@ import { Container, Main } from './styles';
 
 export interface Icompany {
   id: string;
-  cod: string;
+  code: string;
   cnpj: string;
   razao_social: string;
   nome_fantasia: string;
@@ -48,7 +48,7 @@ const Company: React.FC = () => {
                 {companies &&
                   companies.map(company => (
                     <tr key={company.id}>
-                      <td>{company.cod}</td>
+                      <td>{company.code}</td>
                       <td>{company.cnpj}</td>
                       <td>{company.razao_social}</td>
                       <td>{company.nome_fantasia}</td>
