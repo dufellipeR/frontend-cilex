@@ -1,7 +1,7 @@
 /* eslint-disable import/no-duplicates */
 import React, { useCallback, useEffect, useState } from 'react';
 
-import { Link, useHistory } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 
 import { format } from 'date-fns';
 
@@ -11,7 +11,6 @@ import { FiPower } from 'react-icons/fi';
 import { HiOutlineOfficeBuilding } from 'react-icons/hi';
 import chooseSvg from '../../assets/town.svg';
 import { useAuth } from '../../hooks/auth';
-import { useCompanySelected } from '../../hooks/useCompanySelected';
 
 import Button from '../../components/Button';
 
@@ -43,7 +42,6 @@ interface IUserCompany {
 
 const ChoseCompany: React.FC = () => {
   const history = useHistory();
-  const { updateCompany } = useCompanySelected();
   const { user } = useAuth();
 
   const [date, setDate] = useState<string[]>([]);
@@ -51,11 +49,11 @@ const ChoseCompany: React.FC = () => {
   const [userCompanies, setUserCompanies] = useState<IUserCompany[]>([]);
 
   const handleChoice = useCallback(
-    company => {
-      updateCompany(company);
+    (company: IUserCompany) => {
+      localStorage.setItem('@Cilex:companySelected', JSON.stringify(company));
       history.push('home');
     },
-    [history, updateCompany],
+    [history],
   );
 
   useEffect(() => {

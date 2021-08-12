@@ -1,10 +1,9 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { FiHome, FiPower } from 'react-icons/fi';
 
 import Logo from '../../assets/cilex-logo.png';
 import Button from '../Button';
-import { useCompanySelected } from '../../hooks/useCompanySelected';
 
 import { Container } from './styles';
 
@@ -12,9 +11,21 @@ interface HeaderProps {
   pageName: string;
 }
 
+interface CompanySelected {
+  id: string;
+  code: string;
+  razao_social: string;
+}
+
 const Header: React.FC<HeaderProps> = ({ pageName }) => {
   const history = useHistory();
-  const { companySelected } = useCompanySelected();
+
+  const [companySelected, setCompanySelected] = useState({} as CompanySelected);
+
+  useEffect(() => {
+    const companyString = localStorage.getItem('@Cilex:companySelected');
+    if (companyString) setCompanySelected(JSON.parse(companyString));
+  }, []);
 
   const handleLogout = useCallback((): void => {
     history.push('/');
