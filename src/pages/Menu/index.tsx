@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { FiDollarSign, FiTruck } from 'react-icons/fi';
 import {
@@ -6,6 +6,7 @@ import {
   HiOutlineUser,
   HiOutlineUserGroup,
 } from 'react-icons/hi';
+import { MdNotificationsActive } from 'react-icons/md';
 
 import { theme } from '../../App';
 
@@ -14,6 +15,14 @@ import Header from '../../components/Header';
 import { Container, Main, Module } from './styles';
 
 const Menu: React.FC = () => {
+  const [hasUserPending, setHasUserPending] = useState(false);
+
+  useEffect(() => {
+    const jsonHasUser = localStorage.getItem('@Cilex:hasPendingUser');
+
+    if (jsonHasUser) setHasUserPending(JSON.parse(jsonHasUser));
+  }, []);
+
   return (
     <>
       <Container>
@@ -60,6 +69,11 @@ const Menu: React.FC = () => {
             <p>Agrupe as pessoas</p>
           </Module> */}
           <Module to="/menu/users">
+            {hasUserPending && (
+              <div id="notification">
+                <MdNotificationsActive size={16} color="#fff" />
+              </div>
+            )}
             <HiOutlineUserGroup size={44} color={theme.main} />
             <h3>Usuários</h3>
             <p>Gerencia usuários pendentes e ativos</p>

@@ -26,6 +26,8 @@ const UsersPending: React.FC = () => {
     api.get('/pendinguser').then(response => {
       setUsersPending(response.data);
     });
+
+    localStorage.removeItem('@Cilex:hasPendingUser');
   }, []);
 
   return (

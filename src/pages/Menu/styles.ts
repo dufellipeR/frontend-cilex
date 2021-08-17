@@ -1,5 +1,5 @@
-import styled, { keyframes } from 'styled-components';
-import { Link } from 'react-router-dom';
+import styled, { css, keyframes } from 'styled-components';
+import { Link, LinkProps } from 'react-router-dom';
 
 const appearFromLeft = keyframes`
  from {
@@ -28,6 +28,8 @@ export const Main = styled.main`
 `;
 
 export const Module = styled(Link)`
+  position: relative;
+
   max-height: 15.5rem;
   padding: 2rem;
 
@@ -48,5 +50,20 @@ export const Module = styled(Link)`
 
   &:hover {
     background-color: ${props => props.theme.mainHover};
+  }
+
+  #notification {
+    position: absolute;
+    background: ${props => props.theme.main};
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    border-radius: 50%;
+    padding: 8px;
+
+    top: 1rem;
+    right: 1rem;
   }
 `;

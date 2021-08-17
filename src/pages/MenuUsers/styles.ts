@@ -29,6 +29,8 @@ export const Main = styled.main`
 `;
 
 export const Module = styled(Link)`
+  position: relative;
+
   width: 20rem;
   height: 15rem;
   padding: 1rem;
@@ -53,5 +55,20 @@ export const Module = styled(Link)`
 
   &:hover {
     background-color: ${props => props.theme.mainHover};
+  }
+
+  #notification {
+    position: absolute;
+    background: ${props => props.theme.main};
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    border-radius: 50%;
+    padding: 8px;
+
+    top: 1rem;
+    right: 1rem;
   }
 `;

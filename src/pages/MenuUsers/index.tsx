@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { FiUserCheck, FiUserMinus } from 'react-icons/fi';
+import { MdNotificationsActive } from 'react-icons/md';
 
 import { theme } from '../../App';
 
@@ -10,6 +11,14 @@ import ButtonBack from '../../components/ButtonBack';
 import { Container, Main, Module } from './styles';
 
 const MenuUsers: React.FC = () => {
+  const [hasUserPending, setHasUserPending] = useState(false);
+
+  useEffect(() => {
+    const jsonHasUser = localStorage.getItem('@Cilex:hasPendingUser');
+
+    if (jsonHasUser) setHasUserPending(JSON.parse(jsonHasUser));
+  }, []);
+
   return (
     <>
       <Container>
@@ -17,6 +26,11 @@ const MenuUsers: React.FC = () => {
         <ButtonBack destinationBack="/menu" />
         <Main>
           <Module to="/users/pending">
+            {hasUserPending && (
+              <div id="notification">
+                <MdNotificationsActive size={16} color="#fff" />
+              </div>
+            )}
             <FiUserMinus size={44} color={theme.main} />
             <h3>Pendentes</h3>
             <p>Área destinada a ativação de seus usuários</p>

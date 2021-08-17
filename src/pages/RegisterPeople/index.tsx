@@ -144,6 +144,10 @@ const RegisterPeople: React.FC = () => {
             nome_fantasia: nome_fantasia || undefined,
           })
           .then(() => {
+            if (isUser) {
+              localStorage.setItem('@Cilex:hasPendingUser', 'true');
+            }
+
             toast.success('Registrado com sucesso');
             history.push('/people');
           });

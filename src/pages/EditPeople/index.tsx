@@ -130,6 +130,12 @@ const EditPeople: React.FC = () => {
             nome_fantasia: nome_fantasia || undefined,
           })
           .then(() => {
+            if (person) {
+              if (person.isUser === false && isUser === true) {
+                localStorage.setItem('@Cilex:hasPendingUser', 'true');
+              }
+            }
+
             toast.success('Atualizado com sucesso');
             history.push('/people');
           });
@@ -137,7 +143,7 @@ const EditPeople: React.FC = () => {
         toast.error('Ocorreu um erro na atualização da Empresa!');
       }
     },
-    [history, id, isPhysicalPerson],
+    [history, id, isPhysicalPerson, person],
   );
 
   const formSchemaPersonEdit = Yup.object().shape({
