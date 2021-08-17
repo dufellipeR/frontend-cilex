@@ -4,7 +4,6 @@ import * as Yup from 'yup';
 import { Formik } from 'formik';
 import { FiSave } from 'react-icons/fi';
 import {
-  HiOutlineArrowLeft,
   HiOutlineOfficeBuilding,
   HiOutlinePencilAlt,
   HiOutlineTrash,
@@ -17,6 +16,8 @@ import { theme } from '../../App';
 
 import Header from '../../components/Header';
 import Button from '../../components/Button';
+import Input from '../../components/Input';
+import ButtonBack from '../../components/ButtonBack';
 
 import { Icompany } from '../Company';
 
@@ -30,7 +31,6 @@ import {
   ContainerCompanyData,
   Select,
 } from './styles';
-import Input from '../../components/Input';
 
 interface IOpt {
   value: string;
@@ -105,10 +105,6 @@ const EditCompany: React.FC = () => {
     });
   }, []);
 
-  const handleBack = useCallback((): void => {
-    history.goBack();
-  }, [history]);
-
   const handleSubmitForm = useCallback(
     async (data: IRegisterForm) => {
       try {
@@ -172,9 +168,7 @@ const EditCompany: React.FC = () => {
           <Main>
             <HeaderContent>
               <div id="container-arrow">
-                <button type="button" onClick={() => handleBack()}>
-                  <HiOutlineArrowLeft size={42} color={theme.main} />
-                </button>
+                <ButtonBack destinationBack="/company" />
               </div>
               <div id="company-titles">
                 <HiOutlineOfficeBuilding size={32} color={theme.main} />

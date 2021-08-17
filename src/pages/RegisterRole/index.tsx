@@ -53,9 +53,9 @@ const RegisterRole: React.FC = () => {
 
   return (
     <>
-      <Header pageName="Registro de Cargos e Funções" />
       <Container>
-        <ButtonBack />
+        <Header pageName="Registro de Cargos e Funções" />
+        <ButtonBack destinationBack="/role" />
         <Main>
           <Formik
             initialValues={{

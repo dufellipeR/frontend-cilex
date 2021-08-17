@@ -109,7 +109,7 @@ const RegisterCompany: React.FC = () => {
     <>
       <Container>
         <Header pageName="Registro de Empresa" />
-        <ButtonBack />
+        <ButtonBack destinationBack="/company" />
         <Main>
           <Formik
             initialValues={{

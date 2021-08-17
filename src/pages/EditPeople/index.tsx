@@ -5,7 +5,6 @@ import { Formik } from 'formik';
 import Switch from 'react-switch';
 import { FiSave } from 'react-icons/fi';
 import {
-  HiOutlineArrowLeft,
   HiOutlinePencilAlt,
   HiOutlineTrash,
   HiOutlineUser,
@@ -20,6 +19,7 @@ import Header from '../../components/Header';
 import Button from '../../components/Button';
 import Checkbox from '../../components/Checkbox';
 import Input from '../../components/Input';
+import ButtonBack from '../../components/ButtonBack';
 
 import {
   Container,
@@ -84,10 +84,6 @@ const EditPeople: React.FC = () => {
     });
   }, []);
 
-  const handleBack = useCallback((): void => {
-    history.goBack();
-  }, [history]);
-
   const handleSubmitForm = useCallback(
     async (data: IRegisterForm) => {
       try {
@@ -134,6 +130,12 @@ const EditPeople: React.FC = () => {
             nome_fantasia: nome_fantasia || undefined,
           })
           .then(() => {
+            if (person) {
+              if (person.isUser === false && isUser === true) {
+                localStorage.setItem('@Cilex:hasPendingUser', 'true');
+              }
+            }
+
             toast.success('Atualizado com sucesso');
             history.push('/people');
           });
@@ -141,7 +143,7 @@ const EditPeople: React.FC = () => {
         toast.error('Ocorreu um erro na atualização da Empresa!');
       }
     },
-    [history, id, isPhysicalPerson],
+    [history, id, isPhysicalPerson, person],
   );
 
   const formSchemaPersonEdit = Yup.object().shape({
@@ -204,9 +206,7 @@ const EditPeople: React.FC = () => {
           <Main>
             <HeaderContent>
               <div id="container-arrow">
-                <button type="button" onClick={() => handleBack()}>
-                  <HiOutlineArrowLeft size={42} color={theme.main} />
-                </button>
+                <ButtonBack destinationBack="/people" />
               </div>
               <div id="container-titles">
                 <HiOutlineUser size={32} color={theme.main} />

@@ -16,6 +16,7 @@ import { theme } from '../../App';
 import Header from '../../components/Header';
 import Button from '../../components/Button';
 import Input from '../../components/Input';
+import ButtonBack from '../../components/ButtonBack';
 
 import { Container, Main, HeaderContent, FormCustom } from './styles';
 
@@ -37,10 +38,6 @@ const EditRole: React.FC = () => {
       setRole(response.data);
     });
   }, [id]);
-
-  const handleBack = useCallback((): void => {
-    history.goBack();
-  }, [history]);
 
   const handleSubmitForm = useCallback(
     async (data: RegisterRoleForm) => {
@@ -88,9 +85,7 @@ const EditRole: React.FC = () => {
         <Main>
           <HeaderContent>
             <div id="container-arrow">
-              <button type="button" onClick={() => handleBack()}>
-                <HiOutlineArrowLeft size={42} color={theme.main} />
-              </button>
+              <ButtonBack destinationBack="/role" />
             </div>
             <div id="container-titles">
               <h2>{role.role}</h2>

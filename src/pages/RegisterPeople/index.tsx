@@ -144,6 +144,10 @@ const RegisterPeople: React.FC = () => {
             nome_fantasia: nome_fantasia || undefined,
           })
           .then(() => {
+            if (isUser) {
+              localStorage.setItem('@Cilex:hasPendingUser', 'true');
+            }
+
             toast.success('Registrado com sucesso');
             history.push('/people');
           });
@@ -183,7 +187,7 @@ const RegisterPeople: React.FC = () => {
             {({ handleChange, touched, values, errors, handleSubmit }) => (
               <FormCustom onSubmit={handleSubmit}>
                 <div id="align-switch">
-                  <ButtonBack />
+                  <ButtonBack destinationBack="/people" />
                   <div id="container-switch">
                     <p>Pessoa Jurídica</p>
                     <Switch

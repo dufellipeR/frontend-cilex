@@ -9,6 +9,12 @@ import Home from '../pages/Home';
 import Dashboard from '../pages/Dashboard';
 import Menu from '../pages/Menu';
 
+import MenuUsers from '../pages/MenuUsers';
+import UsersActive from '../pages/UsersActive';
+import EditUsersActive from '../pages/EditUsersActive';
+import UsersPending from '../pages/UsersPending';
+import EditUsersPending from '../pages/EditUsersPending';
+
 import ChoseCompany from '../pages/ChoseCompany';
 
 import Company from '../pages/Company';
@@ -33,7 +39,13 @@ const Routes: React.FC = () => {
       <Route path="/chosecompany" component={ChoseCompany} />
       <Route path="/home" exact component={Home} />
       <Route path="/dashboard" component={Dashboard} />
-      <Route path="/menu" component={Menu} />
+      <Route path="/menu" exact component={Menu} />
+
+      <Route path="/menu/users" component={MenuUsers} />
+      <Route path="/users/active" component={UsersActive} />
+      <Route path="/users/pending" component={UsersPending} />
+      <Route path="/user/:id" component={EditUsersActive} />
+      <Route path="/user/pending/:id" component={EditUsersPending} />
 
       <Route path="/company" exact component={Company} />
       <Route path="/company/register" component={RegisterCompany} />

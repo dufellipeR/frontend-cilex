@@ -39,7 +39,7 @@ const Company: React.FC = () => {
         <Header pageName="Empresas" />
         <Main>
           <div id="align-content">
-            <ButtonBack />
+            <ButtonBack destinationBack="/menu" />
             <NewButton to="/company/register">Novo</NewButton>
             <DefaultTable
               tbh={['Código', 'CNPJ', 'Razão Social', 'Nome Fantasia']}

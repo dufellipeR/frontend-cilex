@@ -1,5 +1,5 @@
-import styled, { css, keyframes } from 'styled-components';
-import { Link, LinkProps } from 'react-router-dom';
+import styled, { keyframes } from 'styled-components';
+import { Link } from 'react-router-dom';
 
 const appearFromLeft = keyframes`
  from {
@@ -14,26 +14,29 @@ const appearFromLeft = keyframes`
 `;
 
 export const Container = styled.div`
-  height: 100vh;
+  height: calc(100vh - 15vh);
 
   animation: ${appearFromLeft} 1s;
 `;
 
 export const Main = styled.main`
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(12.5rem, 15.5rem));
-  grid-template-rows: repeat(auto-fit, minmax(10rem, 12.5rem));
-  gap: 1rem;
+  height: 100%;
+  display: flex;
   justify-content: center;
+  align-items: center;
+
+  gap: 2rem;
 `;
 
 export const Module = styled(Link)`
   position: relative;
 
-  max-height: 15.5rem;
-  padding: 2rem;
+  width: 20rem;
+  height: 15rem;
+  padding: 1rem;
 
   text-decoration: none;
+  text-align: center;
   color: #6a6c72;
   cursor: pointer;
 
@@ -42,9 +45,11 @@ export const Module = styled(Link)`
 
   display: flex;
   flex-direction: column;
+  justify-content: center;
+  align-items: center;
 
   h3 {
-    margin: 0.5rem 0;
+    margin: 1rem 0;
     color: #161616;
   }
 
