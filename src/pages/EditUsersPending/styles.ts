@@ -51,3 +51,12 @@ export const FormCustom = styled.form`
 
   gap: 1rem;
 `;
+
+export const CheckboxContainer = styled.div`
+  margin: auto;
+
+  div {
+    display: flex;
+    gap: 5rem;
+  }
+`;

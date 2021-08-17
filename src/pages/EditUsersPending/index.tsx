@@ -12,8 +12,9 @@ import Header from '../../components/Header';
 import Input from '../../components/Input';
 import Button from '../../components/Button';
 import ButtonBack from '../../components/ButtonBack';
+import Checkbox from '../../components/Checkbox';
 
-import { Container, FormCustom, Main } from './styles';
+import { Container, Main, FormCustom, CheckboxContainer } from './styles';
 
 interface UserPending {
   id: string;
@@ -29,6 +30,7 @@ interface RegisterUserForm {
   username: string;
   password: string;
   email: string;
+  isAdmin: boolean;
 }
 
 const EditUsersPending: React.FC = () => {
@@ -42,6 +44,7 @@ const EditUsersPending: React.FC = () => {
     username: Yup.string().required('Username Obrigatório'),
     password: Yup.string().required('Password Obrigatório'),
     email: Yup.string().email(),
+    isAdmin: Yup.boolean(),
   });
 
   useEffect(() => {
@@ -58,7 +61,7 @@ const EditUsersPending: React.FC = () => {
             name: data.username,
             email: data.email,
             password: data.password,
-            isAdmin: false,
+            isAdmin: data.isAdmin,
             pendingUser_id: id,
           })
           .then(() => {
@@ -105,6 +108,7 @@ const EditUsersPending: React.FC = () => {
                 username: '',
                 password: '',
                 email: user.person.email,
+                isAdmin: false,
               }}
               validationSchema={formSchemaUser}
               onSubmit={handleSubmitForm}
@@ -141,6 +145,9 @@ const EditUsersPending: React.FC = () => {
                       errors.password && touched.password ? errors.password : ''
                     }
                   />
+                  <CheckboxContainer>
+                    <Checkbox name="isUser" label="É Admin ?" />
+                  </CheckboxContainer>
                   <Button layoutColor="button-green" type="submit">
                     <FiSave size={24} />
                     <span>Criar</span>

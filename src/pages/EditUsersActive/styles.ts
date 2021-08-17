@@ -5,19 +5,58 @@ export const Container = styled.div`
 `;
 
 export const Main = styled.main`
+  height: 85vh;
+
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-areas: 'a b';
+
+  @media (max-width: 900px) {
+    display: flex;
+    flex-direction: column;
+
+    margin-top: 4rem;
+    gap: 4rem;
+  }
+
+  div#info-user {
+    grid-area: a;
+    align-self: center;
+    justify-self: center;
+
+    text-align: center;
+
+    span:not(#activate-user) {
+      color: ${props => props.theme.main};
+      font-weight: bold;
+    }
+
+    p {
+      margin-bottom: 1rem;
+    }
+  }
+
+  form {
+    width: 80%;
+
+    grid-area: b;
+    align-self: center;
+    justify-self: center;
+  }
+`;
+
+export const FormCustom = styled.form`
   display: flex;
   flex-direction: column;
 
-  margin-top: 2rem;
+  gap: 1rem;
+`;
 
-  #align-content {
-    width: 95%;
+export const CheckboxContainer = styled.div`
+  margin: auto;
 
-    padding: 0 2rem;
-
-    margin: 0 auto;
+  div {
     display: flex;
-    flex-direction: column;
-    gap: 1rem;
+    gap: 5rem;
   }
 `;

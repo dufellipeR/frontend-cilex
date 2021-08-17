@@ -44,7 +44,7 @@ const Routes: React.FC = () => {
       <Route path="/menu/users" component={MenuUsers} />
       <Route path="/users/active" component={UsersActive} />
       <Route path="/users/pending" component={UsersPending} />
-      <Route path="/user/:id" component={EditUsersActive} />
+      <Route path="/user/:id" exact component={EditUsersActive} />
       <Route path="/user/pending/:id" component={EditUsersPending} />
 
       <Route path="/company" exact component={Company} />
