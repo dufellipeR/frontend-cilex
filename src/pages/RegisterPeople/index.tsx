@@ -183,7 +183,7 @@ const RegisterPeople: React.FC = () => {
             {({ handleChange, touched, values, errors, handleSubmit }) => (
               <FormCustom onSubmit={handleSubmit}>
                 <div id="align-switch">
-                  <ButtonBack />
+                  <ButtonBack destinationBack="/people" />
                   <div id="container-switch">
                     <p>Pessoa Jurídica</p>
                     <Switch

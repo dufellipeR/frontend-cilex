@@ -62,7 +62,7 @@ const People: React.FC = () => {
         <Header pageName="Pessoas" />
         <Main>
           <div id="align-content">
-            <ButtonBack />
+            <ButtonBack destinationBack="/menu" />
             <NewButton to="/people/register">Novo</NewButton>
             <DefaultTable tbh={['Código', 'CNPJ/CPF', 'Razão Social/Nome']}>
               <tbody>

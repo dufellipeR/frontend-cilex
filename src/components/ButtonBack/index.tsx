@@ -6,12 +6,16 @@ import { theme } from '../../App';
 
 import { Container } from './styles';
 
-const Button: React.FC = () => {
+interface ButtonBackProps {
+  destinationBack: string;
+}
+
+const ButtonBack: React.FC<ButtonBackProps> = ({ destinationBack }) => {
   const history = useHistory();
 
   const handleBack = useCallback((): void => {
-    history.goBack();
-  }, [history]);
+    history.push(destinationBack);
+  }, [history, destinationBack]);
 
   return (
     <Container type="button" onClick={() => handleBack()}>
@@ -20,4 +24,4 @@ const Button: React.FC = () => {
   );
 };
 
-export default Button;
+export default ButtonBack;

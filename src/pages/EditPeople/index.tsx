@@ -5,7 +5,6 @@ import { Formik } from 'formik';
 import Switch from 'react-switch';
 import { FiSave } from 'react-icons/fi';
 import {
-  HiOutlineArrowLeft,
   HiOutlinePencilAlt,
   HiOutlineTrash,
   HiOutlineUser,
@@ -20,6 +19,7 @@ import Header from '../../components/Header';
 import Button from '../../components/Button';
 import Checkbox from '../../components/Checkbox';
 import Input from '../../components/Input';
+import ButtonBack from '../../components/ButtonBack';
 
 import {
   Container,
@@ -83,10 +83,6 @@ const EditPeople: React.FC = () => {
       setRoles(response.data);
     });
   }, []);
-
-  const handleBack = useCallback((): void => {
-    history.goBack();
-  }, [history]);
 
   const handleSubmitForm = useCallback(
     async (data: IRegisterForm) => {
@@ -204,9 +200,7 @@ const EditPeople: React.FC = () => {
           <Main>
             <HeaderContent>
               <div id="container-arrow">
-                <button type="button" onClick={() => handleBack()}>
-                  <HiOutlineArrowLeft size={42} color={theme.main} />
-                </button>
+                <ButtonBack destinationBack="/people" />
               </div>
               <div id="container-titles">
                 <HiOutlineUser size={32} color={theme.main} />

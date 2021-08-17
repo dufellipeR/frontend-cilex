@@ -38,7 +38,7 @@ const Role: React.FC = () => {
         <Header pageName="Cargos e Funções" />
         <Main>
           <div id="align-content">
-            <ButtonBack />
+            <ButtonBack destinationBack="/menu" />
             <NewButton to="/role/register">Novo</NewButton>
             <DefaultTable tbh={['Código', 'Cargo', 'Função']}>
               <tbody>
