@@ -29,6 +29,7 @@ export interface Person {
   cpf: string;
   nome: string;
   razao_social: string;
+  nome_fantasia: string;
 }
 
 interface UserCompany {
@@ -71,7 +72,11 @@ const People: React.FC = () => {
                     <tr key={people.code}>
                       <td>{people.code}</td>
                       <td>{people.cnpj || people.cpf}</td>
-                      <td>{people.razao_social || people.nome}</td>
+                      <td>
+                        {people.razao_social ||
+                          people.nome_fantasia ||
+                          people.nome}
+                      </td>
 
                       <td id="td-options">
                         <button
