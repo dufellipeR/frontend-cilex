@@ -7,6 +7,7 @@ import ResetPassword from '../pages/ResetPassword';
 import SignIn from '../pages/SignIn';
 import Home from '../pages/Home';
 import Dashboard from '../pages/Dashboard';
+import ChoseCompany from '../pages/ChoseCompany';
 import Menu from '../pages/Menu';
 
 import MenuUsers from '../pages/MenuUsers';
@@ -14,8 +15,6 @@ import UsersActive from '../pages/UsersActive';
 import EditUsersActive from '../pages/EditUsersActive';
 import UsersPending from '../pages/UsersPending';
 import EditUsersPending from '../pages/EditUsersPending';
-
-import ChoseCompany from '../pages/ChoseCompany';
 
 import Company from '../pages/Company';
 import RegisterCompany from '../pages/RegisterCompany';
@@ -25,7 +24,9 @@ import People from '../pages/People';
 import RegisterPeople from '../pages/RegisterPeople';
 import EditPeople from '../pages/EditPeople';
 
-import Group from '../pages/Group';
+import UserGroup from '../pages/UserGroup';
+import RegisterUserGroup from '../pages/RegisterUserGroup';
+import EditUserGroup from '../pages/EditUserGroup';
 
 import Role from '../pages/Role';
 import RegisterRole from '../pages/RegisterRole';
@@ -55,7 +56,9 @@ const Routes: React.FC = () => {
       <Route path="/people/register" component={RegisterPeople} />
       <Route path="/people/:id" component={EditPeople} />
 
-      <Route path="/group" exact component={Group} />
+      <Route path="/group" exact component={UserGroup} />
+      <Route path="/group/register" component={RegisterUserGroup} />
+      <Route path="/group/:id" component={EditUserGroup} />
 
       <Route path="/role" exact component={Role} />
       <Route path="/role/register" exact component={RegisterRole} />
