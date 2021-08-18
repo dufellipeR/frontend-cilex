@@ -2,8 +2,10 @@ import React, { useEffect, useState } from 'react';
 
 import { FiDollarSign, FiTruck } from 'react-icons/fi';
 import {
+  HiOutlineCollection,
   HiOutlineOfficeBuilding,
   HiOutlineUser,
+  HiOutlineUserCircle,
   HiOutlineUserGroup,
 } from 'react-icons/hi';
 import { MdNotificationsActive } from 'react-icons/md';
@@ -74,9 +76,21 @@ const Menu: React.FC = () => {
                 <MdNotificationsActive size={16} color="#fff" />
               </div>
             )}
-            <HiOutlineUserGroup size={44} color={theme.main} />
+            <HiOutlineUserCircle size={44} color={theme.main} />
             <h3>Usuários</h3>
             <p>Gerencia usuários pendentes e ativos</p>
+          </Module>
+
+          <Module to="/menu/users">
+            <HiOutlineUserGroup size={44} color={theme.main} />
+            <h3>Grupo de Usuários</h3>
+            <p>Gerencia grupos de usuários e suas permissões</p>
+          </Module>
+
+          <Module to="/menu/users">
+            <HiOutlineCollection size={44} color={theme.main} />
+            <h3>Módulos</h3>
+            <p>Gerencia seus módulos disponiveis</p>
           </Module>
         </Main>
       </Container>
