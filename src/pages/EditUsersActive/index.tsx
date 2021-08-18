@@ -38,8 +38,8 @@ const EditUsersActive: React.FC = () => {
   const [edditing, setEdditing] = useState(false);
 
   const formSchemaUser = Yup.object().shape({
-    username: Yup.string().required('Username Obrigatório'),
-    password: Yup.string().required('Password Obrigatório'),
+    username: Yup.string(),
+    password: Yup.string(),
     email: Yup.string().email(),
   });
 
@@ -54,10 +54,10 @@ const EditUsersActive: React.FC = () => {
       try {
         api
           .put(`/users/${id}`, {
-            name: data.username,
-            email: data.email,
-            password: data.password,
-            isAdmin: data.isAdmin,
+            name: data.username || undefined,
+            email: data.email || undefined,
+            password: data.password || undefined,
+            isAdmin: data.isAdmin || undefined,
           })
           .then(() => {
             toast.success('Atualizado com sucesso');

@@ -3,7 +3,9 @@ import React, { useEffect, useState } from 'react';
 import { FiDollarSign, FiTruck } from 'react-icons/fi';
 import {
   HiOutlineCollection,
+  HiOutlineGlobeAlt,
   HiOutlineOfficeBuilding,
+  HiOutlineShoppingBag,
   HiOutlineUser,
   HiOutlineUserCircle,
   HiOutlineUserGroup,
@@ -19,6 +21,89 @@ import { Container, Main, Module } from './styles';
 const Menu: React.FC = () => {
   const [hasUserPending, setHasUserPending] = useState(false);
 
+  const modules = [
+    {
+      id: 1,
+      name: 'Financeiro',
+      desc: 'Controle seu financeiro facilmente',
+      url: '/',
+      isActive: true,
+      classIcon: 'bi bi-currency-dollar',
+    },
+    {
+      id: 2,
+      name: 'Logística',
+      desc: 'Monitore seus produtos',
+      url: '/',
+      isActive: true,
+      classIcon: 'bi bi-truck',
+    },
+    {
+      id: 3,
+      name: 'CRM',
+      desc: 'Acompanhe seus clientes',
+      url: '/',
+      isActive: false,
+      classIcon: 'bi bi-truck',
+    },
+    {
+      id: 4,
+      name: 'Pessoas',
+      desc: 'Gerencia as pessoas',
+      url: '/people',
+      isActive: true,
+      classIcon: 'bi bi-person',
+    },
+    {
+      id: 5,
+      name: 'Empresas',
+      desc: 'Registre suas empresas',
+      url: '/company',
+      isActive: true,
+      classIcon: 'bi bi-building',
+    },
+    {
+      id: 6,
+      name: 'Parâmetros Gerais',
+      desc: 'Defina os parâmetros do sistema',
+      url: '/',
+      isActive: false,
+      classIcon: 'bi bi-globe',
+    },
+    {
+      id: 7,
+      name: 'Cargos e Funções',
+      desc: 'Adicione novos cargos',
+      url: '/role',
+      isActive: true,
+      classIcon: 'bi bi-wrench',
+    },
+    {
+      id: 8,
+      name: 'Usuários',
+      desc: 'Gerencie usuários pendentes e ativos',
+      url: '/menu/users',
+      isActive: true,
+      classIcon: 'bi bi-person-circle',
+    },
+    {
+      id: 9,
+      name: 'Grupo de Usuários',
+      desc: 'Gerencia grupos de usuários e suas permissões',
+      url: '/',
+      isActive: true,
+      classIcon: 'bi bi-people',
+    },
+    {
+      id: 10,
+      name: 'Módulos',
+      desc: 'Gerencie seus módulos disponíveis',
+      url: '/',
+      isActive: true,
+      classIcon: 'bi bi-box',
+    },
+  ];
+
   useEffect(() => {
     const jsonHasUser = localStorage.getItem('@Cilex:hasPendingUser');
 
@@ -30,68 +115,13 @@ const Menu: React.FC = () => {
       <Container>
         <Header pageName="Menu" />
         <Main>
-          <Module to="/">
-            <FiDollarSign size={44} color={theme.main} />
-            <h3>Financeiro</h3>
-            <p>Controle seu financeiro facilmente</p>
-          </Module>
-          <Module to="/">
-            <FiTruck size={44} color={theme.main} />
-            <h3>Logistica</h3>
-            <p>Monitore seus produtos</p>
-          </Module>
-          {/* <Module to="/">
-            <HiOutlineShoppingBag size={44} color={theme.main} />
-            <h3>CRM</h3>
-            <p>Acompanhe seus clientes</p>
-          </Module> */}
-          <Module to="/people">
-            <HiOutlineUser size={44} color={theme.main} />
-            <h3>Pessoas</h3>
-            <p>Gerencie as pessoas</p>
-          </Module>
-          <Module to="/company">
-            <HiOutlineOfficeBuilding size={44} color={theme.main} />
-            <h3>Empresas</h3>
-            <p>Registre suas empresas</p>
-          </Module>
-          {/* <Module to="/">
-            <HiOutlineGlobeAlt size={44} color={theme.main} />
-            <h3>Parâmetros Gerais</h3>
-            <p>Defina os parâmetros do sistema</p>
-          </Module> */}
-          <Module to="/role">
-            <HiOutlineUserGroup size={44} color={theme.main} />
-            <h3>Cargos e Funções</h3>
-            <p>Adicione novos cargos</p>
-          </Module>
-          {/* <Module to="/group">
-            <HiOutlineUserGroup size={44} color={theme.main} />
-            <h3>Grupo de Pessoas</h3>
-            <p>Agrupe as pessoas</p>
-          </Module> */}
-          <Module to="/menu/users">
-            {hasUserPending && (
-              <div id="notification">
-                <MdNotificationsActive size={16} color="#fff" />
-              </div>
-            )}
-            <HiOutlineUserCircle size={44} color={theme.main} />
-            <h3>Usuários</h3>
-            <p>Gerencia usuários pendentes e ativos</p>
-          </Module>
-
-          <Module to="/menu/users">
-            <HiOutlineUserGroup size={44} color={theme.main} />
-            <h3>Grupo de Usuários</h3>
-            <p>Gerencia grupos de usuários e suas permissões</p>
-          </Module>
-
-          <Module to="/menu/users">
-            <HiOutlineCollection size={44} color={theme.main} />
-            <h3>Módulos</h3>
-            <p>Gerencia seus módulos disponiveis</p>
-          </Module>
+          {modules.map(module => (
+            <Module key={module.id} to={module.url}>
+              <i className={module.classIcon} />
+              <h3>{module.name}</h3>
+              <p>{module.desc}</p>
+            </Module>
+          ))}
         </Main>
       </Container>
     </>

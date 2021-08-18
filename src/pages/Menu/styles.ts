@@ -1,5 +1,5 @@
-import styled, { css, keyframes } from 'styled-components';
-import { Link, LinkProps } from 'react-router-dom';
+import styled, { keyframes } from 'styled-components';
+import { Link } from 'react-router-dom';
 
 const appearFromLeft = keyframes`
  from {
@@ -42,6 +42,11 @@ export const Module = styled(Link)`
 
   display: flex;
   flex-direction: column;
+
+  .bi {
+    color: ${props => props.theme.main};
+    font-size: 2.5rem;
+  }
 
   h3 {
     margin: 0.5rem 0;
