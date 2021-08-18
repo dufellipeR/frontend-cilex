@@ -61,7 +61,7 @@ const EditUsersActive: React.FC = () => {
           })
           .then(() => {
             toast.success('Atualizado com sucesso');
-            history.push('/menu');
+            history.push('/menu/users/active');
           });
       } catch (err) {
         toast.error('Ocorreu um erro na atualização do Usuário!');
