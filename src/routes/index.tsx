@@ -3,7 +3,6 @@ import { Switch } from 'react-router-dom';
 
 import Route from './Route';
 import ForgotPassword from '../pages/ForgotPassword';
-import ResetPassword from '../pages/ResetPassword';
 import SignIn from '../pages/SignIn';
 import Home from '../pages/Home';
 import Dashboard from '../pages/Dashboard';
@@ -65,7 +64,6 @@ const Routes: React.FC = () => {
       <Route path="/role/:id" component={EditRole} />
 
       <Route path="/forgot-password" component={ForgotPassword} />
-      <Route path="/reset-password" component={ResetPassword} />
     </Switch>
   );
 };
