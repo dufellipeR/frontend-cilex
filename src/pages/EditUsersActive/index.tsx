@@ -14,13 +14,20 @@ import Button from '../../components/Button';
 import ButtonBack from '../../components/ButtonBack';
 import Checkbox from '../../components/Checkbox';
 
-import { Container, Main, FormCustom, CheckboxContainer } from './styles';
+import {
+  Container,
+  Main,
+  FormCustom,
+  CheckboxContainer,
+  Select,
+} from './styles';
 
 interface User {
   id: string;
   name: string;
   email: string;
   isAdmin: boolean;
+  group_id: string;
 }
 
 interface UpdateUserForm {
@@ -28,6 +35,13 @@ interface UpdateUserForm {
   password: string;
   email: string;
   isAdmin: boolean;
+  group_id: string;
+}
+
+export interface UserGroup {
+  id: string;
+  code: string;
+  description: string;
 }
 
 const EditUsersActive: React.FC = () => {
@@ -35,17 +49,23 @@ const EditUsersActive: React.FC = () => {
   const { id }: any = useParams();
 
   const [user, setUser] = useState<User>({} as User);
+  const [userGroups, setUserGroups] = useState<UserGroup[]>([]);
   const [edditing, setEdditing] = useState(false);
 
   const formSchemaUser = Yup.object().shape({
     username: Yup.string(),
     password: Yup.string(),
     email: Yup.string().email(),
+    isAdmin: Yup.boolean(),
+    group_id: Yup.string(),
   });
 
   useEffect(() => {
     api.get(`/users/${id}`).then(response => {
       setUser(response.data);
+    });
+    api.get<UserGroup[]>('/group').then(response => {
+      setUserGroups(response.data);
     });
   }, [id]);
 
@@ -58,6 +78,7 @@ const EditUsersActive: React.FC = () => {
             email: data.email || undefined,
             password: data.password || undefined,
             isAdmin: data.isAdmin || undefined,
+            group_id: data.group_id || undefined,
           })
           .then(() => {
             toast.success('Atualizado com sucesso');
@@ -102,6 +123,7 @@ const EditUsersActive: React.FC = () => {
                 password: '',
                 email: user.email,
                 isAdmin: user.isAdmin,
+                group_id: user.group_id,
               }}
               validationSchema={formSchemaUser}
               onSubmit={handleSubmitForm}
@@ -138,6 +160,17 @@ const EditUsersActive: React.FC = () => {
                       errors.password && touched.password ? errors.password : ''
                     }
                   />
+                  <Select
+                    name="group_id"
+                    value={values.group_id}
+                    onChange={handleChange('group_id')}
+                  >
+                    {userGroups.map(group => (
+                      <option key={group.id} value={group.id}>
+                        {group.description}
+                      </option>
+                    ))}
+                  </Select>
                   <CheckboxContainer>
                     <Checkbox name="isAdmin" label="É Admin ?" />
                   </CheckboxContainer>

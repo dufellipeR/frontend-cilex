@@ -90,7 +90,7 @@ const Menu: React.FC = () => {
       id: 9,
       name: 'Grupo de Usuários',
       desc: 'Gerencia grupos de usuários e suas permissões',
-      url: '/',
+      url: '/group',
       isActive: true,
       classIcon: 'bi bi-people',
     },
