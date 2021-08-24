@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { useHistory, useParams } from 'react-router-dom';
 import * as Yup from 'yup';
-import { Formik } from 'formik';
+import { Formik, Field } from 'formik';
 import { FiSave } from 'react-icons/fi';
 import {
   HiOutlineArrowLeft,
@@ -17,12 +17,14 @@ import Header from '../../components/Header';
 import Button from '../../components/Button';
 import Input from '../../components/Input';
 import ButtonBack from '../../components/ButtonBack';
+import CustomSelect from '../../components/CustomSelect';
 
 import { Container, Main, HeaderContent, FormCustom } from './styles';
 
 interface RegisterUserGroupForm {
   code: string;
   description: string;
+  modules: string[];
 }
 
 const EditUserGroup: React.FC = () => {
@@ -60,6 +62,12 @@ const EditUserGroup: React.FC = () => {
   const formSchemaUserGroupEdit = Yup.object().shape({
     code: Yup.string(),
     description: Yup.string(),
+    modules: Yup.array().of(
+      Yup.object().shape({
+        label: Yup.string().required(),
+        value: Yup.string().required(),
+      }),
+    ),
   });
 
   const handleDeleteGroup = () => {
@@ -74,6 +82,59 @@ const EditUserGroup: React.FC = () => {
         history.push('/group');
       });
   };
+
+  const modulesList = [
+    {
+      value: '1',
+      label: 'Financeiro',
+      classIcon: 'bi bi-currency-dollar',
+    },
+    {
+      value: '2',
+      label: 'Logística',
+      classIcon: 'bi bi-truck',
+    },
+    {
+      value: '3',
+      label: 'CRM',
+      classIcon: 'bi bi-truck',
+    },
+    {
+      value: '4',
+      label: 'Pessoas',
+      classIcon: 'bi bi-person',
+    },
+    {
+      value: '5',
+      label: 'Empresas',
+      classIcon: 'bi bi-building',
+    },
+    {
+      value: '6',
+      label: 'Parâmetros Gerais',
+      classIcon: 'bi bi-globe',
+    },
+    {
+      value: '7',
+      label: 'Cargos e Funções',
+      classIcon: 'bi bi-wrench',
+    },
+    {
+      value: '8',
+      label: 'Usuários',
+      classIcon: 'bi bi-person-circle',
+    },
+    {
+      value: '9',
+      label: 'Grupo de Usuários',
+      classIcon: 'bi bi-people',
+    },
+    {
+      value: '10',
+      label: 'Módulos',
+      classIcon: 'bi bi-box',
+    },
+  ];
 
   return (
     <Container>
@@ -106,6 +167,7 @@ const EditUserGroup: React.FC = () => {
               initialValues={{
                 code: group.code,
                 description: group.description,
+                modules: [],
               }}
               validationSchema={formSchemaUserGroupEdit}
               onSubmit={handleSubmitForm}
@@ -136,6 +198,14 @@ const EditUserGroup: React.FC = () => {
                           ? errors.description
                           : ''
                       }
+                    />
+                    <Field
+                      className="select-custom"
+                      name="modules"
+                      options={modulesList}
+                      component={CustomSelect}
+                      placeholder="Módulos"
+                      isMulti
                     />
                   </div>
                   <div id="align-button-save">
