@@ -1,12 +1,18 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
+import { Link } from 'react-router-dom';
+import { FiEye } from 'react-icons/fi';
 
+import { theme } from '../../App';
+
+import ButtonBack from '../../components/ButtonBack';
+import NewButton from '../../components/NewButton';
+import DefaultTable from '../../components/DefaultTable';
+import ChangeCompany from '../../components/ChangeCompany';
 import Header from '../../components/Header';
 
-import { Container, Main, Module } from './styles';
+import { Container, Main } from './styles';
 
-const Menu: React.FC = () => {
-  const [hasUserPending, setHasUserPending] = useState(false);
-
+const Module: React.FC = () => {
   const modules = [
     {
       id: 1,
@@ -84,34 +90,36 @@ const Menu: React.FC = () => {
       id: 10,
       name: 'Módulos',
       desc: 'Gerencie seus módulos disponíveis',
-      url: '/module',
+      url: '/',
       isActive: true,
       classIcon: 'bi bi-box',
     },
   ];
 
-  useEffect(() => {
-    const jsonHasUser = localStorage.getItem('@Cilex:hasPendingUser');
-
-    if (jsonHasUser) setHasUserPending(JSON.parse(jsonHasUser));
-  }, []);
-
   return (
     <>
       <Container>
-        <Header pageName="Menu" />
+        <Header pageName="Empresas" />
         <Main>
-          {modules.map(module => (
-            <Module key={module.id} to={module.url}>
-              <i className={module.classIcon} />
-              <h3>{module.name}</h3>
-              <p>{module.desc}</p>
-            </Module>
-          ))}
+          <div id="align-content">
+            <ButtonBack destinationBack="/menu" />
+            <DefaultTable tbh={['Módulo', 'Descrição', 'Ativo']}>
+              <tbody>
+                {modules.map(module => (
+                  <tr key={module.id}>
+                    <td>{module.name}</td>
+                    <td>{module.desc}</td>
+                    <td>{module.isActive ? 'Sim' : 'Não'}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </DefaultTable>
+          </div>
         </Main>
       </Container>
+      <ChangeCompany />
     </>
   );
 };
 
-export default Menu;
+export default Module;
