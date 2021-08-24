@@ -26,9 +26,7 @@ export const CustomSelect = ({
   const onChange = (option: ValueType<any, any>) => {
     form.setFieldValue(
       field.name,
-      isMulti
-        ? (option as Option[]).map((item: Option) => item.value)
-        : (option as Option).value,
+      option ? (option as Option[]).map((item: Option) => item.value) : [],
     );
   };
 
@@ -38,6 +36,7 @@ export const CustomSelect = ({
         ? options.filter(option => field.value.indexOf(option.value) >= 0)
         : options.find(option => option.value === field.value);
     }
+
     return isMulti ? [] : ('' as any);
   };
 
@@ -49,7 +48,7 @@ export const CustomSelect = ({
       onChange={onChange}
       placeholder={placeholder}
       options={options}
-      isMulti={isMulti}
+      isMulti
     />
   );
 };

@@ -1,5 +1,5 @@
 /* eslint-disable react/destructuring-assignment */
-import React, { useCallback } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { Formik, Field } from 'formik';
 import * as Yup from 'yup';
@@ -26,10 +26,19 @@ interface RegisterUserGroupForm {
   modules: string[];
 }
 
-interface OptionsProps {
+interface Module {
+  module: {
+    id: string;
+    title: string;
+    description: string;
+    isActive: boolean;
+    url: string;
+  };
+}
+
+interface SelectFields {
   value: string;
   label: string;
-  classIcon: string;
 }
 
 // const MultiValueOption = (props: any) => {
@@ -57,16 +66,13 @@ interface OptionsProps {
 const RegisterUserGroup: React.FC = () => {
   const history = useHistory();
 
+  const [listModules, setListModules] = useState<SelectFields[]>([]);
+
   const formSchemaUserGroup = Yup.object().shape({
     code: Yup.string().required('Código Obrigatório'),
     description: Yup.string().required('Descrição Obrigatória'),
     // eslint-disable-next-line react/forbid-prop-types
-    modules: Yup.array().of(
-      Yup.object().shape({
-        label: Yup.string().required(),
-        value: Yup.string().required(),
-      }),
-    ),
+    modules: Yup.array(),
   });
 
   const handleSubmitForm = useCallback(
@@ -76,21 +82,37 @@ const RegisterUserGroup: React.FC = () => {
 
         console.log('MÓDULOS: ', modules);
 
-        // api
-        //   .post('/group', {
-        //     code: String(code),
-        //     description,
-        //   })
-        //   .then(() => {
-        //     toast.success('Registrado com sucesso');
-        //     history.push('/group');
-        //   });
+        api
+          .post('/group', {
+            code: String(code),
+            description,
+            modules,
+          })
+          .then(() => {
+            toast.success('Registrado com sucesso');
+            history.push('/group');
+          });
       } catch (err) {
         toast.error('Ocorreu um erro no registro do Grupo de Usuários!');
       }
     },
     [history],
   );
+
+  useEffect(() => {
+    api.get<Module[]>('/company_modules').then(response => {
+      const responseModules = response.data;
+
+      const eachListModules = responseModules.map(listModule => {
+        return {
+          value: listModule.module.id,
+          label: listModule.module.title,
+        };
+      });
+
+      setListModules(eachListModules);
+    });
+  }, []);
 
   const modulesList = [
     {
@@ -190,7 +212,7 @@ const RegisterUserGroup: React.FC = () => {
                   <Field
                     className="select-custom"
                     name="modules"
-                    options={modulesList}
+                    options={listModules}
                     component={CustomSelect}
                     placeholder="Módulos"
                     isMulti
