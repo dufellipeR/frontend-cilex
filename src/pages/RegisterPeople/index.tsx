@@ -97,7 +97,7 @@ const RegisterPeople: React.FC = () => {
 
     // Fisica
     cpf: isPhysicalPerson
-      ? Yup.string().required('CPF obrigatório')
+      ? Yup.string().required('CPF obrigatório').min(11).max(11)
       : Yup.string(),
     nome: isPhysicalPerson
       ? Yup.string().required('Nome obrigatório')

@@ -81,7 +81,7 @@ const EditUsersPending: React.FC = () => {
             password: data.password,
             isAdmin: data.isAdmin,
             pendingUser_id: id,
-            group_id: data.group_id,
+            group_id: data.group_id || undefined,
           })
           .then(() => {
             toast.success('Criado com sucesso');

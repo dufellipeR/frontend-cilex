@@ -6,7 +6,7 @@ import * as Yup from 'yup';
 import { toast } from 'react-toastify';
 import { FiSave } from 'react-icons/fi';
 
-import Select, { components } from 'react-select';
+import { components } from 'react-select';
 
 import api from '../../services/api';
 
@@ -80,8 +80,6 @@ const RegisterUserGroup: React.FC = () => {
       try {
         const { code, description, modules } = data;
 
-        console.log('MÓDULOS: ', modules);
-
         api
           .post('/group', {
             code: String(code),
@@ -113,59 +111,6 @@ const RegisterUserGroup: React.FC = () => {
       setListModules(eachListModules);
     });
   }, []);
-
-  const modulesList = [
-    {
-      value: '1',
-      label: 'Financeiro',
-      classIcon: 'bi bi-currency-dollar',
-    },
-    {
-      value: '2',
-      label: 'Logística',
-      classIcon: 'bi bi-truck',
-    },
-    {
-      value: '3',
-      label: 'CRM',
-      classIcon: 'bi bi-truck',
-    },
-    {
-      value: '4',
-      label: 'Pessoas',
-      classIcon: 'bi bi-person',
-    },
-    {
-      value: '5',
-      label: 'Empresas',
-      classIcon: 'bi bi-building',
-    },
-    {
-      value: '6',
-      label: 'Parâmetros Gerais',
-      classIcon: 'bi bi-globe',
-    },
-    {
-      value: '7',
-      label: 'Cargos e Funções',
-      classIcon: 'bi bi-wrench',
-    },
-    {
-      value: '8',
-      label: 'Usuários',
-      classIcon: 'bi bi-person-circle',
-    },
-    {
-      value: '9',
-      label: 'Grupo de Usuários',
-      classIcon: 'bi bi-people',
-    },
-    {
-      value: '10',
-      label: 'Módulos',
-      classIcon: 'bi bi-box',
-    },
-  ];
 
   return (
     <>

@@ -24,7 +24,22 @@ import { Container, Main, HeaderContent, FormCustom } from './styles';
 interface RegisterUserGroupForm {
   code: string;
   description: string;
-  modules: string[];
+  modules: SelectFields[];
+}
+
+interface Module {
+  module: {
+    id: string;
+    title: string;
+    description: string;
+    isActive: boolean;
+    url: string;
+  };
+}
+
+interface SelectFields {
+  value: string;
+  label: string;
 }
 
 const EditUserGroup: React.FC = () => {
@@ -33,10 +48,24 @@ const EditUserGroup: React.FC = () => {
 
   const [editting, setEditting] = useState<boolean>(false);
   const [group, setGroup] = useState<RegisterUserGroupForm | null>(null);
+  const [listModules, setListModules] = useState<SelectFields[]>([]);
 
   useEffect(() => {
     api.get<RegisterUserGroupForm | null>(`/group/${id}`).then(response => {
       setGroup(response.data);
+    });
+
+    api.get<Module[]>(`/group_modules?group_id=${id}`).then(response2 => {
+      const responseModules = response2.data;
+
+      const eachListModules = responseModules.map(listModule => {
+        return {
+          value: listModule.module.id,
+          label: listModule.module.title,
+        };
+      });
+
+      setListModules(eachListModules);
     });
   }, [id]);
 
@@ -62,12 +91,8 @@ const EditUserGroup: React.FC = () => {
   const formSchemaUserGroupEdit = Yup.object().shape({
     code: Yup.string(),
     description: Yup.string(),
-    modules: Yup.array().of(
-      Yup.object().shape({
-        label: Yup.string().required(),
-        value: Yup.string().required(),
-      }),
-    ),
+    // eslint-disable-next-line react/forbid-prop-types
+    modules: Yup.array(),
   });
 
   const handleDeleteGroup = () => {
@@ -136,6 +161,8 @@ const EditUserGroup: React.FC = () => {
     },
   ];
 
+  console.log(group);
+
   return (
     <Container>
       <Header pageName="Editar Grupo de Usuários" />
@@ -167,7 +194,7 @@ const EditUserGroup: React.FC = () => {
               initialValues={{
                 code: group.code,
                 description: group.description,
-                modules: [],
+                modules: listModules,
               }}
               validationSchema={formSchemaUserGroupEdit}
               onSubmit={handleSubmitForm}
@@ -202,7 +229,7 @@ const EditUserGroup: React.FC = () => {
                     <Field
                       className="select-custom"
                       name="modules"
-                      options={modulesList}
+                      options={listModules}
                       component={CustomSelect}
                       placeholder="Módulos"
                       isMulti
