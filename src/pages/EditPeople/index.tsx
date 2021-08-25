@@ -11,7 +11,6 @@ import {
 } from 'react-icons/hi';
 import { toast } from 'react-toastify';
 
-import { useAuth } from '../../hooks/auth';
 import api from '../../services/api';
 import { theme } from '../../App';
 
@@ -20,6 +19,7 @@ import Button from '../../components/Button';
 import Checkbox from '../../components/Checkbox';
 import Input from '../../components/Input';
 import ButtonBack from '../../components/ButtonBack';
+import ModalDelete from '../../components/ModalDelete';
 
 import {
   Container,
@@ -62,10 +62,10 @@ export interface IRole {
 
 const EditPeople: React.FC = () => {
   const history = useHistory();
-  const { user } = useAuth();
   const { id }: any = useParams();
 
   const [editting, setEditting] = useState<boolean>(false);
+  const [showModalDelete, setShowModalDelete] = useState<boolean>(false);
   const [person, setPerson] = useState<IRegisterForm | null>(null);
   const [isPhysicalPerson, setIsPhysicalPerson] = useState(false);
   const [roles, setRoles] = useState<IRole[]>([]);
@@ -225,7 +225,7 @@ const EditPeople: React.FC = () => {
                 </Button>
                 <Button
                   layoutColor="button-outline"
-                  onClick={handleDeletePerson}
+                  onClick={() => setShowModalDelete(true)}
                 >
                   <HiOutlineTrash size={24} color={theme.main} />
                 </Button>
@@ -465,6 +465,11 @@ const EditPeople: React.FC = () => {
           </Main>
         )}
       </Container>
+      <ModalDelete
+        visible={showModalDelete}
+        setVisible={setShowModalDelete}
+        actionToDelete={handleDeletePerson}
+      />
     </>
   );
 };

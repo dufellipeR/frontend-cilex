@@ -3,11 +3,7 @@ import { useHistory, useParams } from 'react-router-dom';
 import * as Yup from 'yup';
 import { Formik } from 'formik';
 import { FiSave } from 'react-icons/fi';
-import {
-  HiOutlineArrowLeft,
-  HiOutlinePencilAlt,
-  HiOutlineTrash,
-} from 'react-icons/hi';
+import { HiOutlinePencilAlt, HiOutlineTrash } from 'react-icons/hi';
 import { toast } from 'react-toastify';
 
 import api from '../../services/api';
@@ -17,6 +13,7 @@ import Header from '../../components/Header';
 import Button from '../../components/Button';
 import Input from '../../components/Input';
 import ButtonBack from '../../components/ButtonBack';
+import ModalDelete from '../../components/ModalDelete';
 
 import { Container, Main, HeaderContent, FormCustom } from './styles';
 
@@ -31,6 +28,7 @@ const EditRole: React.FC = () => {
   const { id }: any = useParams();
 
   const [editting, setEditting] = useState<boolean>(false);
+  const [showModalDelete, setShowModalDelete] = useState<boolean>(false);
   const [role, setRole] = useState<RegisterRoleForm | null>(null);
 
   useEffect(() => {
@@ -79,92 +77,102 @@ const EditRole: React.FC = () => {
   };
 
   return (
-    <Container>
-      <Header pageName="Editar Cargo" />
-      {role && (
-        <Main>
-          <HeaderContent>
-            <div id="container-arrow">
-              <ButtonBack destinationBack="/role" />
-            </div>
-            <div id="container-titles">
-              <h2>{role.role}</h2>
-              <p>{role.description}</p>
-            </div>
-            <div id="container-buttons-actions">
-              <Button
-                layoutColor="button-filled"
-                onClick={() => setEditting(!editting)}
-              >
-                <HiOutlinePencilAlt size={24} color="#fefefe" />
-              </Button>
-              <Button layoutColor="button-outline" onClick={handleDeleteRole}>
-                <HiOutlineTrash size={24} color={theme.main} />
-              </Button>
-            </div>
-          </HeaderContent>
+    <>
+      <Container>
+        <Header pageName="Editar Cargo" />
+        {role && (
+          <Main>
+            <HeaderContent>
+              <div id="container-arrow">
+                <ButtonBack destinationBack="/role" />
+              </div>
+              <div id="container-titles">
+                <h2>{role.role}</h2>
+                <p>{role.description}</p>
+              </div>
+              <div id="container-buttons-actions">
+                <Button
+                  layoutColor="button-filled"
+                  onClick={() => setEditting(!editting)}
+                >
+                  <HiOutlinePencilAlt size={24} color="#fefefe" />
+                </Button>
+                <Button
+                  layoutColor="button-outline"
+                  onClick={() => setShowModalDelete(true)}
+                >
+                  <HiOutlineTrash size={24} color={theme.main} />
+                </Button>
+              </div>
+            </HeaderContent>
 
-          {editting && (
-            <Formik
-              initialValues={{
-                code: role.code,
-                role: role.role,
-                description: role.description,
-              }}
-              validationSchema={formSchemaRoleEdit}
-              onSubmit={handleSubmitForm}
-            >
-              {({ handleChange, touched, values, errors, handleSubmit }) => (
-                <FormCustom onSubmit={handleSubmit}>
-                  <div id="align-inputs">
-                    <Input
-                      name="code"
-                      min={1000}
-                      max={9999}
-                      type="number"
-                      placeholder="Código"
-                      value={values.code}
-                      onChange={handleChange('code')}
-                      messageError={
-                        errors.code && touched.code ? errors.code : ''
-                      }
-                    />
-                    <Input
-                      name="role"
-                      type="text"
-                      placeholder="Cargo"
-                      value={values.role}
-                      onChange={handleChange('role')}
-                      messageError={
-                        errors.role && touched.role ? errors.role : ''
-                      }
-                    />
-                    <Input
-                      name="description"
-                      type="text"
-                      placeholder="Função"
-                      value={values.description}
-                      onChange={handleChange('description')}
-                      messageError={
-                        errors.description && touched.description
-                          ? errors.description
-                          : ''
-                      }
-                    />
-                  </div>
-                  <div id="align-button-save">
-                    <Button layoutColor="button-green" type="submit">
-                      <FiSave size={24} />
-                      <span>Salvar</span>
-                    </Button>
-                  </div>
-                </FormCustom>
-              )}
-            </Formik>
-          )}
-        </Main>
-      )}
-    </Container>
+            {editting && (
+              <Formik
+                initialValues={{
+                  code: role.code,
+                  role: role.role,
+                  description: role.description,
+                }}
+                validationSchema={formSchemaRoleEdit}
+                onSubmit={handleSubmitForm}
+              >
+                {({ handleChange, touched, values, errors, handleSubmit }) => (
+                  <FormCustom onSubmit={handleSubmit}>
+                    <div id="align-inputs">
+                      <Input
+                        name="code"
+                        min={1000}
+                        max={9999}
+                        type="number"
+                        placeholder="Código"
+                        value={values.code}
+                        onChange={handleChange('code')}
+                        messageError={
+                          errors.code && touched.code ? errors.code : ''
+                        }
+                      />
+                      <Input
+                        name="role"
+                        type="text"
+                        placeholder="Cargo"
+                        value={values.role}
+                        onChange={handleChange('role')}
+                        messageError={
+                          errors.role && touched.role ? errors.role : ''
+                        }
+                      />
+                      <Input
+                        name="description"
+                        type="text"
+                        placeholder="Função"
+                        value={values.description}
+                        onChange={handleChange('description')}
+                        messageError={
+                          errors.description && touched.description
+                            ? errors.description
+                            : ''
+                        }
+                      />
+                    </div>
+                    <div id="align-button-save">
+                      <Button layoutColor="button-green" type="submit">
+                        <FiSave size={24} />
+                        <span>Salvar</span>
+                      </Button>
+                    </div>
+                  </FormCustom>
+                )}
+              </Formik>
+            )}
+          </Main>
+        )}
+      </Container>
+      <ModalDelete
+        visible={showModalDelete}
+        setVisible={setShowModalDelete}
+        actionToDelete={handleDeleteRole}
+      />
+    </>
   );
 };
 
