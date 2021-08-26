@@ -46,14 +46,17 @@ const EditUserGroup: React.FC = () => {
   const [editting, setEditting] = useState<boolean>(false);
   const [showModalDelete, setShowModalDelete] = useState<boolean>(false);
   const [group, setGroup] = useState<RegisterUserGroupForm | null>(null);
-  const [listModules, setListModules] = useState<SelectFields[]>([]);
+  const [listModulesUsed, setListModulesUsed] = useState<SelectFields[]>([]);
+  const [listModulesAvailable, setListModulesAvailable] = useState<
+    SelectFields[]
+  >([]);
 
   useEffect(() => {
     api.get<RegisterUserGroupForm | null>(`/group/${id}`).then(response => {
       setGroup(response.data);
     });
 
-    api.get<Module[]>(`/group_modules?group_id=${id}`).then(response2 => {
+    api.get<Module[]>(`/group_modules?group=${id}`).then(response2 => {
       const responseModules = response2.data;
 
       const eachListModules = responseModules.map(listModule => {
@@ -63,7 +66,20 @@ const EditUserGroup: React.FC = () => {
         };
       });
 
-      setListModules(eachListModules);
+      setListModulesUsed(eachListModules);
+    });
+
+    api.get<Module[]>('/company_modules').then(response => {
+      const responseModules = response.data;
+
+      const eachListModules = responseModules.map(listModule => {
+        return {
+          value: listModule.module.id,
+          label: listModule.module.title,
+        };
+      });
+
+      setListModulesAvailable(eachListModules);
     });
   }, [id]);
 
@@ -141,7 +157,7 @@ const EditUserGroup: React.FC = () => {
                 initialValues={{
                   code: group.code,
                   description: group.description,
-                  modules: listModules,
+                  modules: [],
                 }}
                 validationSchema={formSchemaUserGroupEdit}
                 onSubmit={handleSubmitForm}
@@ -176,7 +192,7 @@ const EditUserGroup: React.FC = () => {
                       <Field
                         className="select-custom"
                         name="modules"
-                        options={listModules}
+                        options={listModulesAvailable}
                         component={CustomSelect}
                         placeholder="Módulos"
                         isMulti
