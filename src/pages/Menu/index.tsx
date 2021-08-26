@@ -44,7 +44,7 @@ const Menu: React.FC = () => {
       desc: 'Acompanhe seus clientes',
       url: '/',
       isActive: false,
-      classIcon: 'bi bi-truck',
+      classIcon: 'bi bi-file-person',
     },
     {
       id: 4,
