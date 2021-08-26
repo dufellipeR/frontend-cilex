@@ -97,7 +97,7 @@ const RegisterPeople: React.FC = () => {
 
     // Fisica
     cpf: isPhysicalPerson
-      ? Yup.string().required('CPF obrigatório')
+      ? Yup.string().required('CPF obrigatório').min(11).max(11)
       : Yup.string(),
     nome: isPhysicalPerson
       ? Yup.string().required('Nome obrigatório')
@@ -137,9 +137,9 @@ const RegisterPeople: React.FC = () => {
             tipo,
             isUser,
             role_id: role_id || undefined,
-            cpf: String(cpf) || undefined,
+            cpf: cpf || undefined,
             nome: nome || undefined,
-            cnpj: String(cnpj) || undefined,
+            cnpj: cnpj || undefined,
             razao_social: razao_social || undefined,
             nome_fantasia: nome_fantasia || undefined,
           })
@@ -221,13 +221,14 @@ const RegisterPeople: React.FC = () => {
                     <>
                       <Input
                         name="cpf"
-                        type="number"
+                        type="text"
                         placeholder="CPF"
-                        value={values.cpf}
+                        value={values.cpf.replace(/\D+/g, '')}
                         onChange={handleChange('cpf')}
                         messageError={
                           errors.cpf && touched.cpf ? errors.cpf : ''
                         }
+                        maxLength={11}
                       />
                       <Input
                         name="nome"
@@ -244,9 +245,9 @@ const RegisterPeople: React.FC = () => {
                     <>
                       <Input
                         name="cnpj"
-                        type="number"
+                        type="text"
                         placeholder="CNPJ"
-                        value={values.cnpj}
+                        value={values.cnpj.replace(/\D+/g, '')}
                         onChange={handleChange('cnpj')}
                         messageError={
                           errors.cnpj && touched.cnpj ? errors.cnpj : ''

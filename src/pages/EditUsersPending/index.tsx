@@ -14,7 +14,13 @@ import Button from '../../components/Button';
 import ButtonBack from '../../components/ButtonBack';
 import Checkbox from '../../components/Checkbox';
 
-import { Container, Main, FormCustom, CheckboxContainer } from './styles';
+import {
+  Container,
+  Main,
+  FormCustom,
+  CheckboxContainer,
+  Select,
+} from './styles';
 
 interface UserPending {
   id: string;
@@ -31,6 +37,13 @@ interface RegisterUserForm {
   password: string;
   email: string;
   isAdmin: boolean;
+  group_id: string;
+}
+
+export interface UserGroup {
+  id: string;
+  code: string;
+  description: string;
 }
 
 const EditUsersPending: React.FC = () => {
@@ -38,6 +51,7 @@ const EditUsersPending: React.FC = () => {
   const { id }: any = useParams();
 
   const [user, setUser] = useState<UserPending>({} as UserPending);
+  const [userGroups, setUserGroups] = useState<UserGroup[]>([]);
   const [edditing, setEdditing] = useState(false);
 
   const formSchemaUser = Yup.object().shape({
@@ -45,11 +59,15 @@ const EditUsersPending: React.FC = () => {
     password: Yup.string().required('Password Obrigatório'),
     email: Yup.string().email(),
     isAdmin: Yup.boolean(),
+    group_id: Yup.string(),
   });
 
   useEffect(() => {
     api.get(`/pendinguser/${id}`).then(response => {
       setUser(response.data);
+    });
+    api.get<UserGroup[]>('/group').then(response => {
+      setUserGroups(response.data);
     });
   }, [id]);
 
@@ -63,6 +81,7 @@ const EditUsersPending: React.FC = () => {
             password: data.password,
             isAdmin: data.isAdmin,
             pendingUser_id: id,
+            group_id: data.group_id || undefined,
           })
           .then(() => {
             toast.success('Criado com sucesso');
@@ -109,6 +128,7 @@ const EditUsersPending: React.FC = () => {
                 password: '',
                 email: user.person.email,
                 isAdmin: false,
+                group_id: '',
               }}
               validationSchema={formSchemaUser}
               onSubmit={handleSubmitForm}
@@ -145,6 +165,17 @@ const EditUsersPending: React.FC = () => {
                       errors.password && touched.password ? errors.password : ''
                     }
                   />
+                  <Select
+                    name="group_id"
+                    value={values.group_id}
+                    onChange={handleChange('group_id')}
+                  >
+                    {userGroups.map(group => (
+                      <option key={group.id} value={group.id}>
+                        {group.description}
+                      </option>
+                    ))}
+                  </Select>
                   <CheckboxContainer>
                     <Checkbox name="isUser" label="É Admin ?" />
                   </CheckboxContainer>

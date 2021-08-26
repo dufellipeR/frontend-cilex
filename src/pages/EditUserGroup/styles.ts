@@ -60,4 +60,16 @@ export const FormCustom = styled.form`
       width: 100%;
     }
   }
+
+  .select-custom {
+    border: 2px solid #666360;
+    border-radius: 10px;
+
+    padding: 1rem;
+    width: 100%;
+
+    .bi {
+      color: ${props => props.theme.main};
+    }
+  }
 `;

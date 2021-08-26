@@ -18,6 +18,7 @@ import Header from '../../components/Header';
 import Button from '../../components/Button';
 import Input from '../../components/Input';
 import ButtonBack from '../../components/ButtonBack';
+import ModalDelete from '../../components/ModalDelete';
 
 import { Icompany } from '../Company';
 
@@ -64,6 +65,7 @@ const EditCompany: React.FC = () => {
 
   const [companies, setCompanies] = useState<IOpt[]>([]);
   const [editting, setEditting] = useState<boolean>(false);
+  const [showModalDelete, setShowModalDelete] = useState<boolean>(false);
   const [company, setCompany] = useState<IRegisterForm | null>(null);
   const [matrizCompanies, setMatrizCompanies] = useState<MatrizID[]>([]);
 
@@ -191,7 +193,7 @@ const EditCompany: React.FC = () => {
                 </Button>
                 <Button
                   layoutColor="button-outline"
-                  onClick={handleDeleteCompany}
+                  onClick={() => setShowModalDelete(true)}
                 >
                   <HiOutlineTrash size={24} color={theme.main} />
                 </Button>
@@ -369,6 +371,11 @@ const EditCompany: React.FC = () => {
           </Main>
         )}
       </Container>
+      <ModalDelete
+        visible={showModalDelete}
+        setVisible={setShowModalDelete}
+        actionToDelete={handleDeleteCompany}
+      />
     </>
   );
 };

@@ -11,7 +11,6 @@ import {
 } from 'react-icons/hi';
 import { toast } from 'react-toastify';
 
-import { useAuth } from '../../hooks/auth';
 import api from '../../services/api';
 import { theme } from '../../App';
 
@@ -20,6 +19,7 @@ import Button from '../../components/Button';
 import Checkbox from '../../components/Checkbox';
 import Input from '../../components/Input';
 import ButtonBack from '../../components/ButtonBack';
+import ModalDelete from '../../components/ModalDelete';
 
 import {
   Container,
@@ -62,10 +62,10 @@ export interface IRole {
 
 const EditPeople: React.FC = () => {
   const history = useHistory();
-  const { user } = useAuth();
   const { id }: any = useParams();
 
   const [editting, setEditting] = useState<boolean>(false);
+  const [showModalDelete, setShowModalDelete] = useState<boolean>(false);
   const [person, setPerson] = useState<IRegisterForm | null>(null);
   const [isPhysicalPerson, setIsPhysicalPerson] = useState(false);
   const [roles, setRoles] = useState<IRole[]>([]);
@@ -123,9 +123,9 @@ const EditPeople: React.FC = () => {
             tipo,
             isUser,
             role_id: role_id || undefined,
-            cpf: String(cpf) || undefined,
+            cpf: cpf || undefined,
             nome: nome || undefined,
-            cnpj: String(cnpj) || undefined,
+            cnpj: cnpj || undefined,
             razao_social: razao_social || undefined,
             nome_fantasia: nome_fantasia || undefined,
           })
@@ -171,7 +171,7 @@ const EditPeople: React.FC = () => {
 
     // Fisica
     cpf: isPhysicalPerson
-      ? Yup.string().required('CPF obrigatório')
+      ? Yup.string().required('CPF obrigatório').min(11).max(11)
       : Yup.string(),
     nome: isPhysicalPerson
       ? Yup.string().required('Nome obrigatório')
@@ -225,7 +225,7 @@ const EditPeople: React.FC = () => {
                 </Button>
                 <Button
                   layoutColor="button-outline"
-                  onClick={handleDeletePerson}
+                  onClick={() => setShowModalDelete(true)}
                 >
                   <HiOutlineTrash size={24} color={theme.main} />
                 </Button>
@@ -311,13 +311,14 @@ const EditPeople: React.FC = () => {
                         <>
                           <Input
                             name="cpf"
-                            type="number"
+                            type="text"
                             placeholder="CPF"
-                            value={values.cpf}
+                            value={values.cpf.replace(/\D+/g, '')}
                             onChange={handleChange('cpf')}
                             messageError={
                               errors.cpf && touched.cpf ? errors.cpf : ''
                             }
+                            maxLength={11}
                           />
                           <Input
                             name="nome"
@@ -334,9 +335,9 @@ const EditPeople: React.FC = () => {
                         <>
                           <Input
                             name="cnpj"
-                            type="number"
+                            type="text"
                             placeholder="CNPJ"
-                            value={values.cnpj}
+                            value={values.cnpj.replace(/\D+/g, '')}
                             onChange={handleChange('cnpj')}
                             messageError={
                               errors.cnpj && touched.cnpj ? errors.cnpj : ''
@@ -465,6 +466,11 @@ const EditPeople: React.FC = () => {
           </Main>
         )}
       </Container>
+      <ModalDelete
+        visible={showModalDelete}
+        setVisible={setShowModalDelete}
+        actionToDelete={handleDeletePerson}
+      />
     </>
   );
 };

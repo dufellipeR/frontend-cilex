@@ -1,9 +1,12 @@
-import React, { useCallback } from 'react';
+/* eslint-disable react/destructuring-assignment */
+import React, { useCallback, useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
-import { Formik } from 'formik';
+import { Formik, Field } from 'formik';
 import * as Yup from 'yup';
 import { toast } from 'react-toastify';
 import { FiSave } from 'react-icons/fi';
+
+import { components } from 'react-select';
 
 import api from '../../services/api';
 
@@ -11,31 +14,77 @@ import Button from '../../components/Button';
 import Header from '../../components/Header';
 import Input from '../../components/Input';
 import ButtonBack from '../../components/ButtonBack';
+import CustomSelect from '../../components/CustomSelect';
 
 import { Container, Main, FormCustom } from './styles';
+
+const { Option } = components;
 
 interface RegisterUserGroupForm {
   code: string;
   description: string;
+  modules: string[];
 }
+
+interface Module {
+  module: {
+    id: string;
+    title: string;
+    description: string;
+    isActive: boolean;
+    url: string;
+  };
+}
+
+interface SelectFields {
+  value: string;
+  label: string;
+}
+
+// const MultiValueOption = (props: any) => {
+//   return (
+//     <Option
+//       {...props}
+//       getStyles={(styles: any) => {
+//         return {
+//           ...styles,
+//           display: 'flex',
+//           alignItems: 'center',
+//           gap: '0.5rem',
+//           fontSize: '1.5rem',
+//           padding: '1rem',
+//           marginTop: '-1rem',
+//         };
+//       }}
+//     >
+//       <i className={props.data.classIcon} />
+//       <span>{props.data.label}</span>
+//     </Option>
+//   );
+// };
 
 const RegisterUserGroup: React.FC = () => {
   const history = useHistory();
 
+  const [listModules, setListModules] = useState<SelectFields[]>([]);
+
   const formSchemaUserGroup = Yup.object().shape({
     code: Yup.string().required('Código Obrigatório'),
     description: Yup.string().required('Descrição Obrigatória'),
+    // eslint-disable-next-line react/forbid-prop-types
+    modules: Yup.array(),
   });
 
   const handleSubmitForm = useCallback(
     async (data: RegisterUserGroupForm) => {
       try {
-        const { code, description } = data;
+        const { code, description, modules } = data;
 
         api
           .post('/group', {
             code: String(code),
             description,
+            modules,
           })
           .then(() => {
             toast.success('Registrado com sucesso');
@@ -48,6 +97,21 @@ const RegisterUserGroup: React.FC = () => {
     [history],
   );
 
+  useEffect(() => {
+    api.get<Module[]>('/company_modules').then(response => {
+      const responseModules = response.data;
+
+      const eachListModules = responseModules.map(listModule => {
+        return {
+          value: listModule.module.id,
+          label: listModule.module.title,
+        };
+      });
+
+      setListModules(eachListModules);
+    });
+  }, []);
+
   return (
     <>
       <Container>
@@ -58,6 +122,7 @@ const RegisterUserGroup: React.FC = () => {
             initialValues={{
               code: '',
               description: '',
+              modules: [],
             }}
             validationSchema={formSchemaUserGroup}
             onSubmit={handleSubmitForm}
@@ -88,6 +153,14 @@ const RegisterUserGroup: React.FC = () => {
                         ? errors.description
                         : ''
                     }
+                  />
+                  <Field
+                    className="select-custom"
+                    name="modules"
+                    options={listModules}
+                    component={CustomSelect}
+                    placeholder="Módulos"
+                    isMulti
                   />
                 </div>
                 <div id="align-button-save">
