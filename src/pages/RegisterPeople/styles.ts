@@ -20,6 +20,18 @@ export const Main = styled.main`
       gap: 2rem;
     }
   }
+
+  @media (max-width: 900px) {
+    #align-switch {
+      display: flex;
+      flex-direction: column;
+      gap: 2rem;
+
+      #container-switch {
+        gap: 1rem;
+      }
+    }
+  }
 `;
 
 export const FormCustom = styled.form`
