@@ -49,6 +49,7 @@ interface SelectFields {
 const EditUserGroup: React.FC = () => {
   const history = useHistory();
   const { id }: any = useParams();
+  const company = localStorage.getItem('@Cilex:companySelected');
 
   const [editting, setEditting] = useState<boolean>(false);
   const [showModalDelete, setShowModalDelete] = useState<boolean>(false);
@@ -76,29 +77,33 @@ const EditUserGroup: React.FC = () => {
 
       setListModulesUsed(eachListModules);
 
-      api.get<Module[]>('/company_modules').then(response => {
-        const responseModules2 = response.data;
+      api
+        .get<Module[]>(
+          `company_modules/?company_id=${JSON.parse(company as string).id}`,
+        )
+        .then(response => {
+          const responseModules2 = response.data;
 
-        const eachListModules2 = responseModules2.map(listModule => {
-          return {
-            value: listModule.module.id,
-            label: listModule.module.title,
-            classIcon: listModule.module.classIcon,
-          };
+          const eachListModules2 = responseModules2.map(listModule => {
+            return {
+              value: listModule.module.id,
+              label: listModule.module.title,
+              classIcon: listModule.module.classIcon,
+            };
+          });
+
+          const modulesFiltered: SelectFields[] = [];
+
+          eachListModules2.forEach(k => {
+            const isIncluded = eachListModules.find(j => j.value === k.value);
+
+            if (!isIncluded) {
+              modulesFiltered.push(k);
+            }
+          });
+
+          setListModulesAvailable(modulesFiltered);
         });
-
-        const modulesFiltered: SelectFields[] = [];
-
-        eachListModules2.forEach(k => {
-          const isIncluded = eachListModules.find(j => j.value === k.value);
-
-          if (!isIncluded) {
-            modulesFiltered.push(k);
-          }
-        });
-
-        setListModulesAvailable(modulesFiltered);
-      });
     });
   }, [id]);
 
