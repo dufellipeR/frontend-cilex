@@ -73,3 +73,36 @@ export const FormCustom = styled.form`
     }
   }
 `;
+
+export const ContainerListModules = styled.div`
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  margin-top: 1rem;
+
+  div.content-modules {
+    border: 2px solid #666360;
+    border-radius: 10px;
+
+    padding: 1rem;
+    width: 100%;
+
+    h3 {
+      color: ${props => props.theme.main};
+    }
+
+    ul {
+      list-style: none;
+
+      li {
+        margin-left: 1rem;
+
+        button {
+          border: none;
+          background-color: transparent;
+        }
+      }
+    }
+  }
+`;

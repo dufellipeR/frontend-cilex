@@ -13,10 +13,15 @@ import Header from '../../components/Header';
 import Button from '../../components/Button';
 import Input from '../../components/Input';
 import ButtonBack from '../../components/ButtonBack';
-import CustomSelect from '../../components/CustomSelect';
 import ModalDelete from '../../components/ModalDelete';
 
-import { Container, Main, HeaderContent, FormCustom } from './styles';
+import {
+  Container,
+  Main,
+  HeaderContent,
+  FormCustom,
+  ContainerListModules,
+} from './styles';
 
 interface RegisterUserGroupForm {
   code: string;
@@ -122,6 +127,35 @@ const EditUserGroup: React.FC = () => {
       });
   };
 
+  const handleAddModule = ({ value, label }: SelectFields) => {
+    const updateModules = [...listModulesUsed];
+
+    const hasModuleSelected = updateModules.find(
+      module => module.value === value,
+    );
+
+    if (hasModuleSelected) {
+      toast.info('Módulo já selecionado');
+    } else {
+      setListModulesUsed([...updateModules, { value, label }]);
+    }
+  };
+
+  const handleRemoveModule = ({ value, label }: SelectFields) => {
+    const updateModules = [...listModulesUsed];
+
+    const moduleIndex = updateModules.findIndex(
+      module => module.value === value,
+    );
+
+    if (moduleIndex >= 0) {
+      updateModules.splice(moduleIndex, 1);
+      setListModulesUsed(updateModules);
+    } else {
+      toast.info('Módulo não existente');
+    }
+  };
+
   return (
     <>
       <Container>
@@ -189,15 +223,51 @@ const EditUserGroup: React.FC = () => {
                             : ''
                         }
                       />
-                      <Field
-                        className="select-custom"
-                        name="modules"
-                        options={listModulesAvailable}
-                        component={CustomSelect}
-                        placeholder="Módulos"
-                        isMulti
-                      />
                     </div>
+                    <ContainerListModules>
+                      <div className="content-modules">
+                        <h3>Módulos Selecionados</h3>
+
+                        <ul>
+                          {listModulesUsed.map(module => (
+                            <li key={module.value}>
+                              <button
+                                type="button"
+                                onClick={() =>
+                                  handleRemoveModule({
+                                    value: module.value,
+                                    label: module.label,
+                                  })
+                                }
+                              >
+                                {module.label}
+                              </button>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                      <div className="content-modules">
+                        <h3>Módulos Disponíveis</h3>
+
+                        <ul>
+                          {listModulesAvailable.map(module => (
+                            <li key={module.value}>
+                              <button
+                                type="button"
+                                onClick={() =>
+                                  handleAddModule({
+                                    value: module.value,
+                                    label: module.label,
+                                  })
+                                }
+                              >
+                                {module.label}
+                              </button>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    </ContainerListModules>
                     <div id="align-button-save">
                       <Button layoutColor="button-green" type="submit">
                         <FiSave size={24} />
