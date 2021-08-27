@@ -50,6 +50,13 @@ export const FormCustom = styled.form`
   flex-direction: column;
 
   gap: 1rem;
+
+  #container-switch {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 2rem;
+  }
 `;
 
 export const CheckboxContainer = styled.div`

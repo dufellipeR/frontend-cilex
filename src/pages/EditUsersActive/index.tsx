@@ -5,6 +5,9 @@ import * as Yup from 'yup';
 import { toast } from 'react-toastify';
 import { FiSave } from 'react-icons/fi';
 import { HiOutlinePencilAlt } from 'react-icons/hi';
+import Switch from 'react-switch';
+
+import { theme } from '../../App';
 
 import api from '../../services/api';
 
@@ -28,6 +31,7 @@ interface User {
   email: string;
   isAdmin: boolean;
   group_id: string;
+  isActive: boolean;
 }
 
 interface UpdateUserForm {
@@ -51,6 +55,7 @@ const EditUsersActive: React.FC = () => {
   const [user, setUser] = useState<User>({} as User);
   const [userGroups, setUserGroups] = useState<UserGroup[]>([]);
   const [edditing, setEdditing] = useState(false);
+  const [userActive, setUserActive] = useState(false);
 
   const formSchemaUser = Yup.object().shape({
     username: Yup.string(),
@@ -58,11 +63,13 @@ const EditUsersActive: React.FC = () => {
     email: Yup.string().email(),
     isAdmin: Yup.boolean(),
     group_id: Yup.string(),
+    isActive: Yup.boolean(),
   });
 
   useEffect(() => {
     api.get(`/users/${id}`).then(response => {
       setUser(response.data);
+      setUserActive(response.data.isActive);
     });
     api.get<UserGroup[]>('/group').then(response => {
       setUserGroups(response.data);
@@ -79,6 +86,7 @@ const EditUsersActive: React.FC = () => {
             password: data.password || undefined,
             isAdmin: data.isAdmin || undefined,
             group_id: data.group_id || undefined,
+            isActive: userActive,
           })
           .then(() => {
             toast.success('Atualizado com sucesso');
@@ -88,7 +96,7 @@ const EditUsersActive: React.FC = () => {
         toast.error('Ocorreu um erro na atualização do Usuário!');
       }
     },
-    [history, id],
+    [history, id, userActive],
   );
 
   return (
@@ -130,6 +138,17 @@ const EditUsersActive: React.FC = () => {
             >
               {({ handleChange, touched, values, errors, handleSubmit }) => (
                 <FormCustom onSubmit={handleSubmit}>
+                  <div id="container-switch">
+                    <p>Desativo</p>
+                    <Switch
+                      onChange={() => setUserActive(!userActive)}
+                      checked={userActive}
+                      checkedIcon={false}
+                      uncheckedIcon={false}
+                      onColor={theme.main}
+                    />
+                    <p>Ativo</p>
+                  </div>
                   <Input
                     name="email"
                     type="text"
