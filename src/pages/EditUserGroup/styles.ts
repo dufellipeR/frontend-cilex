@@ -67,10 +67,6 @@ export const FormCustom = styled.form`
 
     padding: 1rem;
     width: 100%;
-
-    .bi {
-      color: ${props => props.theme.main};
-    }
   }
 `;
 
@@ -94,13 +90,21 @@ export const ContainerListModules = styled.div`
 
     ul {
       list-style: none;
+      margin-top: 1rem;
 
       li {
-        margin-left: 1rem;
+        margin-left: 0.2rem;
+        margin-top: 0.3rem;
 
         button {
           border: none;
           background-color: transparent;
+
+          .bi {
+            color: ${props => props.theme.main};
+            font-size: 1rem;
+            margin: 0.3rem;
+          }
         }
       }
     }

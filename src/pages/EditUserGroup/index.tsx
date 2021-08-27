@@ -36,10 +36,12 @@ interface Module {
     description: string;
     isActive: boolean;
     url: string;
+    classIcon: string;
   };
 }
 
 interface SelectFields {
+  classIcon: string;
   value: string;
   label: string;
 }
@@ -68,43 +70,61 @@ const EditUserGroup: React.FC = () => {
         return {
           value: listModule.module.id,
           label: listModule.module.title,
+          classIcon: listModule.module.classIcon,
         };
       });
 
       setListModulesUsed(eachListModules);
-    });
 
-    api.get<Module[]>('/company_modules').then(response => {
-      const responseModules = response.data;
+      api.get<Module[]>('/company_modules').then(response => {
+        const responseModules2 = response.data;
 
-      const eachListModules = responseModules.map(listModule => {
-        return {
-          value: listModule.module.id,
-          label: listModule.module.title,
-        };
+        const eachListModules2 = responseModules2.map(listModule => {
+          return {
+            value: listModule.module.id,
+            label: listModule.module.title,
+            classIcon: listModule.module.classIcon,
+          };
+        });
+
+        const modulesFiltered: SelectFields[] = [];
+
+        eachListModules2.forEach(k => {
+          const isIncluded = eachListModules.find(j => j.value === k.value);
+
+          if (!isIncluded) {
+            modulesFiltered.push(k);
+          }
+        });
+
+        setListModulesAvailable(modulesFiltered);
       });
-
-      setListModulesAvailable(eachListModules);
     });
   }, [id]);
 
   const handleSubmitForm = useCallback(
     async (data: RegisterUserGroupForm) => {
+      const modules: string[] = [];
+      listModulesUsed.forEach(module => {
+        modules.push(module.value);
+      });
+
       try {
         api
           .put(`/group/${id}`, {
             code: String(data.code),
             description: data.description,
+            modules,
           })
           .then(() => {
             toast.success('Atualizado com sucesso');
             history.push('/group');
           });
       } catch (err) {
-        toast.error('Ocorreu um erro na atualização do Cargo!');
+        toast.error('Ocorreu um erro na atualização do Grupo!');
       }
     },
-    [history, id],
+    [history, listModulesUsed, id],
   );
 
   const formSchemaUserGroupEdit = Yup.object().shape({
@@ -127,26 +147,40 @@ const EditUserGroup: React.FC = () => {
       });
   };
 
-  const handleAddModule = ({ value, label }: SelectFields) => {
+  const handleAddModule = ({ value, label, classIcon }: SelectFields) => {
+    const availableList = [...listModulesAvailable];
     const updateModules = [...listModulesUsed];
 
     const hasModuleSelected = updateModules.find(
       module => module.value === value,
     );
 
+    const moduleIndex = availableList.findIndex(
+      module => module.value === value,
+    );
+
+    availableList.splice(moduleIndex, 1);
+
+    setListModulesAvailable([...availableList]);
+
     if (hasModuleSelected) {
       toast.info('Módulo já selecionado');
     } else {
-      setListModulesUsed([...updateModules, { value, label }]);
+      setListModulesUsed([...updateModules, { value, label, classIcon }]);
     }
   };
 
-  const handleRemoveModule = ({ value, label }: SelectFields) => {
+  const handleRemoveModule = ({ value, label, classIcon }: SelectFields) => {
     const updateModules = [...listModulesUsed];
 
     const moduleIndex = updateModules.findIndex(
       module => module.value === value,
     );
+
+    setListModulesAvailable([
+      ...listModulesAvailable,
+      { value, label, classIcon },
+    ]);
 
     if (moduleIndex >= 0) {
       updateModules.splice(moduleIndex, 1);
@@ -237,9 +271,11 @@ const EditUserGroup: React.FC = () => {
                                   handleRemoveModule({
                                     value: module.value,
                                     label: module.label,
+                                    classIcon: module.classIcon,
                                   })
                                 }
                               >
+                                <i className={module.classIcon} />
                                 {module.label}
                               </button>
                             </li>
@@ -258,9 +294,11 @@ const EditUserGroup: React.FC = () => {
                                   handleAddModule({
                                     value: module.value,
                                     label: module.label,
+                                    classIcon: module.classIcon,
                                   })
                                 }
                               >
+                                <i className={module.classIcon} />
                                 {module.label}
                               </button>
                             </li>
