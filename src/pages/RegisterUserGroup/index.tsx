@@ -36,35 +36,18 @@ interface Module {
   };
 }
 
+interface Company {
+  id: string;
+}
+
 interface SelectFields {
   value: string;
   label: string;
 }
 
-// const MultiValueOption = (props: any) => {
-//   return (
-//     <Option
-//       {...props}
-//       getStyles={(styles: any) => {
-//         return {
-//           ...styles,
-//           display: 'flex',
-//           alignItems: 'center',
-//           gap: '0.5rem',
-//           fontSize: '1.5rem',
-//           padding: '1rem',
-//           marginTop: '-1rem',
-//         };
-//       }}
-//     >
-//       <i className={props.data.classIcon} />
-//       <span>{props.data.label}</span>
-//     </Option>
-//   );
-// };
-
 const RegisterUserGroup: React.FC = () => {
   const history = useHistory();
+  const company = localStorage.getItem('@Cilex:companySelected');
 
   const [listModules, setListModules] = useState<SelectFields[]>([]);
 
@@ -98,19 +81,23 @@ const RegisterUserGroup: React.FC = () => {
   );
 
   useEffect(() => {
-    api.get<Module[]>('/company_modules').then(response => {
-      const responseModules = response.data;
+    api
+      .get<Module[]>(
+        `company_modules/?company_id=${JSON.parse(company as string).id}`,
+      )
+      .then(response => {
+        const responseModules = response.data;
 
-      const eachListModules = responseModules.map(listModule => {
-        return {
-          value: listModule.module.id,
-          label: listModule.module.title,
-        };
+        const eachListModules = responseModules.map(listModule => {
+          return {
+            value: listModule.module.id,
+            label: listModule.module.title,
+          };
+        });
+
+        setListModules(eachListModules);
       });
-
-      setListModules(eachListModules);
-    });
-  }, []);
+  }, [company]);
 
   return (
     <>
