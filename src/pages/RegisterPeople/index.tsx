@@ -9,6 +9,8 @@ import { toast } from 'react-toastify';
 
 import { useAuth } from '../../hooks/auth';
 import api from '../../services/api';
+import { maskPhone } from '../../utils/masks';
+import unformatTel from '../../utils/unformat';
 import { theme } from '../../App';
 
 import Button from '../../components/Button';
@@ -129,7 +131,7 @@ const RegisterPeople: React.FC = () => {
           .post('/person', {
             code: String(code),
             email,
-            tel,
+            tel: unformatTel(tel),
             endereco,
             cep,
             uf,
@@ -295,8 +297,7 @@ const RegisterPeople: React.FC = () => {
                     name="tel"
                     type="text"
                     placeholder="Telefone"
-                    value={values.tel}
-                    onChange={handleChange('tel')}
+                    mask={maskPhone}
                     messageError={errors.tel && touched.tel ? errors.tel : ''}
                   />
                   <Input

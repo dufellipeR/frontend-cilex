@@ -1,4 +1,7 @@
-import React, { InputHTMLAttributes, useState } from 'react';
+import React, { useState, InputHTMLAttributes } from 'react';
+import { Field, FieldProps } from 'formik';
+import MaskedInput from 'react-text-mask';
+
 import { IconBaseProps } from 'react-icons';
 import { FiAlertCircle } from 'react-icons/fi';
 
@@ -7,20 +10,41 @@ import { Container, Error } from './styles';
 interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   icon?: React.ComponentType<IconBaseProps>;
   messageError?: string;
+  mask?: (string | RegExp)[];
 }
 
-const Input: React.FC<InputProps> = ({ icon: Icon, messageError, ...rest }) => {
+const Input: React.FC<InputProps> = ({
+  icon: Icon,
+  messageError,
+  mask,
+  ...rest
+}) => {
   const [inputFocus, setInputFocus] = useState(false);
 
   return (
     <Container isFocus={inputFocus} isError={!!messageError}>
       {Icon && <Icon size={20} />}
 
-      <input
-        onFocus={() => setInputFocus(true)}
-        onBlur={() => setInputFocus(false)}
-        {...rest}
-      />
+      {mask ? (
+        <Field name={rest.name} {...rest}>
+          {({ field }: FieldProps) => (
+            <MaskedInput
+              {...field}
+              placeholder={rest.placeholder}
+              mask={mask}
+              type="text"
+              onFocus={() => setInputFocus(true)}
+              onBlur={() => setInputFocus(false)}
+            />
+          )}
+        </Field>
+      ) : (
+        <input
+          onFocus={() => setInputFocus(true)}
+          onBlur={() => setInputFocus(false)}
+          {...rest}
+        />
+      )}
 
       {messageError && (
         <Error title={messageError}>
