@@ -9,8 +9,13 @@ import { toast } from 'react-toastify';
 
 import { useAuth } from '../../hooks/auth';
 import api from '../../services/api';
-import { maskPhone } from '../../utils/masks';
-import unformatTel from '../../utils/unformat';
+import { maskPhone, maskCPF, maskCEP, maskCNPJ } from '../../utils/masks';
+import {
+  unformatTel,
+  unformatCPF,
+  unformatCEP,
+  unformatCNPJ,
+} from '../../utils/unformat';
 import { theme } from '../../App';
 
 import Button from '../../components/Button';
@@ -89,7 +94,7 @@ const RegisterPeople: React.FC = () => {
     // Jurídica
     cnpj: isPhysicalPerson
       ? Yup.string()
-      : Yup.string().required('CNPJ obrigatório').min(14).max(18),
+      : Yup.string().required('CNPJ obrigatório').min(18).max(18),
     razao_social: isPhysicalPerson
       ? Yup.string()
       : Yup.string().required('Razão Social obrigatório'),
@@ -99,7 +104,7 @@ const RegisterPeople: React.FC = () => {
 
     // Fisica
     cpf: isPhysicalPerson
-      ? Yup.string().required('CPF obrigatório').min(11).max(11)
+      ? Yup.string().required('CPF obrigatório').min(14).max(14)
       : Yup.string(),
     nome: isPhysicalPerson
       ? Yup.string().required('Nome obrigatório')
@@ -133,15 +138,15 @@ const RegisterPeople: React.FC = () => {
             email,
             tel: unformatTel(tel),
             endereco,
-            cep,
+            cep: unformatCEP(cep),
             uf,
             info,
             tipo,
             isUser,
             role_id: role_id || undefined,
-            cpf: cpf || undefined,
+            cpf: (cpf && unformatCPF(cpf)) || undefined,
             nome: nome || undefined,
-            cnpj: cnpj || undefined,
+            cnpj: (cnpj && unformatCNPJ(cnpj)) || undefined,
             razao_social: razao_social || undefined,
             nome_fantasia: nome_fantasia || undefined,
           })
@@ -225,12 +230,11 @@ const RegisterPeople: React.FC = () => {
                         name="cpf"
                         type="text"
                         placeholder="CPF"
-                        value={values.cpf.replace(/\D+/g, '')}
-                        onChange={handleChange('cpf')}
+                        mask={maskCPF}
                         messageError={
                           errors.cpf && touched.cpf ? errors.cpf : ''
                         }
-                        maxLength={11}
+                        maxLength={14}
                       />
                       <Input
                         name="nome"
@@ -249,12 +253,10 @@ const RegisterPeople: React.FC = () => {
                         name="cnpj"
                         type="text"
                         placeholder="CNPJ"
-                        value={values.cnpj.replace(/\D+/g, '')}
-                        onChange={handleChange('cnpj')}
+                        mask={maskCNPJ}
                         messageError={
                           errors.cnpj && touched.cnpj ? errors.cnpj : ''
                         }
-                        minLength={14}
                         maxLength={18}
                       />
                       <Input
@@ -314,8 +316,7 @@ const RegisterPeople: React.FC = () => {
                     name="cep"
                     type="text"
                     placeholder="CEP"
-                    value={values.cep}
-                    onChange={handleChange('cep')}
+                    mask={maskCEP}
                     messageError={errors.cep && touched.cep ? errors.cep : ''}
                   />
                   <Input

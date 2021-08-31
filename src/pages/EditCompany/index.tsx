@@ -13,6 +13,8 @@ import { toast } from 'react-toastify';
 import { useAuth } from '../../hooks/auth';
 import api from '../../services/api';
 import { theme } from '../../App';
+import { maskPhone, maskCEP, maskCNPJ } from '../../utils/masks';
+import { unformatTel, unformatCEP, unformatCNPJ } from '../../utils/unformat';
 
 import Header from '../../components/Header';
 import Button from '../../components/Button';
@@ -71,7 +73,7 @@ const EditCompany: React.FC = () => {
 
   const formSchemaCompanyEdit = Yup.object().shape({
     code: Yup.string().required('Código Obrigatório'),
-    cnpj: Yup.string().required('CNPJ obrigatório').min(14).max(18),
+    cnpj: Yup.string().required('CNPJ obrigatório').min(18).max(18),
     razao_social: Yup.string().required('Razão Social obrigatória'),
     nome_fantasia: Yup.string().required('Nome Fantasia obrigatório'),
     email: Yup.string().required('E-mail obrigatório'),
@@ -267,12 +269,10 @@ const EditCompany: React.FC = () => {
                         name="cnpj"
                         type="text"
                         placeholder="CNPJ"
-                        value={values.cnpj}
-                        onChange={handleChange('cnpj')}
+                        mask={maskCNPJ}
                         messageError={
                           errors.cnpj && touched.cnpj ? errors.cnpj : ''
                         }
-                        minLength={14}
                         maxLength={18}
                       />
                       <Input
@@ -313,8 +313,7 @@ const EditCompany: React.FC = () => {
                         name="tel"
                         type="text"
                         placeholder="Telefone"
-                        value={values.tel}
-                        onChange={handleChange('tel')}
+                        mask={maskPhone}
                         messageError={
                           errors.tel && touched.tel ? errors.tel : ''
                         }
@@ -335,8 +334,7 @@ const EditCompany: React.FC = () => {
                         name="cep"
                         type="text"
                         placeholder="CEP"
-                        value={values.cep}
-                        onChange={handleChange('cep')}
+                        mask={maskCEP}
                         messageError={
                           errors.cep && touched.cep ? errors.cep : ''
                         }

@@ -9,7 +9,8 @@ import { toast } from 'react-toastify';
 
 import { useAuth } from '../../hooks/auth';
 import api from '../../services/api';
-import { theme } from '../../App';
+import { maskPhone, maskCEP, maskCNPJ } from '../../utils/masks';
+import { unformatTel, unformatCEP, unformatCNPJ } from '../../utils/unformat';
 
 import Button from '../../components/Button';
 import Header from '../../components/Header';
@@ -61,7 +62,7 @@ const RegisterCompany: React.FC = () => {
 
   const formSchemaCompany = Yup.object().shape({
     code: Yup.string().required('Código Obrigatório'),
-    cnpj: Yup.string().required('CNPJ obrigatório').min(14).max(18),
+    cnpj: Yup.string().required('CNPJ obrigatório').min(18).max(18),
     razao_social: Yup.string().required('Razão Social obrigatória'),
     nome_fantasia: Yup.string().required('Nome Fantasia obrigatório'),
     email: Yup.string().required('E-mail obrigatório'),
@@ -93,13 +94,13 @@ const RegisterCompany: React.FC = () => {
         api
           .post('/company', {
             code: String(code),
-            cnpj: String(cnpj),
+            cnpj: cnpj && unformatCNPJ(cnpj),
             razao_social,
             nome_fantasia,
             email,
-            tel,
+            tel: tel && unformatTel(tel),
             endereco,
-            cep,
+            cep: cep && unformatCEP(cep),
             uf,
             info,
             matriz_id: matriz_id || undefined,
@@ -170,14 +171,12 @@ const RegisterCompany: React.FC = () => {
                       </Select>
                       <Input
                         name="cnpj"
-                        type="number"
+                        type="text"
                         placeholder="CNPJ"
-                        value={values.cnpj}
-                        onChange={handleChange('cnpj')}
+                        mask={maskCNPJ}
                         messageError={
                           errors.cnpj && touched.cnpj ? errors.cnpj : ''
                         }
-                        minLength={14}
                         maxLength={18}
                       />
                       <Input
@@ -218,8 +217,7 @@ const RegisterCompany: React.FC = () => {
                         name="tel"
                         type="text"
                         placeholder="Telefone"
-                        value={values.tel}
-                        onChange={handleChange('tel')}
+                        mask={maskPhone}
                         messageError={
                           errors.tel && touched.tel ? errors.tel : ''
                         }
@@ -240,8 +238,7 @@ const RegisterCompany: React.FC = () => {
                         name="cep"
                         type="text"
                         placeholder="CEP"
-                        value={values.cep}
-                        onChange={handleChange('cep')}
+                        mask={maskCEP}
                         messageError={
                           errors.cep && touched.cep ? errors.cep : ''
                         }
