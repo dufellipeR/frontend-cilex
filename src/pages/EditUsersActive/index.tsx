@@ -84,13 +84,13 @@ const EditUsersActive: React.FC = () => {
             name: data.username || undefined,
             email: data.email || undefined,
             password: data.password || undefined,
-            isAdmin: data.isAdmin || undefined,
+            isAdmin: data.isAdmin,
             group_id: data.group_id || undefined,
             isActive: userActive,
           })
           .then(() => {
             toast.success('Atualizado com sucesso');
-            history.push('/menu/users/active');
+            history.push('/users/active');
           });
       } catch (err) {
         toast.error('Ocorreu um erro na atualização do Usuário!');

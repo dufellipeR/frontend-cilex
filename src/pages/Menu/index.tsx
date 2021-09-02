@@ -1,11 +1,23 @@
 import React, { useEffect, useState } from 'react';
 
 import Header from '../../components/Header';
+import { useAuth } from '../../hooks/auth';
+import api from '../../services/api';
 
 import { Container, Main, Module } from './styles';
 
+interface Module {
+  title: string;
+  description: string;
+  moduleclassicon: string;
+  url: string;
+}
+
 const Menu: React.FC = () => {
   const [hasUserPending, setHasUserPending] = useState(false);
+  const [listModules, setListModules] = useState<Module[]>([]);
+
+  const { user } = useAuth();
 
   const modules = [
     {
@@ -91,6 +103,27 @@ const Menu: React.FC = () => {
   ];
 
   useEffect(() => {
+    const storageCompany = localStorage.getItem('@Cilex:companySelected');
+
+    const companySelected = storageCompany && JSON.parse(storageCompany);
+
+    // Se atualizar o própiro cadastro, deve relogar
+    if (user.isAdmin === true) {
+      api
+        .get(`/company_modules/companyModule?company_id=${companySelected.id}`)
+        .then(response => {
+          setListModules(response.data);
+        });
+    } else {
+      api
+        .get(`/group_modules/groupModules?group=${user.group_id}`)
+        .then(response => {
+          setListModules(response.data);
+        });
+    }
+  }, [user]);
+
+  useEffect(() => {
     const jsonHasUser = localStorage.getItem('@Cilex:hasPendingUser');
 
     if (jsonHasUser) setHasUserPending(JSON.parse(jsonHasUser));
@@ -101,11 +134,11 @@ const Menu: React.FC = () => {
       <Container>
         <Header pageName="Menu" />
         <Main>
-          {modules.map(module => (
-            <Module key={module.id} to={module.url}>
-              <i className={module.classIcon} />
-              <h3>{module.name}</h3>
-              <p>{module.desc}</p>
+          {listModules.map(module => (
+            <Module key={module.title} to={module.url}>
+              <i className={module.moduleclassicon} />
+              <h3>{module.title}</h3>
+              <p>{module.description}</p>
             </Module>
           ))}
         </Main>

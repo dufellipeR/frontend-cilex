@@ -8,6 +8,8 @@ interface User {
   email: string;
   isAdmin: boolean;
   avatar_url: string;
+
+  group_id: string;
 }
 
 interface AuthState {

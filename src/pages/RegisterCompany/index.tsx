@@ -116,6 +116,31 @@ const RegisterCompany: React.FC = () => {
     [history],
   );
 
+  const segments = [
+    {
+      id: '1',
+      title: 'Pet Shop',
+      icon: 'dog',
+      description: 'Lorem Ipsum',
+      modules: [
+        { id: '1', title: 'Financeiro' },
+        { id: '2', title: 'Logística' },
+        { id: '3', title: 'CRM' },
+      ],
+    },
+    {
+      id: '2',
+      title: 'Pet Shop 2',
+      icon: 'dog',
+      description: 'Lorem Ipsum',
+      modules: [
+        { id: '1', title: 'Financeiro' },
+        { id: '2', title: 'Logística' },
+        { id: '3', title: 'CRM' },
+      ],
+    },
+  ];
+
   return (
     <>
       <Container>
@@ -275,78 +300,27 @@ const RegisterCompany: React.FC = () => {
                 ) : (
                   <>
                     <ContainerCards>
-                      <Module>
-                        <div className="card">
-                          <div className="front">
-                            <FaDog size={40} color="#FFF" />
-                            <h3>Pet Shop</h3>
-                            <p>
-                              Lorem Ipsum is simply dummy text of the printing
-                              and typesetting industry.
-                            </p>
-                          </div>
-                          <div className="back">
-                            <h3>Lista de Módulos</h3>
+                      {segments.map(segment => (
+                        <Module key={segment.id}>
+                          <div className="card">
+                            <div className="front">
+                              <FaDog size={40} color="#FFF" />
+                              <h3>{segment.title}</h3>
+                              <p>{segment.description}</p>
+                            </div>
+                            <div className="back">
+                              <h3>Lista de Módulos</h3>
 
-                            <ul>
-                              <li>Financeiro</li>
-                              <li>Logística</li>
-                              <li>CRM</li>
-                              <li>Pessoas</li>
-                              <li>Empresas</li>
-                            </ul>
-                            <Button layoutColor="button-green">Usar</Button>
+                              <ul>
+                                {segment.modules.map(module => (
+                                  <li key={module.id}>{module.title}</li>
+                                ))}
+                              </ul>
+                              <Button layoutColor="button-green">Usar</Button>
+                            </div>
                           </div>
-                        </div>
-                      </Module>
-                      <Module>
-                        <div className="card">
-                          <div className="front">
-                            <FaDog size={40} color="#FFF" />
-                            <h3>Pet Shop</h3>
-                            <p>
-                              Lorem Ipsum is simply dummy text of the printing
-                              and typesetting industry.
-                            </p>
-                          </div>
-                          <div className="back">
-                            <h3>Lista de Módulos</h3>
-
-                            <ul>
-                              <li>Financeiro</li>
-                              <li>Logística</li>
-                              <li>CRM</li>
-                              <li>Pessoas</li>
-                              <li>Empresas</li>
-                            </ul>
-                            <Button layoutColor="button-green">Usar</Button>
-                          </div>
-                        </div>
-                      </Module>
-                      <Module>
-                        <div className="card">
-                          <div className="front">
-                            <FaDog size={40} color="#FFF" />
-                            <h3>Pet Shop</h3>
-                            <p>
-                              Lorem Ipsum is simply dummy text of the printing
-                              and typesetting industry.
-                            </p>
-                          </div>
-                          <div className="back">
-                            <h3>Lista de Módulos</h3>
-
-                            <ul>
-                              <li>Financeiro</li>
-                              <li>Logística</li>
-                              <li>CRM</li>
-                              <li>Pessoas</li>
-                              <li>Empresas</li>
-                            </ul>
-                            <Button layoutColor="button-green">Usar</Button>
-                          </div>
-                        </div>
-                      </Module>
+                        </Module>
+                      ))}
                     </ContainerCards>
                     <AlignButtonsStepTwo>
                       <Button
