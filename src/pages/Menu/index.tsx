@@ -107,7 +107,6 @@ const Menu: React.FC = () => {
 
     const companySelected = storageCompany && JSON.parse(storageCompany);
 
-    // Se atualizar o própiro cadastro, deve relogar
     if (user.isAdmin === true) {
       api
         .get(`/company_modules/companyModule?company_id=${companySelected.id}`)

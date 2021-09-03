@@ -1,4 +1,8 @@
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
+
+interface ModuleProps {
+  selected: boolean;
+}
 
 export const Container = styled.div`
   height: 100vh;
@@ -52,7 +56,7 @@ export const ContainerCards = styled.div`
   justify-content: center;
 `;
 
-export const Module = styled.div`
+export const Module = styled.div<ModuleProps>`
   display: inline-block;
   padding: 0 12px;
   perspective: 900px;
@@ -64,7 +68,16 @@ export const Module = styled.div`
 
   .card {
     background: ${props => props.theme.main};
-    border: 2px solid ${props => props.theme.mainHover};
+
+    ${props =>
+      props.selected
+        ? css`
+            border: 5px solid ${props.theme.greenColor};
+          `
+        : css`
+            border: 2px solid ${props.theme.mainHover};
+          `}
+
     border-radius: 5%;
 
     position: relative;
@@ -91,6 +104,10 @@ export const Module = styled.div`
 
     color: #fff;
     padding: 0 1rem;
+
+    i {
+      font-size: 2rem;
+    }
   }
 
   .back {
@@ -105,6 +122,16 @@ export const Module = styled.div`
 
     ul {
       list-style: none;
+    }
+
+    li {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+
+      i {
+        font-size: 1rem;
+      }
     }
 
     button {

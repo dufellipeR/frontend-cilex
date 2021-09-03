@@ -27,6 +27,20 @@ import {
   AlignButtonsStepTwo,
 } from './styles';
 
+type Module = {
+  title: string;
+  moduleclassicon: string;
+};
+
+interface Segment {
+  id: string;
+  name: string;
+  description: string;
+  classIcon: string;
+  isLockes: boolean;
+  modules: Module[];
+}
+
 interface RegisterCompanyForm {
   code: string;
   cnpj: string;
@@ -39,6 +53,7 @@ interface RegisterCompanyForm {
   uf?: string;
   info?: string;
   matriz_id?: string;
+  segment_id: string;
 }
 
 interface MatrizID {
@@ -52,11 +67,16 @@ const RegisterCompany: React.FC = () => {
   const { user } = useAuth();
 
   const [matrizCompanies, setMatrizCompanies] = useState<MatrizID[]>([]);
+  const [segments, setSegments] = useState<Segment[]>([]);
+  const [segmentIdSelected, setSegmentIdSelected] = useState('');
   const [isStepOne, setIsStepOne] = useState(true);
 
   useEffect(() => {
     api.get<MatrizID[]>('/company?isMatriz=true').then(response => {
       setMatrizCompanies(response.data);
+    });
+    api.get<Segment[]>('/segment/segmentsModule').then(response => {
+      setSegments(response.data);
     });
   }, []);
 
@@ -72,6 +92,7 @@ const RegisterCompany: React.FC = () => {
     uf: Yup.string(),
     info: Yup.string(),
     matriz_id: Yup.string(),
+    segment_id: Yup.string(),
   });
 
   const handleSubmitForm = useCallback(
@@ -91,55 +112,35 @@ const RegisterCompany: React.FC = () => {
           matriz_id,
         } = data;
 
-        api
-          .post('/company', {
-            code: String(code),
-            cnpj: cnpj && unformatCNPJ(cnpj),
-            razao_social,
-            nome_fantasia,
-            email,
-            tel: tel && unformatTel(tel),
-            endereco,
-            cep: cep && unformatCEP(cep),
-            uf,
-            info,
-            matriz_id: matriz_id || undefined,
-          })
-          .then(() => {
-            toast.success('Registrado com sucesso');
-            history.push('/company');
-          });
+        if (segmentIdSelected) {
+          api
+            .post('/company', {
+              code: String(code),
+              cnpj: cnpj && unformatCNPJ(cnpj),
+              razao_social,
+              nome_fantasia,
+              email,
+              tel: tel && unformatTel(tel),
+              endereco,
+              cep: cep && unformatCEP(cep),
+              uf,
+              info,
+              matriz_id: matriz_id || undefined,
+              segment_id: segmentIdSelected,
+            })
+            .then(() => {
+              toast.success('Registrado com sucesso');
+              history.push('/company');
+            });
+        } else {
+          toast.error('Um segmento deve ser selecionado!');
+        }
       } catch (err) {
         toast.error('Ocorreu um erro no registro da Empresa!');
       }
     },
-    [history],
+    [history, segmentIdSelected],
   );
-
-  const segments = [
-    {
-      id: '1',
-      title: 'Pet Shop',
-      icon: 'dog',
-      description: 'Lorem Ipsum',
-      modules: [
-        { id: '1', title: 'Financeiro' },
-        { id: '2', title: 'Logística' },
-        { id: '3', title: 'CRM' },
-      ],
-    },
-    {
-      id: '2',
-      title: 'Pet Shop 2',
-      icon: 'dog',
-      description: 'Lorem Ipsum',
-      modules: [
-        { id: '1', title: 'Financeiro' },
-        { id: '2', title: 'Logística' },
-        { id: '3', title: 'CRM' },
-      ],
-    },
-  ];
 
   return (
     <>
@@ -161,6 +162,7 @@ const RegisterCompany: React.FC = () => {
               uf: '',
               info: '',
               matriz_id: '',
+              segment_id: '',
             }}
             validationSchema={formSchemaCompany}
             onSubmit={handleSubmitForm}
@@ -189,7 +191,10 @@ const RegisterCompany: React.FC = () => {
                       >
                         <option value="">Matriz</option>
                         {matrizCompanies.map(companyMatriz => (
-                          <option value={companyMatriz.id}>
+                          <option
+                            key={companyMatriz.id}
+                            value={companyMatriz.id}
+                          >
                             {companyMatriz.code} - {companyMatriz.nome_fantasia}
                           </option>
                         ))}
@@ -301,11 +306,14 @@ const RegisterCompany: React.FC = () => {
                   <>
                     <ContainerCards>
                       {segments.map(segment => (
-                        <Module key={segment.id}>
+                        <Module
+                          key={segment.id}
+                          selected={segmentIdSelected === segment.id}
+                        >
                           <div className="card">
                             <div className="front">
-                              <FaDog size={40} color="#FFF" />
-                              <h3>{segment.title}</h3>
+                              <i className={segment.classIcon} />
+                              <h3>{segment.name}</h3>
                               <p>{segment.description}</p>
                             </div>
                             <div className="back">
@@ -313,10 +321,20 @@ const RegisterCompany: React.FC = () => {
 
                               <ul>
                                 {segment.modules.map(module => (
-                                  <li key={module.id}>{module.title}</li>
+                                  <li key={module.title}>
+                                    <i className={module.moduleclassicon} />
+                                    <p>{module.title}</p>
+                                  </li>
                                 ))}
                               </ul>
-                              <Button layoutColor="button-green">Usar</Button>
+                              <Button
+                                layoutColor="button-green"
+                                onClick={() => setSegmentIdSelected(segment.id)}
+                              >
+                                {segmentIdSelected === segment.id
+                                  ? 'Selecionado'
+                                  : 'Usar'}
+                              </Button>
                             </div>
                           </div>
                         </Module>
