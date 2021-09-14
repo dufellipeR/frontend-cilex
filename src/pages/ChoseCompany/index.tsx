@@ -24,14 +24,13 @@ import {
   Company,
 } from './styles';
 import api from '../../services/api';
-import { Icompany } from '../Company';
 
-interface User {
+interface Icompany {
   id: string;
-  name: string;
-  email: string;
-  isAdmin: boolean;
-  avatar_url: string;
+  code: string;
+  cnpj: string;
+  razao_social: string;
+  nome_fantasia: string;
 }
 
 interface IUserCompany {

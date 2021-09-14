@@ -12,26 +12,30 @@ import Menu from '../pages/Menu';
 import Module from '../pages/Module';
 
 import MenuUsers from '../pages/MenuUsers';
-import UsersActive from '../pages/UsersActive';
-import EditUsersActive from '../pages/EditUsersActive';
-import UsersPending from '../pages/UsersPending';
-import EditUsersPending from '../pages/EditUsersPending';
+import ListUserActive from '../pages/UserActive/ListUserActive';
+import EditUserActive from '../pages/UserActive/EditUserActive';
+import ListUserPending from '../pages/UserPending/ListUserPending';
+import EditUserPending from '../pages/UserPending/EditUserPending';
 
-import Company from '../pages/Company';
-import RegisterCompany from '../pages/RegisterCompany';
-import EditCompany from '../pages/EditCompany';
+import ListCompany from '../pages/Company/ListCompany';
+import RegisterCompany from '../pages/Company/RegisterCompany';
+import EditCompany from '../pages/Company/EditCompany';
 
-import People from '../pages/People';
-import RegisterPeople from '../pages/RegisterPeople';
-import EditPeople from '../pages/EditPeople';
+import ListPeople from '../pages/People/ListPeople';
+import RegisterPeople from '../pages/People/RegisterPeople';
+import EditPeople from '../pages/People/EditPeople';
 
-import UserGroup from '../pages/UserGroup';
-import RegisterUserGroup from '../pages/RegisterUserGroup';
-import EditUserGroup from '../pages/EditUserGroup';
+import ListUserGroup from '../pages/UserGroup/ListUserGroup';
+import RegisterUserGroup from '../pages/UserGroup/RegisterUserGroup';
+import EditUserGroup from '../pages/UserGroup/EditUserGroup';
 
-import Role from '../pages/Role';
-import RegisterRole from '../pages/RegisterRole';
-import EditRole from '../pages/EditRole';
+import ListRole from '../pages/Role/ListRole';
+import RegisterRole from '../pages/Role/RegisterRole';
+import EditRole from '../pages/Role/EditRole';
+
+import Financial from '../pages/Financial';
+
+import Inventory from '../pages/Inventory';
 
 const Routes: React.FC = () => {
   return (
@@ -46,26 +50,30 @@ const Routes: React.FC = () => {
       <Route path="/module" exact component={Module} />
 
       <Route path="/menu/users" component={MenuUsers} />
-      <Route path="/users/active" component={UsersActive} />
-      <Route path="/users/pending" component={UsersPending} />
-      <Route path="/user/:id" exact component={EditUsersActive} />
-      <Route path="/user/pending/:id" component={EditUsersPending} />
+      <Route path="/users/active" component={ListUserActive} />
+      <Route path="/users/pending" component={ListUserPending} />
+      <Route path="/user/:id" exact component={EditUserActive} />
+      <Route path="/user/pending/:id" component={EditUserPending} />
 
-      <Route path="/company" exact component={Company} />
+      <Route path="/company" exact component={ListCompany} />
       <Route path="/company/register" component={RegisterCompany} />
       <Route path="/company/:id" component={EditCompany} />
 
-      <Route path="/people" exact component={People} />
+      <Route path="/people" exact component={ListPeople} />
       <Route path="/people/register" component={RegisterPeople} />
       <Route path="/people/:id" component={EditPeople} />
 
-      <Route path="/group" exact component={UserGroup} />
+      <Route path="/group" exact component={ListUserGroup} />
       <Route path="/group/register" component={RegisterUserGroup} />
       <Route path="/group/:id" component={EditUserGroup} />
 
-      <Route path="/role" exact component={Role} />
+      <Route path="/role" exact component={ListRole} />
       <Route path="/role/register" exact component={RegisterRole} />
       <Route path="/role/:id" component={EditRole} />
+
+      <Route path="/financial" component={Financial} />
+
+      <Route path="/inventory" component={Inventory} />
 
       <Route path="/forgot-password" component={ForgotPassword} />
     </Switch>
