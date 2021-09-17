@@ -37,6 +37,20 @@ import Financial from '../pages/Financial';
 
 import Inventory from '../pages/Inventory';
 
+import Product from '../pages/Inventory/Product';
+
+import ListType from '../pages/Inventory/Type/ListType';
+import RegisterType from '../pages/Inventory/Type/RegisterType';
+import EditType from '../pages/Inventory/Type/EditType';
+
+import ListGroup from '../pages/Inventory/Group/ListGroup';
+import RegisterGroup from '../pages/Inventory/Group/RegisterGroup';
+import EditGroup from '../pages/Inventory/Group/EditGroup';
+
+import ListSubGroup from '../pages/Inventory/SubGroup/ListSubGroup';
+import RegisterSubGroup from '../pages/Inventory/SubGroup/RegisterSubGroup';
+import EditSubGroup from '../pages/Inventory/SubGroup/EditSubGroup';
+
 const Routes: React.FC = () => {
   return (
     <Switch>
@@ -73,7 +87,24 @@ const Routes: React.FC = () => {
 
       <Route path="/financial" component={Financial} />
 
-      <Route path="/inventory" component={Inventory} />
+      <Route path="/inventory" exact component={Inventory} />
+      <Route path="/inventory/product" component={Product} />
+
+      <Route path="/inventory/type" exact component={ListType} />
+      <Route path="/inventory/type/register" exact component={RegisterType} />
+      <Route path="/inventory/type/:id" component={EditType} />
+
+      <Route path="/inventory/group" exact component={ListGroup} />
+      <Route path="/inventory/group/register" exact component={RegisterGroup} />
+      <Route path="/inventory/group/:id" component={EditGroup} />
+
+      <Route path="/inventory/subgroup" exact component={ListSubGroup} />
+      <Route
+        path="/inventory/subgroup/register"
+        exact
+        component={RegisterSubGroup}
+      />
+      <Route path="/inventory/subgroup/:id" component={EditSubGroup} />
 
       <Route path="/forgot-password" component={ForgotPassword} />
     </Switch>

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 
 import Header from '../../components/Header';
+import ModuleCard from '../../components/ModuleCard';
 import { useAuth } from '../../hooks/auth';
 import api from '../../services/api';
 
@@ -134,11 +135,13 @@ const Menu: React.FC = () => {
         <Header pageName="Menu" />
         <Main>
           {listModules.map(module => (
-            <Module key={module.title} to={module.url}>
-              <i className={module.moduleclassicon} />
-              <h3>{module.title}</h3>
-              <p>{module.description}</p>
-            </Module>
+            <ModuleCard
+              key={module.title}
+              to={module.url}
+              classIcon={module.moduleclassicon}
+              title={module.title}
+              description={module.description}
+            />
           ))}
         </Main>
       </Container>
