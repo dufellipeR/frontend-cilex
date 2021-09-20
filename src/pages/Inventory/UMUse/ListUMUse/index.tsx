@@ -27,7 +27,7 @@ const ListUMUse: React.FC = () => {
       <Main>
         <div id="align-content">
           <ButtonBack destinationBack="/inventory" />
-          <NewButton to="/inventory/umPurchase/register">Novo</NewButton>
+          <NewButton to="/inventory/umUse/register">Novo</NewButton>
           <DefaultTable tbh={['Descrição', 'Unidade de Medida de Uso']}>
             <tbody>
               {UMUses.map(UMUse => (

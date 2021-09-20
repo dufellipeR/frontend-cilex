@@ -51,6 +51,26 @@ import ListSubGroup from '../pages/Inventory/SubGroup/ListSubGroup';
 import RegisterSubGroup from '../pages/Inventory/SubGroup/RegisterSubGroup';
 import EditSubGroup from '../pages/Inventory/SubGroup/EditSubGroup';
 
+import ListFamily from '../pages/Inventory/Family/ListFamily';
+import RegisterFamily from '../pages/Inventory/Family/RegisterFamily';
+import EditFamily from '../pages/Inventory/Family/EditFamily';
+
+import ListSubFamily from '../pages/Inventory/SubFamily/ListSubFamily';
+import RegisterSubFamily from '../pages/Inventory/SubFamily/RegisterSubFamily';
+import EditSubFamily from '../pages/Inventory/SubFamily/EditSubFamily';
+
+import ListApplication from '../pages/Inventory/Application/ListApplication';
+import RegisterApplication from '../pages/Inventory/Application/RegisterApplication';
+import EditApplication from '../pages/Inventory/Application/EditApplication';
+
+import ListUMPurchase from '../pages/Inventory/UMPurchase/ListUMPurchase';
+import RegisterUMPurchase from '../pages/Inventory/UMPurchase/RegisterUMPurchase';
+import EditUMPurchase from '../pages/Inventory/UMPurchase/EditUMPurchase';
+
+import ListUMUse from '../pages/Inventory/UMUse/ListUMUse';
+import RegisterUMUse from '../pages/Inventory/UMUse/RegisterUMUse';
+import EditUMUse from '../pages/Inventory/UMUse/EditUMUse';
+
 const Routes: React.FC = () => {
   return (
     <Switch>
@@ -105,6 +125,42 @@ const Routes: React.FC = () => {
         component={RegisterSubGroup}
       />
       <Route path="/inventory/subgroup/:id" component={EditSubGroup} />
+
+      <Route path="/inventory/family" exact component={ListFamily} />
+      <Route
+        path="/inventory/family/register"
+        exact
+        component={RegisterFamily}
+      />
+      <Route path="/inventory/family/:id" component={EditFamily} />
+
+      <Route path="/inventory/subfamily" exact component={ListSubFamily} />
+      <Route
+        path="/inventory/subfamily/register"
+        exact
+        component={RegisterSubFamily}
+      />
+      <Route path="/inventory/subfamily/:id" component={EditSubFamily} />
+
+      <Route path="/inventory/application" exact component={ListApplication} />
+      <Route
+        path="/inventory/application/register"
+        exact
+        component={RegisterApplication}
+      />
+      <Route path="/inventory/application/:id" component={EditApplication} />
+
+      <Route path="/inventory/umPurchase" exact component={ListUMPurchase} />
+      <Route
+        path="/inventory/umPurchase/register"
+        exact
+        component={RegisterUMPurchase}
+      />
+      <Route path="/inventory/umPurchase/:id" component={EditUMPurchase} />
+
+      <Route path="/inventory/umUse" exact component={ListUMUse} />
+      <Route path="/inventory/umUse/register" exact component={RegisterUMUse} />
+      <Route path="/inventory/umUse/:id" component={EditUMUse} />
 
       <Route path="/forgot-password" component={ForgotPassword} />
     </Switch>
