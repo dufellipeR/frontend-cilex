@@ -8,6 +8,7 @@ import { toast } from 'react-toastify';
 
 import api from '../../../../services/api';
 import { theme } from '../../../../App';
+import { useCrudModules } from '../../../../hooks/useCrudModules';
 
 import Header from '../../../../components/Header';
 import Button from '../../../../components/Button';
@@ -22,9 +23,15 @@ interface RegisterDimensionForm {
   description: string;
 }
 
+const formSchemaDimension = Yup.object().shape({
+  code: Yup.string().required('Código Obrigatório'),
+  description: Yup.string().required('Dimensão Obrigatória'),
+});
+
 const EditDimension: React.FC = () => {
   const history = useHistory();
   const { id }: any = useParams();
+  const { deleteDataFromModule } = useCrudModules();
 
   const [editting, setEditting] = useState<boolean>(false);
   const [showModalDelete, setShowModalDelete] = useState<boolean>(false);
@@ -57,11 +64,6 @@ const EditDimension: React.FC = () => {
     },
     [history, id],
   );
-
-  const formSchemaDimension = Yup.object().shape({
-    code: Yup.string().required('Código Obrigatório'),
-    description: Yup.string().required('Descrição Obrigatório'),
-  });
 
   const handleDeleteDimension = () => {
     api
@@ -159,7 +161,13 @@ const EditDimension: React.FC = () => {
       <ModalDelete
         visible={showModalDelete}
         setVisible={setShowModalDelete}
-        actionToDelete={handleDeleteDimension}
+        actionToDelete={() => {
+          deleteDataFromModule({
+            id,
+            route: 'dimension',
+            routePush: 'inventory',
+          });
+        }}
       />
     </>
   );

@@ -19,13 +19,13 @@ interface RegisterDimensionForm {
   description: string;
 }
 
+const formSchemaDimension = Yup.object().shape({
+  code: Yup.string().required('Código Obrigatório'),
+  description: Yup.string().required('Dimensão Obrigatória'),
+});
+
 const RegisterDimension: React.FC = () => {
   const history = useHistory();
-
-  const formSchemaDimension = Yup.object().shape({
-    code: Yup.string().required('Código Obrigatório'),
-    description: Yup.string().required('Descrição Obrigatório'),
-  });
 
   const handleSubmitForm = useCallback(
     async (data: RegisterDimensionForm) => {

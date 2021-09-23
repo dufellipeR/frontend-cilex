@@ -15,28 +15,28 @@ import ButtonBack from '../../../../components/ButtonBack';
 import { Container, Main, FormCustom } from './styles';
 
 interface RegisterUMUseForm {
-  description: string;
-  UMUse: string;
+  useUM: string;
+  transformationUM: string;
 }
+
+const formSchemaUMUse = Yup.object().shape({
+  useUM: Yup.string().required('Unidade de Medida de Uso Obrigatória'),
+  transformationUM: Yup.string().required(
+    'Transformação da Unidade de Medida Obrigatório',
+  ),
+});
 
 const RegisterUMUse: React.FC = () => {
   const history = useHistory();
 
-  const formSchemaUMUse = Yup.object().shape({
-    description: Yup.string().required('Descrição Obrigatório'),
-    UMUse: Yup.string().required(
-      'Transformação da Unidade de Medida Obrigatório',
-    ),
-  });
-
   const handleSubmitForm = useCallback(
     async (data: RegisterUMUseForm) => {
       try {
-        const { description, UMUse } = data;
+        const { useUM, transformationUM } = data;
         api
           .post('/umUse', {
-            UMUse,
-            description,
+            useUM,
+            transformationUM,
           })
           .then(() => {
             toast.success('Registrado com sucesso');
@@ -57,8 +57,8 @@ const RegisterUMUse: React.FC = () => {
         <Main>
           <Formik
             initialValues={{
-              description: '',
-              UMUse: '',
+              useUM: '',
+              transformationUM: '',
             }}
             validationSchema={formSchemaUMUse}
             onSubmit={handleSubmitForm}
@@ -70,22 +70,22 @@ const RegisterUMUse: React.FC = () => {
                     name="transformationUM"
                     type="text"
                     placeholder="Transformação da Unidade de Medida"
-                    value={values.UMUse}
-                    onChange={handleChange('UMUse')}
+                    value={values.transformationUM}
+                    onChange={handleChange('transformationUM')}
                     messageError={
-                      errors.UMUse && touched.UMUse ? errors.UMUse : ''
+                      errors.transformationUM && touched.transformationUM
+                        ? errors.transformationUM
+                        : ''
                     }
                   />
                   <Input
-                    name="description"
+                    name="useUM"
                     type="text"
                     placeholder="Unidade de Medida de Uso"
-                    value={values.description}
-                    onChange={handleChange('description')}
+                    value={values.useUM}
+                    onChange={handleChange('useUM')}
                     messageError={
-                      errors.description && touched.description
-                        ? errors.description
-                        : ''
+                      errors.useUM && touched.useUM ? errors.useUM : ''
                     }
                   />
                 </div>

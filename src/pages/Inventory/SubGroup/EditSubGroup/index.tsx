@@ -8,6 +8,7 @@ import { toast } from 'react-toastify';
 
 import api from '../../../../services/api';
 import { theme } from '../../../../App';
+import { useCrudModules } from '../../../../hooks/useCrudModules';
 
 import Header from '../../../../components/Header';
 import Button from '../../../../components/Button';
@@ -22,9 +23,15 @@ interface RegisterSubGroupForm {
   description: string;
 }
 
+const formSchemaSubGroup = Yup.object().shape({
+  code: Yup.string().required('Código Obrigatório'),
+  description: Yup.string().required('Sub-Grupo Obrigatório'),
+});
+
 const EditSubGroup: React.FC = () => {
   const history = useHistory();
   const { id }: any = useParams();
+  const { deleteDataFromModule } = useCrudModules();
 
   const [editting, setEditting] = useState<boolean>(false);
   const [showModalDelete, setShowModalDelete] = useState<boolean>(false);
@@ -57,24 +64,6 @@ const EditSubGroup: React.FC = () => {
     },
     [history, id],
   );
-
-  const formSchemaSubGroup = Yup.object().shape({
-    code: Yup.string().required('Código Obrigatório'),
-    description: Yup.string().required('Descrição Obrigatório'),
-  });
-
-  const handleDeleteGroup = () => {
-    api
-      .delete(`/subgroup/${id}`)
-      .then(() => {
-        toast.success('Deletado com Sucesso');
-        history.push('/inventory');
-      })
-      .catch(() => {
-        toast.success('Erro ao deletar Sub-Grupo');
-        history.push('/inventory');
-      });
-  };
 
   return (
     <>
@@ -159,7 +148,13 @@ const EditSubGroup: React.FC = () => {
       <ModalDelete
         visible={showModalDelete}
         setVisible={setShowModalDelete}
-        actionToDelete={handleDeleteGroup}
+        actionToDelete={() => {
+          deleteDataFromModule({
+            id,
+            route: 'subgroup',
+            routePush: 'inventory',
+          });
+        }}
       />
     </>
   );

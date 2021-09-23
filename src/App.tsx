@@ -26,14 +26,14 @@ export const theme = {
 const App: React.FC = () => {
   return (
     <>
-      <AppProvider>
-        <ThemeProvider theme={theme}>
-          <BrowserRouter>
+      <BrowserRouter>
+        <AppProvider>
+          <ThemeProvider theme={theme}>
             <Routes />
-          </BrowserRouter>
-          <GlobalStyle />
-        </ThemeProvider>
-      </AppProvider>
+            <GlobalStyle />
+          </ThemeProvider>
+        </AppProvider>
+      </BrowserRouter>
     </>
   );
 };

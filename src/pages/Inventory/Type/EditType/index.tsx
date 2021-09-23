@@ -9,6 +9,7 @@ import Switch from 'react-switch';
 
 import api from '../../../../services/api';
 import { theme } from '../../../../App';
+import { useCrudModules } from '../../../../hooks/useCrudModules';
 
 import Header from '../../../../components/Header';
 import Button from '../../../../components/Button';
@@ -24,9 +25,16 @@ interface RegisterTypeForm {
   acceptStructure: boolean;
 }
 
+const formSchemaType = Yup.object().shape({
+  code: Yup.string().required('Código Obrigatório'),
+  description: Yup.string().required('Descrição Obrigatório'),
+  acceptStructure: Yup.boolean(),
+});
+
 const EditType: React.FC = () => {
   const history = useHistory();
   const { id }: any = useParams();
+  const { deleteDataFromModule } = useCrudModules();
 
   const [editting, setEditting] = useState<boolean>(false);
   const [showModalDelete, setShowModalDelete] = useState<boolean>(false);
@@ -63,25 +71,6 @@ const EditType: React.FC = () => {
     },
     [history, id, acceptStructure],
   );
-
-  const formSchemaType = Yup.object().shape({
-    code: Yup.string().required('Código Obrigatório'),
-    description: Yup.string().required('Descrição Obrigatório'),
-    acceptStructure: Yup.boolean(),
-  });
-
-  const handleDeleteType = () => {
-    api
-      .delete(`/type/${id}`)
-      .then(() => {
-        toast.success('Deletado com Sucesso');
-        history.push('/inventory');
-      })
-      .catch(() => {
-        toast.success('Erro ao deletar Tipo');
-        history.push('/inventory');
-      });
-  };
 
   return (
     <>
@@ -181,7 +170,13 @@ const EditType: React.FC = () => {
       <ModalDelete
         visible={showModalDelete}
         setVisible={setShowModalDelete}
-        actionToDelete={handleDeleteType}
+        actionToDelete={() => {
+          deleteDataFromModule({
+            id,
+            route: 'type',
+            routePush: 'inventory',
+          });
+        }}
       />
     </>
   );

@@ -19,13 +19,13 @@ interface RegisterSubFamilyForm {
   description: string;
 }
 
+const formSchemaSubFamily = Yup.object().shape({
+  code: Yup.string().required('Código Obrigatório'),
+  description: Yup.string().required('Sub-Família Obrigatória'),
+});
+
 const RegisterSubFamily: React.FC = () => {
   const history = useHistory();
-
-  const formSchemaSubFamily = Yup.object().shape({
-    code: Yup.string().required('Código Obrigatório'),
-    description: Yup.string().required('Descrição Obrigatório'),
-  });
 
   const handleSubmitForm = useCallback(
     async (data: RegisterSubFamilyForm) => {

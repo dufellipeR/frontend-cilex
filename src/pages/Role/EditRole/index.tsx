@@ -8,6 +8,7 @@ import { toast } from 'react-toastify';
 
 import api from '../../../services/api';
 import { theme } from '../../../App';
+import { useCrudModules } from '../../../hooks/useCrudModules';
 
 import Header from '../../../components/Header';
 import Button from '../../../components/Button';
@@ -26,6 +27,7 @@ interface RegisterRoleForm {
 const EditRole: React.FC = () => {
   const history = useHistory();
   const { id }: any = useParams();
+  const { deleteDataFromModule } = useCrudModules();
 
   const [editting, setEditting] = useState<boolean>(false);
   const [showModalDelete, setShowModalDelete] = useState<boolean>(false);
@@ -62,19 +64,6 @@ const EditRole: React.FC = () => {
     role: Yup.string(),
     description: Yup.string(),
   });
-
-  const handleDeleteRole = () => {
-    api
-      .delete(`/role/${id}`)
-      .then(() => {
-        toast.success('Deletado com Sucesso');
-        history.push('/role');
-      })
-      .catch(() => {
-        toast.success('Erro ao deletar Cargo');
-        history.push('/role');
-      });
-  };
 
   return (
     <>
@@ -170,7 +159,9 @@ const EditRole: React.FC = () => {
       <ModalDelete
         visible={showModalDelete}
         setVisible={setShowModalDelete}
-        actionToDelete={handleDeleteRole}
+        actionToDelete={() => {
+          deleteDataFromModule({ id, route: 'role', routePush: 'role' });
+        }}
       />
     </>
   );

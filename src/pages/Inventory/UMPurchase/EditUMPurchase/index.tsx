@@ -8,6 +8,7 @@ import { toast } from 'react-toastify';
 
 import api from '../../../../services/api';
 import { theme } from '../../../../App';
+import { useCrudModules } from '../../../../hooks/useCrudModules';
 
 import Header from '../../../../components/Header';
 import Button from '../../../../components/Button';
@@ -18,18 +19,26 @@ import ModalDelete from '../../../../components/ModalDelete';
 import { Container, Main, HeaderContent, FormCustom } from './styles';
 
 interface RegisterUMPurchaseForm {
-  description: string;
+  purchaseUM: string;
   transformationUM: string;
 }
+
+const formSchemaUMPurchase = Yup.object().shape({
+  purchaseUM: Yup.string().required('Unidade de Medida de Compra Obrigatória'),
+  transformationUM: Yup.string().required(
+    'Transformação da Unidade de Medida Obrigatório',
+  ),
+});
 
 const EditUMPurchase: React.FC = () => {
   const history = useHistory();
   const { id }: any = useParams();
+  const { deleteDataFromModule } = useCrudModules();
 
   const [editting, setEditting] = useState<boolean>(false);
   const [showModalDelete, setShowModalDelete] = useState<boolean>(false);
   const [umPurchase, setUMPurchase] = useState<RegisterUMPurchaseForm | null>({
-    description: 'Asd',
+    purchaseUM: 'L',
     transformationUM: 'ML',
   });
 
@@ -46,7 +55,7 @@ const EditUMPurchase: React.FC = () => {
       try {
         api
           .put(`/umPurchase/${id}`, {
-            description: data.description,
+            description: data.purchaseUM,
             transformationUM: data.transformationUM,
           })
           .then(() => {
@@ -62,26 +71,6 @@ const EditUMPurchase: React.FC = () => {
     [history, id],
   );
 
-  const formSchemaUMPurchase = Yup.object().shape({
-    description: Yup.string().required('Descrição Obrigatório'),
-    transformationUM: Yup.string().required(
-      'Transformação da Unidade de Medida Obrigatório',
-    ),
-  });
-
-  const handleDeleteUMPurchase = () => {
-    api
-      .delete(`/umPurchase/${id}`)
-      .then(() => {
-        toast.success('Deletado com Sucesso');
-        history.push('/inventory');
-      })
-      .catch(() => {
-        toast.success('Erro ao deletar Unidade de Medida de Compra');
-        history.push('/inventory');
-      });
-  };
-
   return (
     <>
       <Container>
@@ -93,7 +82,7 @@ const EditUMPurchase: React.FC = () => {
                 <ButtonBack destinationBack="/inventory" />
               </div>
               <div id="container-titles">
-                <h2>{umPurchase.description}</h2>
+                <h2>{umPurchase.purchaseUM}</h2>
                 <p>{umPurchase.transformationUM}</p>
               </div>
               <div id="container-buttons-actions">
@@ -115,7 +104,7 @@ const EditUMPurchase: React.FC = () => {
             {editting && (
               <Formik
                 initialValues={{
-                  description: umPurchase.description,
+                  purchaseUM: umPurchase.purchaseUM,
                   transformationUM: umPurchase.transformationUM,
                 }}
                 validationSchema={formSchemaUMPurchase}
@@ -137,14 +126,14 @@ const EditUMPurchase: React.FC = () => {
                         }
                       />
                       <Input
-                        name="description"
+                        name="purchaseUM"
                         type="text"
                         placeholder="Unidade de Medida de Compra"
-                        value={values.description}
-                        onChange={handleChange('description')}
+                        value={values.purchaseUM}
+                        onChange={handleChange('purchaseUM')}
                         messageError={
-                          errors.description && touched.description
-                            ? errors.description
+                          errors.purchaseUM && touched.purchaseUM
+                            ? errors.purchaseUM
                             : ''
                         }
                       />
@@ -165,7 +154,13 @@ const EditUMPurchase: React.FC = () => {
       <ModalDelete
         visible={showModalDelete}
         setVisible={setShowModalDelete}
-        actionToDelete={handleDeleteUMPurchase}
+        actionToDelete={() => {
+          deleteDataFromModule({
+            id,
+            route: 'umPurchase',
+            routePush: 'inventory',
+          });
+        }}
       />
     </>
   );

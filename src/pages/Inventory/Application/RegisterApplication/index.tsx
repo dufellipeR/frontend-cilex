@@ -19,13 +19,13 @@ interface RegisterApplicationForm {
   description: string;
 }
 
+const formSchemaApplication = Yup.object().shape({
+  code: Yup.string().required('Código Obrigatório'),
+  description: Yup.string().required('Aplicação Obrigatória'),
+});
+
 const RegisterApplication: React.FC = () => {
   const history = useHistory();
-
-  const formSchemaApplication = Yup.object().shape({
-    code: Yup.string().required('Código Obrigatório'),
-    description: Yup.string().required('Descrição Obrigatório'),
-  });
 
   const handleSubmitForm = useCallback(
     async (data: RegisterApplicationForm) => {

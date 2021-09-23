@@ -8,6 +8,7 @@ import { toast } from 'react-toastify';
 
 import api from '../../../../services/api';
 import { theme } from '../../../../App';
+import { useCrudModules } from '../../../../hooks/useCrudModules';
 
 import Header from '../../../../components/Header';
 import Button from '../../../../components/Button';
@@ -22,9 +23,15 @@ interface RegisterGroupForm {
   description: string;
 }
 
+const formSchemaGroup = Yup.object().shape({
+  code: Yup.string().required('Código Obrigatório'),
+  description: Yup.string().required('Grupo Obrigatório'),
+});
+
 const EditGroup: React.FC = () => {
   const history = useHistory();
   const { id }: any = useParams();
+  const { deleteDataFromModule } = useCrudModules();
 
   const [editting, setEditting] = useState<boolean>(false);
   const [showModalDelete, setShowModalDelete] = useState<boolean>(false);
@@ -57,24 +64,6 @@ const EditGroup: React.FC = () => {
     },
     [history, id],
   );
-
-  const formSchemaGroup = Yup.object().shape({
-    code: Yup.string().required('Código Obrigatório'),
-    description: Yup.string().required('Descrição Obrigatório'),
-  });
-
-  const handleDeleteGroup = () => {
-    api
-      .delete(`/group/${id}`)
-      .then(() => {
-        toast.success('Deletado com Sucesso');
-        history.push('/inventory');
-      })
-      .catch(() => {
-        toast.success('Erro ao deletar Grupo');
-        history.push('/inventory');
-      });
-  };
 
   return (
     <>
@@ -159,7 +148,13 @@ const EditGroup: React.FC = () => {
       <ModalDelete
         visible={showModalDelete}
         setVisible={setShowModalDelete}
-        actionToDelete={handleDeleteGroup}
+        actionToDelete={() => {
+          deleteDataFromModule({
+            id,
+            route: 'group',
+            routePush: 'inventory',
+          });
+        }}
       />
     </>
   );

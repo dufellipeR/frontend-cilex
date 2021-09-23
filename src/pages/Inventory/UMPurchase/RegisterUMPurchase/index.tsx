@@ -15,28 +15,28 @@ import ButtonBack from '../../../../components/ButtonBack';
 import { Container, Main, FormCustom } from './styles';
 
 interface RegisterUMPurchaseForm {
-  description: string;
+  purchaseUM: string;
   transformationUM: string;
 }
+
+const formSchemaUMPurchase = Yup.object().shape({
+  purchaseUM: Yup.string().required('Unidade de Medida de Compra Obrigatória'),
+  transformationUM: Yup.string().required(
+    'Transformação da Unidade de Medida Obrigatório',
+  ),
+});
 
 const RegisterUMPurchase: React.FC = () => {
   const history = useHistory();
 
-  const formSchemaUMPurchase = Yup.object().shape({
-    description: Yup.string().required('Descrição Obrigatório'),
-    transformationUM: Yup.string().required(
-      'Transformação da Unidade de Medida Obrigatório',
-    ),
-  });
-
   const handleSubmitForm = useCallback(
     async (data: RegisterUMPurchaseForm) => {
       try {
-        const { description, transformationUM } = data;
+        const { purchaseUM, transformationUM } = data;
         api
           .post('/umPurchase', {
             transformationUM,
-            description,
+            purchaseUM,
           })
           .then(() => {
             toast.success('Registrado com sucesso');
@@ -59,7 +59,7 @@ const RegisterUMPurchase: React.FC = () => {
         <Main>
           <Formik
             initialValues={{
-              description: '',
+              purchaseUM: '',
               transformationUM: '',
             }}
             validationSchema={formSchemaUMPurchase}
@@ -81,14 +81,14 @@ const RegisterUMPurchase: React.FC = () => {
                     }
                   />
                   <Input
-                    name="description"
+                    name="purchaseUM"
                     type="text"
                     placeholder="Unidade de Medida de Compra"
-                    value={values.description}
-                    onChange={handleChange('description')}
+                    value={values.purchaseUM}
+                    onChange={handleChange('purchaseUM')}
                     messageError={
-                      errors.description && touched.description
-                        ? errors.description
+                      errors.purchaseUM && touched.purchaseUM
+                        ? errors.purchaseUM
                         : ''
                     }
                   />

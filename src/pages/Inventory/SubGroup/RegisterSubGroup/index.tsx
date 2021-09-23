@@ -19,13 +19,13 @@ interface RegisterSubGroupForm {
   description: string;
 }
 
+const formSchemaSubGroup = Yup.object().shape({
+  code: Yup.string().required('Código Obrigatório'),
+  description: Yup.string().required('Sub-Grupo Obrigatório'),
+});
+
 const RegisterSubGroup: React.FC = () => {
   const history = useHistory();
-
-  const formSchemaSubGroup = Yup.object().shape({
-    code: Yup.string().required('Código Obrigatório'),
-    description: Yup.string().required('Descrição Obrigatório'),
-  });
 
   const handleSubmitForm = useCallback(
     async (data: RegisterSubGroupForm) => {

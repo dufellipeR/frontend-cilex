@@ -8,6 +8,7 @@ import { toast } from 'react-toastify';
 
 import api from '../../../../services/api';
 import { theme } from '../../../../App';
+import { useCrudModules } from '../../../../hooks/useCrudModules';
 
 import Header from '../../../../components/Header';
 import Button from '../../../../components/Button';
@@ -18,19 +19,27 @@ import ModalDelete from '../../../../components/ModalDelete';
 import { Container, Main, HeaderContent, FormCustom } from './styles';
 
 interface RegisterUMUseForm {
-  description: string;
-  UMUse: string;
+  useUM: string;
+  transformationUM: string;
 }
+
+const formSchemaUMUse = Yup.object().shape({
+  useUM: Yup.string().required('Unidade de Medida de Uso Obrigatória'),
+  transformationUM: Yup.string().required(
+    'Transformação da Unidade de Medida Obrigatório',
+  ),
+});
 
 const EditUMUse: React.FC = () => {
   const history = useHistory();
   const { id }: any = useParams();
+  const { deleteDataFromModule } = useCrudModules();
 
   const [editting, setEditting] = useState<boolean>(false);
   const [showModalDelete, setShowModalDelete] = useState<boolean>(false);
   const [umUse, setUMUse] = useState<RegisterUMUseForm | null>({
-    description: 'Asd',
-    UMUse: 'ML',
+    useUM: 'ML',
+    transformationUM: 'L',
   });
 
   useEffect(() => {
@@ -44,8 +53,8 @@ const EditUMUse: React.FC = () => {
       try {
         api
           .put(`/umUse/${id}`, {
-            description: data.description,
-            UMUse: data.UMUse,
+            useUM: data.useUM,
+            transformationUM: data.transformationUM,
           })
           .then(() => {
             toast.success('Atualizado com sucesso');
@@ -60,26 +69,6 @@ const EditUMUse: React.FC = () => {
     [history, id],
   );
 
-  const formSchemaUMUse = Yup.object().shape({
-    description: Yup.string().required('Descrição Obrigatório'),
-    UMUse: Yup.string().required(
-      'Transformação da Unidade de Medida Obrigatório',
-    ),
-  });
-
-  const handleDeleteUMUse = () => {
-    api
-      .delete(`/umUse/${id}`)
-      .then(() => {
-        toast.success('Deletado com Sucesso');
-        history.push('/inventory');
-      })
-      .catch(() => {
-        toast.success('Erro ao deletar Unidade de Medida de Uso');
-        history.push('/inventory');
-      });
-  };
-
   return (
     <>
       <Container>
@@ -91,8 +80,8 @@ const EditUMUse: React.FC = () => {
                 <ButtonBack destinationBack="/inventory" />
               </div>
               <div id="container-titles">
-                <h2>{umUse.description}</h2>
-                <p>{umUse.UMUse}</p>
+                <h2>{umUse.useUM}</h2>
+                <p>{umUse.transformationUM}</p>
               </div>
               <div id="container-buttons-actions">
                 <Button
@@ -113,8 +102,8 @@ const EditUMUse: React.FC = () => {
             {editting && (
               <Formik
                 initialValues={{
-                  description: umUse.description,
-                  UMUse: umUse.UMUse,
+                  useUM: umUse.useUM,
+                  transformationUM: umUse.transformationUM,
                 }}
                 validationSchema={formSchemaUMUse}
                 onSubmit={handleSubmitForm}
@@ -123,25 +112,25 @@ const EditUMUse: React.FC = () => {
                   <FormCustom onSubmit={handleSubmit}>
                     <div id="align-inputs">
                       <Input
-                        name="UMUse"
+                        name="transformationUM"
                         type="text"
                         placeholder="Transformação da Unidade de Medida"
-                        value={values.UMUse}
-                        onChange={handleChange('UMUse')}
+                        value={values.transformationUM}
+                        onChange={handleChange('transformationUM')}
                         messageError={
-                          errors.UMUse && touched.UMUse ? errors.UMUse : ''
+                          errors.transformationUM && touched.transformationUM
+                            ? errors.transformationUM
+                            : ''
                         }
                       />
                       <Input
-                        name="description"
+                        name="useUM"
                         type="text"
                         placeholder="Unidade de Medida de Uso"
-                        value={values.description}
-                        onChange={handleChange('description')}
+                        value={values.useUM}
+                        onChange={handleChange('useUM')}
                         messageError={
-                          errors.description && touched.description
-                            ? errors.description
-                            : ''
+                          errors.useUM && touched.useUM ? errors.useUM : ''
                         }
                       />
                     </div>
@@ -161,7 +150,13 @@ const EditUMUse: React.FC = () => {
       <ModalDelete
         visible={showModalDelete}
         setVisible={setShowModalDelete}
-        actionToDelete={handleDeleteUMUse}
+        actionToDelete={() => {
+          deleteDataFromModule({
+            id,
+            route: 'umUse',
+            routePush: 'inventory',
+          });
+        }}
       />
     </>
   );

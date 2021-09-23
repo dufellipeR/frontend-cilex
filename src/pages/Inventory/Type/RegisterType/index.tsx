@@ -22,16 +22,16 @@ interface RegisterTypeForm {
   acceptStructure: boolean;
 }
 
-const RegisterType: React.FC = () => {
-  const [acceptStructure, setAcceptStructure] = useState(false);
+const formSchemaType = Yup.object().shape({
+  code: Yup.string().required('Código Obrigatório'),
+  description: Yup.string().required('Descrição Obrigatório'),
+  acceptStructure: Yup.boolean(),
+});
 
+const RegisterType: React.FC = () => {
   const history = useHistory();
 
-  const formSchemaType = Yup.object().shape({
-    code: Yup.string().required('Código Obrigatório'),
-    description: Yup.string().required('Descrição Obrigatório'),
-    acceptStructure: Yup.boolean(),
-  });
+  const [acceptStructure, setAcceptStructure] = useState(false);
 
   const handleSubmitForm = useCallback(
     async (data: RegisterTypeForm) => {
