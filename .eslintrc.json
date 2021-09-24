@@ -78,7 +78,8 @@
           ]
         }
       }
-    ]
+    ],
+    "react/require-default-props": [0, { "forbidDefaultForRequired": false, "ignoreFunctionalComponents": true }]
   },
   "settings": {
     "import/resolver": {
