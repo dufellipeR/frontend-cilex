@@ -320,7 +320,7 @@ const EditPeople: React.FC = () => {
                             name="cpf"
                             type="text"
                             placeholder="CPF"
-                            // mask={maskCPF}
+                            mask={maskCPF}
                             messageError={
                               errors.cpf && touched.cpf ? errors.cpf : ''
                             }
@@ -343,7 +343,7 @@ const EditPeople: React.FC = () => {
                             name="cnpj"
                             type="text"
                             placeholder="CNPJ"
-                            // mask={maskCNPJ}
+                            mask={maskCNPJ}
                             messageError={
                               errors.cnpj && touched.cnpj ? errors.cnpj : ''
                             }
@@ -389,7 +389,7 @@ const EditPeople: React.FC = () => {
                         name="tel"
                         type="text"
                         placeholder="Telefone"
-                        // mask={maskPhone}
+                        mask={maskPhone}
                         messageError={
                           errors.tel && touched.tel ? errors.tel : ''
                         }
@@ -410,7 +410,7 @@ const EditPeople: React.FC = () => {
                         name="cep"
                         type="text"
                         placeholder="CEP"
-                        // mask={maskCEP}
+                        mask={maskCEP}
                         messageError={
                           errors.cep && touched.cep ? errors.cep : ''
                         }

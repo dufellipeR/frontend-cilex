@@ -274,7 +274,7 @@ const EditCompany: React.FC = () => {
                         name="cnpj"
                         type="text"
                         placeholder="CNPJ"
-                        // mask={maskCNPJ}
+                        mask={maskCNPJ}
                         messageError={
                           errors.cnpj && touched.cnpj ? errors.cnpj : ''
                         }
@@ -318,7 +318,7 @@ const EditCompany: React.FC = () => {
                         name="tel"
                         type="text"
                         placeholder="Telefone"
-                        // mask={maskPhone}
+                        mask={maskPhone}
                         messageError={
                           errors.tel && touched.tel ? errors.tel : ''
                         }
@@ -339,7 +339,7 @@ const EditCompany: React.FC = () => {
                         name="cep"
                         type="text"
                         placeholder="CEP"
-                        // mask={maskCEP}
+                        mask={maskCEP}
                         messageError={
                           errors.cep && touched.cep ? errors.cep : ''
                         }
