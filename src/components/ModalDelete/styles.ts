@@ -31,8 +31,8 @@ export const Content = styled.div<ContentProps>`
   background-color: #fff;
   border-radius: 8px;
 
-  width: ${props => `${props.widthRem}%`};
-  height: ${props => `${props.heightRem}%`};
+  width: ${props => `${props.widthRem}rem`};
+  height: ${props => `${props.heightRem}rem`};
 
   max-width: 100%;
   max-height: 100%;

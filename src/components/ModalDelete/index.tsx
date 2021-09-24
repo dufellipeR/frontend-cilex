@@ -17,8 +17,8 @@ interface ModalDeleteProps {
 const ModalDelete: React.FC<ModalDeleteProps> = ({
   visible,
   setVisible,
-  widthRem,
-  heightRem,
+  widthRem = 30,
+  heightRem = 15,
   actionToDelete,
 }) => {
   return visible ? (

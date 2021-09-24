@@ -1,14 +1,10 @@
-import React, { ButtonHTMLAttributes, useCallback } from 'react';
+import React, { useCallback } from 'react';
 import { HiOutlineSwitchVertical } from 'react-icons/hi';
 import { useHistory } from 'react-router-dom';
 
 import { Container } from './styles';
 
-type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
-  loading?: boolean;
-};
-
-const ChangeCompany: React.FC<ButtonProps> = ({ ...rest }) => {
+const ChangeCompany: React.FC = ({ ...rest }) => {
   const history = useHistory();
 
   const handleClick = useCallback(() => {
