@@ -37,7 +37,7 @@ import Financial from '../pages/Financial';
 
 import Inventory from '../pages/Inventory';
 
-import Product from '../pages/Inventory/Product';
+import RegisterProduct from '../pages/Inventory/Product/RegisterProduct';
 
 import ListType from '../pages/Inventory/Type/ListType';
 import RegisterType from '../pages/Inventory/Type/RegisterType';
@@ -62,6 +62,10 @@ import EditSubFamily from '../pages/Inventory/SubFamily/EditSubFamily';
 import ListApplication from '../pages/Inventory/Application/ListApplication';
 import RegisterApplication from '../pages/Inventory/Application/RegisterApplication';
 import EditApplication from '../pages/Inventory/Application/EditApplication';
+
+import ListDimension from '../pages/Inventory/Dimension/ListDimension';
+import RegisterDimension from '../pages/Inventory/Dimension/RegisterDimension';
+import EditDimension from '../pages/Inventory/Dimension/EditDimension';
 
 import ListUMPurchase from '../pages/Inventory/UMPurchase/ListUMPurchase';
 import RegisterUMPurchase from '../pages/Inventory/UMPurchase/RegisterUMPurchase';
@@ -108,7 +112,8 @@ const Routes: React.FC = () => {
       <Route path="/financial" component={Financial} />
 
       <Route path="/inventory" exact component={Inventory} />
-      <Route path="/inventory/product" component={Product} />
+
+      <Route path="/inventory/product/register" component={RegisterProduct} />
 
       <Route path="/inventory/type" exact component={ListType} />
       <Route path="/inventory/type/register" exact component={RegisterType} />
@@ -149,6 +154,14 @@ const Routes: React.FC = () => {
         component={RegisterApplication}
       />
       <Route path="/inventory/application/:id" component={EditApplication} />
+
+      <Route path="/inventory/dimension" exact component={ListDimension} />
+      <Route
+        path="/inventory/dimension/register"
+        exact
+        component={RegisterDimension}
+      />
+      <Route path="/inventory/dimension/:id" component={EditDimension} />
 
       <Route path="/inventory/umPurchase" exact component={ListUMPurchase} />
       <Route

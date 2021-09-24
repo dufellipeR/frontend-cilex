@@ -14,7 +14,7 @@ const Inventory: React.FC = () => {
         <ButtonBack destinationBack="/menu" />
         <Main>
           <ModuleCard
-            to="/inventory/product"
+            to="/inventory/product/register"
             classIcon="bi bi-box-seam"
             title="Produtos"
             description="Gerencie seus produtos"
@@ -38,37 +38,37 @@ const Inventory: React.FC = () => {
             description="Gerencie seus sub-grupos"
           />
           <ModuleCard
-            to="/home"
+            to="/inventory/family"
             classIcon="bi bi-box-seam"
             title="Família"
             description="Gerencie suas famílias"
           />
           <ModuleCard
-            to="/home"
+            to="/inventory/subfamily"
             classIcon="bi bi-box-seam"
             title="Sub-família"
             description="Gerencie suas sub-famílias"
           />
           <ModuleCard
-            to="/home"
+            to="/inventory/application"
             classIcon="bi bi-box-seam"
             title="Aplicação"
             description="Gerencie suas aplicações"
           />
           <ModuleCard
-            to="/home"
+            to="/inventory/dimension"
             classIcon="bi bi-box-seam"
             title="Dimensão do Produto"
             description="Gerencie suas dimensões dos produtos"
           />
           <ModuleCard
-            to="/home"
+            to="/inventory/umPurchase"
             classIcon="bi bi-box-seam"
             title="U.M. de Compra"
             description="Gerencie suas unidades de medida de compras"
           />
           <ModuleCard
-            to="/home"
+            to="/inventory/umUse"
             classIcon="bi bi-box-seam"
             title="U.M. de Uso"
             description="Gerencie suas unidades de medida de uso"
