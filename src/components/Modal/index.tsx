@@ -14,24 +14,39 @@ interface ModalProps {
 const Modal: React.FC<ModalProps> = ({
   visible,
   setVisible,
-  widthRem,
-  heightRem,
+  widthRem = 0,
+  heightRem = 0,
   children,
 }) => {
   return visible ? (
     <Background>
-      <Content widthRem={widthRem} heightRem={heightRem}>
-        <button
-          type="button"
-          id="button-exit"
-          onClick={() => {
-            setVisible(false);
-          }}
-        >
-          <MdClose size={20} color={theme.main} />
-        </button>
-        {children}
-      </Content>
+      {widthRem && heightRem ? (
+        <Content widthRem={widthRem} heightRem={heightRem}>
+          <button
+            type="button"
+            id="button-exit"
+            onClick={() => {
+              setVisible(false);
+            }}
+          >
+            <MdClose size={20} color={theme.main} />
+          </button>
+          {children}
+        </Content>
+      ) : (
+        <Content>
+          <button
+            type="button"
+            id="button-exit"
+            onClick={() => {
+              setVisible(false);
+            }}
+          >
+            <MdClose size={20} color={theme.main} />
+          </button>
+          {children}
+        </Content>
+      )}
     </Background>
   ) : null;
 };

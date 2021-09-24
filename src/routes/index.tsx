@@ -1,7 +1,6 @@
 import React from 'react';
-import { Switch } from 'react-router-dom';
+import { Route, Switch } from 'react-router-dom';
 
-import Route from './Route';
 import ForgotPassword from '../pages/ForgotPassword';
 import SignIn from '../pages/SignIn';
 import Home from '../pages/Home';
