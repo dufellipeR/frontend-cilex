@@ -1,5 +1,5 @@
 {
-  "name": "naruto-hinoishi",
+  "name": "cilex",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -13,7 +13,6 @@
     "@types/node": "^12.0.0",
     "@types/react": "^16.9.0",
     "@types/react-dom": "^16.9.0",
-    "@types/react-text-mask": "^5.4.9",
     "@unform/core": "^2.1.6",
     "@unform/web": "^2.1.6",
     "axios": "^0.19.2",
@@ -29,7 +28,6 @@
     "react-scripts": "^4.0.3",
     "react-select": "^3.2.0",
     "react-switch": "^6.0.0",
-    "react-text-mask": "^5.4.3",
     "react-toastify": "^7.0.4",
     "styled-components": "^5.1.1",
     "typescript": "~3.7.2",
@@ -42,14 +40,6 @@
     "test": "react-scripts test",
     "test:coverage": "react-scripts test --coverage --watchAll false",
     "eject": "react-scripts eject"
-  },
-  "jest": {
-    "collectCoverageFrom": [
-      "src/pages/**/*.tsx",
-      "src/components/**/*.tsx",
-      "src/hooks/*.tsx",
-      "!src/hooks/index.tsx"
-    ]
   },
   "browserslist": {
     "production": [
