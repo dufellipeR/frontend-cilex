@@ -9,7 +9,7 @@ type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
 
 const Button: React.FC<ButtonProps> = ({
   children,
-  loading,
+  loading = false,
   layoutColor,
   ...rest
 }) => (
