@@ -81,7 +81,7 @@ export const Module = styled.div<ModuleProps>`
     border-radius: 5%;
 
     position: relative;
-    height: 15rem;
+    min-height: 15rem;
     transition: all 0.6s ease;
     transform-style: preserve-3d;
   }
