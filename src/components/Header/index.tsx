@@ -6,6 +6,7 @@ import Logo from '../../assets/cilex-logo.png';
 import Button from '../Button';
 
 import { Container } from './styles';
+import { useAuth } from '../../hooks/auth';
 
 interface HeaderProps {
   pageName: string;
@@ -19,6 +20,7 @@ interface CompanySelected {
 
 const Header: React.FC<HeaderProps> = ({ pageName }) => {
   const history = useHistory();
+  const { signOut } = useAuth();
 
   const [companySelected, setCompanySelected] = useState({} as CompanySelected);
 
@@ -28,8 +30,9 @@ const Header: React.FC<HeaderProps> = ({ pageName }) => {
   }, []);
 
   const handleLogout = useCallback((): void => {
+    signOut();
     history.push('/');
-  }, [history]);
+  }, [history, signOut]);
 
   const handleHome = useCallback((): void => {
     history.push('/home');

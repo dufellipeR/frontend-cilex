@@ -48,6 +48,7 @@ const AuthProvider: React.FC = ({ children }) => {
   const signOut = useCallback(() => {
     localStorage.removeItem('@Cilex:token');
     localStorage.removeItem('@Cilex:user');
+    localStorage.removeItem('@Cilex:companySelected');
 
     setData({} as AuthState);
   }, []);

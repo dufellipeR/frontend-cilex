@@ -31,7 +31,7 @@ interface User {
 
 const Home: React.FC = () => {
   const history = useHistory();
-  const { user } = useAuth();
+  const { user, signOut } = useAuth();
 
   const [date, setDate] = useState<string[]>([]);
 
@@ -49,8 +49,9 @@ const Home: React.FC = () => {
   }, []);
 
   const handleLogout = useCallback((): void => {
+    signOut();
     history.push('/');
-  }, [history]);
+  }, [history, signOut]);
 
   const handleDashboard = useCallback((): void => {
     history.push('/dashboard');
@@ -66,8 +67,7 @@ const Home: React.FC = () => {
         <Header>
           <h1>Cilex</h1>
           <Greetings>
-            <h2>Bom Dia Arthur !</h2>
-            {/* <h2>Bom Dia {user.name.split(' ')[0]} !</h2> */}
+            <h2>Bom Dia {user.name.split(' ')[0]} !</h2>
             {date && (
               <h3>{`${date[0]}, ${date[1]} de ${date[2]} de ${date[3]}`}</h3>
             )}

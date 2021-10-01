@@ -12,9 +12,10 @@ import { Container, Header, Options, Greetings } from './styles';
 
 const Dashboard: React.FC = () => {
   const history = useHistory();
-  const { user } = useAuth();
+  const { user, signOut } = useAuth();
 
   const handleLogout = useCallback((): void => {
+    signOut();
     history.push('/');
   }, [history]);
 
