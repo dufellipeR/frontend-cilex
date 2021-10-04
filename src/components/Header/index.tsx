@@ -10,6 +10,7 @@ import { useAuth } from '../../hooks/auth';
 
 interface HeaderProps {
   pageName: string;
+  disabledHome?: boolean;
 }
 
 interface CompanySelected {
@@ -18,7 +19,7 @@ interface CompanySelected {
   razao_social: string;
 }
 
-const Header: React.FC<HeaderProps> = ({ pageName }) => {
+const Header: React.FC<HeaderProps> = ({ pageName, disabledHome = false }) => {
   const history = useHistory();
   const { signOut } = useAuth();
 
@@ -52,7 +53,11 @@ const Header: React.FC<HeaderProps> = ({ pageName }) => {
       </div>
 
       <div id="container-buttons">
-        <Button onClick={() => handleHome()} layoutColor="button-filled">
+        <Button
+          onClick={() => handleHome()}
+          layoutColor="button-filled"
+          disabled={disabledHome}
+        >
           <FiHome size={24} />
         </Button>
         <Button onClick={() => handleLogout()} layoutColor="button-outline">

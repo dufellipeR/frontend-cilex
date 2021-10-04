@@ -7,6 +7,7 @@ import { HiOutlineArrowLeft } from 'react-icons/hi';
 import { toast } from 'react-toastify';
 
 import { useAuth } from '../../../hooks/auth';
+import { useHasUserCompany } from '../../../hooks/useHasUserCompany';
 import api from '../../../services/api';
 import { maskPhone, maskCEP, maskCNPJ } from '../../../utils/masks';
 import {
@@ -68,6 +69,7 @@ interface MatrizID {
 const RegisterCompany: React.FC = () => {
   const history = useHistory();
   const { user } = useAuth();
+  const { hasUserCompany, setHasUserCompany } = useHasUserCompany();
 
   const [matrizCompanies, setMatrizCompanies] = useState<MatrizID[]>([]);
   const [segments, setSegments] = useState<Segment[]>([]);
@@ -133,6 +135,7 @@ const RegisterCompany: React.FC = () => {
             })
             .then(() => {
               toast.success('Registrado com sucesso');
+              if (hasUserCompany) setHasUserCompany(true);
               history.push('/company');
             });
         } else {
@@ -142,14 +145,14 @@ const RegisterCompany: React.FC = () => {
         toast.error('Ocorreu um erro no registro da Empresa!');
       }
     },
-    [history, segmentIdSelected],
+    [history, segmentIdSelected, hasUserCompany, setHasUserCompany],
   );
 
   return (
     <>
       <Container>
-        <Header pageName="Registro de Empresa" />
-        <ButtonBack destinationBack="/company" />
+        <Header pageName="Registro de Empresa" disabledHome={!hasUserCompany} />
+        {hasUserCompany && <ButtonBack destinationBack="/company" />}
 
         <Step>
           <Formik

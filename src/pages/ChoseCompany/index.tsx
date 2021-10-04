@@ -1,16 +1,14 @@
 /* eslint-disable import/no-duplicates */
 import React, { useCallback, useEffect, useState } from 'react';
-
 import { useHistory } from 'react-router-dom';
-
 import { format } from 'date-fns';
-
 import ptBR from 'date-fns/locale/pt-BR';
-
 import { FiPower } from 'react-icons/fi';
 import { HiOutlineOfficeBuilding } from 'react-icons/hi';
+
 import chooseSvg from '../../assets/town.svg';
 import { useAuth } from '../../hooks/auth';
+import { useHasUserCompany } from '../../hooks/useHasUserCompany';
 
 import Button from '../../components/Button';
 
@@ -42,9 +40,9 @@ interface IUserCompany {
 const ChoseCompany: React.FC = () => {
   const history = useHistory();
   const { user, signOut } = useAuth();
+  const { setHasUserCompany } = useHasUserCompany();
 
   const [date, setDate] = useState<string[]>([]);
-  const [companies, setCompanies] = useState<Icompany[]>([]);
   const [userCompanies, setUserCompanies] = useState<IUserCompany[]>([]);
 
   const handleChoice = useCallback(
@@ -70,19 +68,15 @@ const ChoseCompany: React.FC = () => {
 
   useEffect(() => {
     api.get<IUserCompany[]>(`/usercompany?user=${user.id}`).then(response => {
-      console.log(response.data);
-
-      setUserCompanies(response.data);
-    });
-  }, [user.id]);
-
-  useEffect(() => {
-    api.get<IUserCompany[]>(`/usercompany?user=${user.id}`).then(response => {
       if (response.data.length === 0) {
+        setHasUserCompany(false);
         history.push('/company/register');
+      } else {
+        setHasUserCompany(true);
+        setUserCompanies(response.data);
       }
     });
-  }, [history]);
+  }, [history, user.id, setHasUserCompany]);
 
   const handleLogout = useCallback((): void => {
     signOut();
