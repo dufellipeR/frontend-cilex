@@ -135,8 +135,13 @@ const RegisterCompany: React.FC = () => {
             })
             .then(() => {
               toast.success('Registrado com sucesso');
-              if (hasUserCompany) setHasUserCompany(true);
-              history.push('/company');
+
+              if (!hasUserCompany) {
+                setHasUserCompany(true);
+                history.push('/chosecompany');
+              } else {
+                history.push('/company');
+              }
             });
         } else {
           toast.error('Um segmento deve ser selecionado!');

@@ -23,14 +23,6 @@ import {
 } from './styles';
 import api from '../../services/api';
 
-interface Icompany {
-  id: string;
-  code: string;
-  cnpj: string;
-  razao_social: string;
-  nome_fantasia: string;
-}
-
 interface IUserCompany {
   id: string;
   code: string;
