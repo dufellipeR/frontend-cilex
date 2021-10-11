@@ -1,6 +1,4 @@
-import React, { TableHTMLAttributes, useMemo, useState } from 'react';
-import { FiEye } from 'react-icons/fi';
-import { Link } from 'react-router-dom';
+import React, { TableHTMLAttributes } from 'react';
 
 import { Table, TableHead } from './styles';
 
@@ -8,9 +6,7 @@ type TableProps = TableHTMLAttributes<HTMLTableElement> & {
   tbh: string[] | null;
 };
 
-const DefaultTable: React.FC<TableProps> = ({ children, tbh, ...rest }) => {
-  const [visualize, setVisualize] = useState(true);
-
+const DefaultTable: React.FC<TableProps> = ({ children, tbh }) => {
   return (
     <Table>
       <thead>

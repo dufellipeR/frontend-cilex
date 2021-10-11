@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { useHistory, useParams } from 'react-router-dom';
 import * as Yup from 'yup';
 import { Formik } from 'formik';
@@ -7,6 +7,7 @@ import { HiOutlinePencilAlt, HiOutlineTrash } from 'react-icons/hi';
 import { toast } from 'react-toastify';
 
 import api from '../../../../services/api';
+import camera from '../../../../assets/camera.svg';
 import { theme } from '../../../../App';
 import { useCrudModules } from '../../../../hooks/useCrudModules';
 
@@ -15,51 +16,158 @@ import Button from '../../../../components/Button';
 import Input from '../../../../components/Input';
 import ButtonBack from '../../../../components/ButtonBack';
 import ModalDelete from '../../../../components/ModalDelete';
+import Select from '../../../../components/Select';
 
-import { Container, Main, HeaderContent, FormCustom } from './styles';
+import {
+  Container,
+  Main,
+  HeaderContent,
+  FormCustom,
+  ContainerInputFile,
+} from './styles';
 
-interface RegisterGroupForm {
+interface RegisterProductForm {
   code: string;
   description: string;
+  type: string;
+
+  group: string;
+  subGroup: string;
+
+  family: string;
+  subFamily: string;
+
+  application: string;
+  dimension: string;
+
+  umPurchase: string;
+  umUse: string;
+
+  technicalDescription: string;
+  techicalDrawing: any;
+  photo: any;
 }
 
-const formSchemaGroup = Yup.object().shape({
-  code: Yup.string().required('Código Obrigatório'),
-  description: Yup.string().required('Grupo Obrigatório'),
+const formSchemaProduct = Yup.object().shape({
+  code: Yup.string(),
+  description: Yup.string(),
+  type: Yup.string(),
+
+  group: Yup.string(),
+  subGroup: Yup.string(),
+
+  family: Yup.string(),
+  subFamily: Yup.string(),
+
+  application: Yup.string(),
+  dimension: Yup.string(),
+
+  umPurchase: Yup.string(),
+  umUse: Yup.string(),
+
+  technicalDescription: Yup.string(),
+  techicalDrawing: Yup.mixed(),
+
+  photo: Yup.mixed(),
 });
 
-const EditGroup: React.FC = () => {
+const types = [
+  { id: 1, name: 'Tipo 1' },
+  { id: 2, name: 'Tipo 2' },
+  { id: 3, name: 'Tipo 3' },
+];
+
+const EditProduct: React.FC = () => {
   const history = useHistory();
   const { id }: any = useParams();
   const { deleteDataFromModule } = useCrudModules();
 
+  const [statePhoto, setStatePhoto] = useState<any>(null);
+  const [stateTechicalDrawing, setStateTechnicalDrawing] = useState<any>(null);
+
   const [editting, setEditting] = useState<boolean>(false);
   const [showModalDelete, setShowModalDelete] = useState<boolean>(false);
-  const [group, setGroup] = useState<RegisterGroupForm | null>({
-    code: '1',
+  const [product, setProduct] = useState<RegisterProductForm | null>({
+    code: 'Asd',
     description: 'Asd',
+    type: 'Asd',
+
+    group: 'Asd',
+    subGroup: 'Asd',
+
+    family: 'Asd',
+    subFamily: 'Asd',
+
+    application: 'Asd',
+    dimension: 'Asd',
+
+    umPurchase: 'Asd',
+    umUse: 'Asd',
+
+    technicalDescription: 'Asd',
+    techicalDrawing: null,
+    photo: null,
   });
 
   useEffect(() => {
-    api.get<RegisterGroupForm | null>(`/group/${id}`).then(response => {
-      setGroup(response.data);
+    api.get<RegisterProductForm | null>(`/product/${id}`).then(response => {
+      setProduct(response.data);
     });
   }, [id]);
 
+  const previewPhoto = useMemo(() => {
+    return statePhoto ? URL.createObjectURL(statePhoto) : null;
+  }, [statePhoto]);
+
+  const previewTechicalDrawing = useMemo(() => {
+    return stateTechicalDrawing
+      ? URL.createObjectURL(stateTechicalDrawing)
+      : null;
+  }, [stateTechicalDrawing]);
+
   const handleSubmitForm = useCallback(
-    async (data: RegisterGroupForm) => {
+    async (data: RegisterProductForm) => {
       try {
+        const {
+          code,
+          description,
+          type,
+          group,
+          subGroup,
+          family,
+          subFamily,
+          application,
+          dimension,
+          umPurchase,
+          umUse,
+          technicalDescription,
+          techicalDrawing,
+          photo,
+        } = data;
+
         api
-          .put(`/group/${id}`, {
-            code: String(data.code),
-            description: data.description,
+          .put(`/product/${id}`, {
+            code: String(code),
+            description,
+            type,
+            group,
+            subGroup,
+            family,
+            subFamily,
+            application,
+            dimension,
+            umPurchase,
+            umUse,
+            technicalDescription,
+            techicalDrawing,
+            photo,
           })
           .then(() => {
             toast.success('Atualizado com sucesso');
             history.push('/inventory');
           });
       } catch (err) {
-        toast.error('Ocorreu um erro na atualização do Grupo!');
+        toast.error('Ocorreu um erro na atualização do Produto!');
       }
     },
     [history, id],
@@ -69,15 +177,15 @@ const EditGroup: React.FC = () => {
     <>
       <Container>
         <Header pageName="Editar Grupo" />
-        {group && (
+        {product && (
           <Main>
             <HeaderContent>
               <div id="container-arrow">
                 <ButtonBack destinationBack="/inventory" />
               </div>
               <div id="container-titles">
-                <h2>{group.code}</h2>
-                <p>{group.description}</p>
+                <h2>{product.code}</h2>
+                <p>{product.description}</p>
               </div>
               <div id="container-buttons-actions">
                 <Button
@@ -98,13 +206,32 @@ const EditGroup: React.FC = () => {
             {editting && (
               <Formik
                 initialValues={{
-                  code: group.code,
-                  description: group.description,
+                  code: product.code,
+                  description: product.description,
+                  type: product.type,
+                  group: product.group,
+                  subGroup: product.subGroup,
+                  family: product.family,
+                  subFamily: product.subFamily,
+                  application: product.application,
+                  dimension: product.dimension,
+                  umPurchase: product.umPurchase,
+                  umUse: product.umUse,
+                  technicalDescription: product.technicalDescription,
+                  techicalDrawing: null,
+                  photo: null,
                 }}
-                validationSchema={formSchemaGroup}
+                validationSchema={formSchemaProduct}
                 onSubmit={handleSubmitForm}
               >
-                {({ handleChange, touched, values, errors, handleSubmit }) => (
+                {({
+                  handleChange,
+                  touched,
+                  values,
+                  errors,
+                  handleSubmit,
+                  setFieldValue,
+                }) => (
                   <FormCustom onSubmit={handleSubmit}>
                     <div id="align-inputs">
                       <Input
@@ -122,7 +249,7 @@ const EditGroup: React.FC = () => {
                       <Input
                         name="description"
                         type="text"
-                        placeholder="Grupo"
+                        placeholder="Descrição"
                         value={values.description}
                         onChange={handleChange('description')}
                         messageError={
@@ -131,6 +258,201 @@ const EditGroup: React.FC = () => {
                             : ''
                         }
                       />
+                      <Select
+                        name="type"
+                        value={values.type}
+                        onChange={handleChange('type')}
+                        messageError={
+                          errors.type && touched.type ? errors.type : ''
+                        }
+                      >
+                        <option value="">Tipo</option>
+                        {types.map(type => (
+                          <option key={type.id} value={type.id}>
+                            {type.name}
+                          </option>
+                        ))}
+                      </Select>
+                      <Select
+                        name="group"
+                        value={values.group}
+                        onChange={handleChange('group')}
+                        messageError={
+                          errors.group && touched.group ? errors.group : ''
+                        }
+                      >
+                        <option value="">Grupo</option>
+                        {types.map(type => (
+                          <option key={type.id} value={type.id}>
+                            {type.name}
+                          </option>
+                        ))}
+                      </Select>
+                      <Select
+                        name="subGroup"
+                        value={values.subGroup}
+                        onChange={handleChange('subGroup')}
+                        messageError={
+                          errors.subGroup && touched.subGroup
+                            ? errors.subGroup
+                            : ''
+                        }
+                      >
+                        <option value="">Sub-Grupo</option>
+                        {types.map(type => (
+                          <option key={type.id} value={type.id}>
+                            {type.name}
+                          </option>
+                        ))}
+                      </Select>
+                      <Select
+                        name="family"
+                        value={values.family}
+                        onChange={handleChange('family')}
+                        messageError={
+                          errors.family && touched.family ? errors.family : ''
+                        }
+                      >
+                        <option value="">Família</option>
+                        {types.map(type => (
+                          <option key={type.id} value={type.id}>
+                            {type.name}
+                          </option>
+                        ))}
+                      </Select>
+                      <Select
+                        name="subFamily"
+                        value={values.subFamily}
+                        onChange={handleChange('subFamily')}
+                        messageError={
+                          errors.subFamily && touched.subFamily
+                            ? errors.subFamily
+                            : ''
+                        }
+                      >
+                        <option value="">Sub-Família</option>
+                        {types.map(type => (
+                          <option key={type.id} value={type.id}>
+                            {type.name}
+                          </option>
+                        ))}
+                      </Select>
+                      <Select
+                        name="application"
+                        value={values.application}
+                        onChange={handleChange('application')}
+                        messageError={
+                          errors.application && touched.application
+                            ? errors.application
+                            : ''
+                        }
+                      >
+                        <option value="">Aplicação</option>
+                        {types.map(type => (
+                          <option key={type.id} value={type.id}>
+                            {type.name}
+                          </option>
+                        ))}
+                      </Select>
+                      <Select
+                        name="dimension"
+                        value={values.dimension}
+                        onChange={handleChange('dimension')}
+                        messageError={
+                          errors.dimension && touched.dimension
+                            ? errors.dimension
+                            : ''
+                        }
+                      >
+                        <option value="">Dimensão do Produto</option>
+                        {types.map(type => (
+                          <option key={type.id} value={type.id}>
+                            {type.name}
+                          </option>
+                        ))}
+                      </Select>
+                      <Select
+                        name="umPurchase"
+                        value={values.umPurchase}
+                        onChange={handleChange('umPurchase')}
+                        messageError={
+                          errors.umPurchase && touched.umPurchase
+                            ? errors.umPurchase
+                            : ''
+                        }
+                      >
+                        <option value="">Unidade de Medida de Compra</option>
+                        {types.map(type => (
+                          <option key={type.id} value={type.id}>
+                            {type.name}
+                          </option>
+                        ))}
+                      </Select>
+                      <Select
+                        name="umUse"
+                        value={values.umUse}
+                        onChange={handleChange('umUse')}
+                        messageError={
+                          errors.umUse && touched.umUse ? errors.umUse : ''
+                        }
+                      >
+                        <option value="">Unidade de Medida de Uso</option>
+                        {types.map(type => (
+                          <option key={type.id} value={type.id}>
+                            {type.name}
+                          </option>
+                        ))}
+                      </Select>
+                      <Input
+                        name="technicalDescription"
+                        type="text"
+                        placeholder="Descrição Técnica"
+                        value={values.technicalDescription}
+                        onChange={handleChange('technicalDescription')}
+                        messageError={
+                          errors.technicalDescription &&
+                          touched.technicalDescription
+                            ? errors.technicalDescription
+                            : ''
+                        }
+                      />
+                      <ContainerInputFile
+                        style={{
+                          backgroundImage: `url(${previewTechicalDrawing})`,
+                        }}
+                        hasThumb={stateTechicalDrawing}
+                      >
+                        <p>Desenho Técnico</p>
+                        <input
+                          id="techicalDrawing"
+                          name="techicalDrawing"
+                          type="file"
+                          onChange={event => {
+                            setStateTechnicalDrawing(event.target.files![0]);
+                            setFieldValue(
+                              'techicalDrawing',
+                              event.target.files![0],
+                            );
+                          }}
+                        />
+                        <img src={camera} alt="Select img" />
+                      </ContainerInputFile>
+                      <ContainerInputFile
+                        style={{ backgroundImage: `url(${previewPhoto})` }}
+                        hasThumb={statePhoto}
+                      >
+                        <p>Foto</p>
+                        <input
+                          id="photo"
+                          name="photo"
+                          type="file"
+                          onChange={event => {
+                            setStatePhoto(event.target.files![0]);
+                            setFieldValue('photo', event.target.files![0]);
+                          }}
+                        />
+                        <img src={camera} alt="Select img" />
+                      </ContainerInputFile>
                     </div>
                     <div id="align-button-save">
                       <Button layoutColor="button-green" type="submit">
@@ -151,7 +473,7 @@ const EditGroup: React.FC = () => {
         actionToDelete={() => {
           deleteDataFromModule({
             id,
-            route: 'group',
+            route: 'product',
             routePush: 'inventory',
           });
         }}
@@ -160,4 +482,4 @@ const EditGroup: React.FC = () => {
   );
 };
 
-export default EditGroup;
+export default EditProduct;

@@ -52,11 +52,15 @@ export const ContainerInputFile = styled.label<InputFileProps>`
   border-radius: 10px;
   background-size: cover;
   cursor: pointer;
-  height: 225%;
+  height: 10rem;
 
   display: flex;
   justify-content: center;
   align-items: center;
+
+  p {
+    margin-right: 1rem;
+  }
 
   input {
     display: none;

@@ -34,7 +34,7 @@ interface RegisterGroupForm {
   umUse: string;
 
   technicalDescription: string;
-  techicalDrawing: string;
+  techicalDrawing: any;
   photo: any;
 }
 
@@ -56,9 +56,9 @@ const formSchemaGroup = Yup.object().shape({
   umUse: Yup.string().required(),
 
   technicalDescription: Yup.string().required('Descrição Técnica Obrigatória'),
-  techicalDrawing: Yup.string().required('Desenho Técnico Obrigatório'),
+  techicalDrawing: Yup.mixed().required('Desenho Técnico Obrigatório'),
 
-  photo: Yup.mixed().required(),
+  photo: Yup.mixed().required('Foto Obrigatória'),
 });
 
 const types = [
@@ -70,11 +70,18 @@ const types = [
 const RegisterGroup: React.FC = () => {
   const history = useHistory();
 
-  const [thumb, setThumb] = useState<any>(null);
+  const [statePhoto, setStatePhoto] = useState<any>(null);
+  const [stateTechicalDrawing, setStateTechnicalDrawing] = useState<any>(null);
 
-  const preview = useMemo(() => {
-    return thumb ? URL.createObjectURL(thumb) : null;
-  }, [thumb]);
+  const previewPhoto = useMemo(() => {
+    return statePhoto ? URL.createObjectURL(statePhoto) : null;
+  }, [statePhoto]);
+
+  const previewTechicalDrawing = useMemo(() => {
+    return stateTechicalDrawing
+      ? URL.createObjectURL(stateTechicalDrawing)
+      : null;
+  }, [stateTechicalDrawing]);
 
   const handleSubmitForm = useCallback(
     async (data: RegisterGroupForm) => {
@@ -128,7 +135,7 @@ const RegisterGroup: React.FC = () => {
     <>
       <Container>
         <Header pageName="Registro do Produto" />
-        <ButtonBack destinationBack="/inventory/group" />
+        <ButtonBack destinationBack="/inventory/product" />
         <Main>
           <Formik
             initialValues={{
@@ -144,7 +151,7 @@ const RegisterGroup: React.FC = () => {
               umPurchase: '',
               umUse: '',
               technicalDescription: '',
-              techicalDrawing: '',
+              techicalDrawing: null,
               photo: null,
             }}
             validationSchema={formSchemaGroup}
@@ -322,28 +329,38 @@ const RegisterGroup: React.FC = () => {
                         : ''
                     }
                   />
-                  <Input
-                    name="techicalDrawing"
-                    type="text"
-                    placeholder="Desenho Técnico"
-                    value={values.techicalDrawing}
-                    onChange={handleChange('techicalDrawing')}
-                    messageError={
-                      errors.techicalDrawing && touched.techicalDrawing
-                        ? errors.techicalDrawing
-                        : ''
-                    }
-                  />
                   <ContainerInputFile
-                    style={{ backgroundImage: `url(${preview})` }}
-                    hasThumb={thumb}
+                    style={{
+                      backgroundImage: `url(${previewTechicalDrawing})`,
+                    }}
+                    hasThumb={stateTechicalDrawing}
                   >
+                    <p>Desenho Técnico</p>
+                    <input
+                      id="techicalDrawing"
+                      name="techicalDrawing"
+                      type="file"
+                      onChange={event => {
+                        setStateTechnicalDrawing(event.target.files![0]);
+                        setFieldValue(
+                          'techicalDrawing',
+                          event.target.files![0],
+                        );
+                      }}
+                    />
+                    <img src={camera} alt="Select img" />
+                  </ContainerInputFile>
+                  <ContainerInputFile
+                    style={{ backgroundImage: `url(${previewPhoto})` }}
+                    hasThumb={statePhoto}
+                  >
+                    <p>Foto</p>
                     <input
                       id="photo"
                       name="photo"
                       type="file"
                       onChange={event => {
-                        setThumb(event.target.files![0]);
+                        setStatePhoto(event.target.files![0]);
                         setFieldValue('photo', event.target.files![0]);
                       }}
                     />

@@ -14,7 +14,7 @@ const Inventory: React.FC = () => {
         <ButtonBack destinationBack="/menu" />
         <Main>
           <ModuleCard
-            to="/inventory/product/register"
+            to="/inventory/product"
             classIcon="bi bi-box-seam"
             title="Produtos"
             description="Gerencie seus produtos"

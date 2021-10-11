@@ -1,4 +1,8 @@
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
+
+interface InputFileProps {
+  hasThumb?: string;
+}
 
 export const Container = styled.div``;
 
@@ -65,5 +69,40 @@ export const FormCustom = styled.form`
     @media (max-width: 900px) {
       width: 100%;
     }
+  }
+`;
+
+export const ContainerInputFile = styled.label<InputFileProps>`
+  border: 1px dashed #666360;
+  border-radius: 10px;
+  background-size: cover;
+  cursor: pointer;
+  height: 10rem;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  p {
+    margin-right: 1rem;
+  }
+
+  input {
+    display: none;
+  }
+
+  ${props =>
+    props.hasThumb &&
+    css`
+      border: 0;
+    `}
+
+  .has-thumbnail {
+    border: 0;
+    padding: 10rem;
+  }
+
+  .has-thumbnail img {
+    display: none;
   }
 `;

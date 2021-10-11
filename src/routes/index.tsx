@@ -37,6 +37,8 @@ import Financial from '../pages/Financial';
 import Inventory from '../pages/Inventory';
 
 import RegisterProduct from '../pages/Inventory/Product/RegisterProduct';
+import ListProduct from '../pages/Inventory/Product/ListProduct';
+import EditProduct from '../pages/Inventory/Product/EditProduct';
 
 import ListType from '../pages/Inventory/Type/ListType';
 import RegisterType from '../pages/Inventory/Type/RegisterType';
@@ -112,7 +114,13 @@ const Routes: React.FC = () => {
 
       <Route path="/inventory" exact component={Inventory} />
 
-      <Route path="/inventory/product/register" component={RegisterProduct} />
+      <Route path="/inventory/product" exact component={ListProduct} />
+      <Route
+        path="/inventory/product/register"
+        exact
+        component={RegisterProduct}
+      />
+      <Route path="/inventory/product/:id" component={EditProduct} />
 
       <Route path="/inventory/type" exact component={ListType} />
       <Route path="/inventory/type/register" exact component={RegisterType} />
