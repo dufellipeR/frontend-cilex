@@ -11,6 +11,7 @@ import NewButton from '../../../components/NewButton';
 import DefaultTable from '../../../components/DefaultTable';
 import ChangeCompany from '../../../components/ChangeCompany';
 import Header from '../../../components/Header';
+import EmptyData from '../../../components/EmptyData';
 
 import { Container, Main } from './styles';
 
@@ -41,29 +42,33 @@ const ListCompany: React.FC = () => {
           <div id="align-content">
             <ButtonBack destinationBack="/menu" />
             <NewButton to="/company/register">Novo</NewButton>
-            <DefaultTable
-              tbh={['Código', 'CNPJ', 'Razão Social', 'Nome Fantasia']}
-            >
-              <tbody>
-                {companies &&
-                  companies.map(company => (
-                    <tr key={company.id}>
-                      <td>{company.code}</td>
-                      <td>{company.cnpj}</td>
-                      <td>{company.razao_social}</td>
-                      <td>{company.nome_fantasia}</td>
-                      <td>
-                        <Link
-                          style={{ textDecoration: 'none' }}
-                          to={`/company/${company.id}`}
-                        >
-                          <FiEye size={24} color={theme.main} />
-                        </Link>
-                      </td>
-                    </tr>
-                  ))}
-              </tbody>
-            </DefaultTable>
+            {companies.length > 0 ? (
+              <DefaultTable
+                tbh={['Código', 'CNPJ', 'Razão Social', 'Nome Fantasia']}
+              >
+                <tbody>
+                  {companies &&
+                    companies.map(company => (
+                      <tr key={company.id}>
+                        <td>{company.code}</td>
+                        <td>{company.cnpj}</td>
+                        <td>{company.razao_social}</td>
+                        <td>{company.nome_fantasia}</td>
+                        <td>
+                          <Link
+                            style={{ textDecoration: 'none' }}
+                            to={`/company/${company.id}`}
+                          >
+                            <FiEye size={24} color={theme.main} />
+                          </Link>
+                        </td>
+                      </tr>
+                    ))}
+                </tbody>
+              </DefaultTable>
+            ) : (
+              <EmptyData />
+            )}
           </div>
         </Main>
       </Container>

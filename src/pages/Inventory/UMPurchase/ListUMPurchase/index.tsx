@@ -11,6 +11,7 @@ import Header from '../../../../components/Header';
 import ButtonBack from '../../../../components/ButtonBack';
 
 import { Container, Main } from './styles';
+import EmptyData from '../../../../components/EmptyData';
 
 const ListUMPurchase: React.FC = () => {
   const UMPurchases = [
@@ -28,24 +29,28 @@ const ListUMPurchase: React.FC = () => {
         <div id="align-content">
           <ButtonBack destinationBack="/inventory" />
           <NewButton to="/inventory/umPurchase/register">Novo</NewButton>
-          <DefaultTable tbh={['Descrição', 'Unidade de Medida de Compra']}>
-            <tbody>
-              {UMPurchases.map(unit => (
-                <tr key={unit.description}>
-                  <td>{unit.description}</td>
-                  <td>{unit.transformationUM}</td>
-                  <td>
-                    <Link
-                      style={{ textDecoration: 'none' }}
-                      to={`/inventory/umPurchase/${unit.description}`}
-                    >
-                      <FiEye size={24} color={theme.main} />
-                    </Link>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </DefaultTable>
+          {UMPurchases.length > 0 ? (
+            <DefaultTable tbh={['Descrição', 'Unidade de Medida de Compra']}>
+              <tbody>
+                {UMPurchases.map(unit => (
+                  <tr key={unit.description}>
+                    <td>{unit.description}</td>
+                    <td>{unit.transformationUM}</td>
+                    <td>
+                      <Link
+                        style={{ textDecoration: 'none' }}
+                        to={`/inventory/umPurchase/${unit.description}`}
+                      >
+                        <FiEye size={24} color={theme.main} />
+                      </Link>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </DefaultTable>
+          ) : (
+            <EmptyData />
+          )}
         </div>
       </Main>
     </Container>

@@ -9,6 +9,7 @@ import NewButton from '../../../../components/NewButton';
 import DefaultTable from '../../../../components/DefaultTable';
 import Header from '../../../../components/Header';
 import ButtonBack from '../../../../components/ButtonBack';
+import EmptyData from '../../../../components/EmptyData';
 
 import { Container, Main } from './styles';
 
@@ -28,25 +29,29 @@ const ListType: React.FC = () => {
         <div id="align-content">
           <ButtonBack destinationBack="/inventory" />
           <NewButton to="/inventory/type/register">Novo</NewButton>
-          <DefaultTable tbh={['Código', 'Tipo', 'Aceita Estrutura?']}>
-            <tbody>
-              {types.map(type => (
-                <tr key={type.code}>
-                  <td>{type.code}</td>
-                  <td>{type.description}</td>
-                  <td>{type.accept === true ? 'Sim' : 'Não'}</td>
-                  <td>
-                    <Link
-                      style={{ textDecoration: 'none' }}
-                      to={`/inventory/type/${type.code}`}
-                    >
-                      <FiEye size={24} color={theme.main} />
-                    </Link>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </DefaultTable>
+          {types.length > 0 ? (
+            <DefaultTable tbh={['Código', 'Tipo', 'Aceita Estrutura?']}>
+              <tbody>
+                {types.map(type => (
+                  <tr key={type.code}>
+                    <td>{type.code}</td>
+                    <td>{type.description}</td>
+                    <td>{type.accept === true ? 'Sim' : 'Não'}</td>
+                    <td>
+                      <Link
+                        style={{ textDecoration: 'none' }}
+                        to={`/inventory/type/${type.code}`}
+                      >
+                        <FiEye size={24} color={theme.main} />
+                      </Link>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </DefaultTable>
+          ) : (
+            <EmptyData />
+          )}
         </div>
       </Main>
     </Container>

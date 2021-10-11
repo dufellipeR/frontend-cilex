@@ -9,6 +9,7 @@ import DefaultTable from '../../../components/DefaultTable';
 import Header from '../../../components/Header';
 import ButtonBack from '../../../components/ButtonBack';
 import NewButton from '../../../components/NewButton';
+import EmptyData from '../../../components/EmptyData';
 
 import { Container, Main } from './styles';
 
@@ -35,10 +36,10 @@ const ListUserGroup: React.FC = () => {
           <div id="align-content">
             <ButtonBack destinationBack="/menu" />
             <NewButton to="/group/register">Novo</NewButton>
-            <DefaultTable tbh={['Código', 'Descrição']}>
-              <tbody>
-                {groups &&
-                  groups.map(group => (
+            {groups.length > 0 ? (
+              <DefaultTable tbh={['Código', 'Descrição']}>
+                <tbody>
+                  {groups.map(group => (
                     <tr key={group.id}>
                       <td>{group.code}</td>
                       <td>{group.description}</td>
@@ -53,8 +54,11 @@ const ListUserGroup: React.FC = () => {
                       </td>
                     </tr>
                   ))}
-              </tbody>
-            </DefaultTable>
+                </tbody>
+              </DefaultTable>
+            ) : (
+              <EmptyData />
+            )}
           </div>
         </Main>
       </Container>

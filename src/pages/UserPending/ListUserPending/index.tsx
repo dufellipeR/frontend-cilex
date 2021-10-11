@@ -8,6 +8,7 @@ import { theme } from '../../../App';
 import Header from '../../../components/Header';
 import ButtonBack from '../../../components/ButtonBack';
 import DefaultTable from '../../../components/DefaultTable';
+import EmptyData from '../../../components/EmptyData';
 
 import { Container, Main } from './styles';
 
@@ -37,24 +38,28 @@ const ListUserPending: React.FC = () => {
         <Main>
           <div id="align-content">
             <ButtonBack destinationBack="/menu/users" />
-            <DefaultTable tbh={['ID', 'Nome']}>
-              <tbody>
-                {usersPending.map(user => (
-                  <tr key={user.id}>
-                    <td>{user.person.code}</td>
-                    <td>{user.person.nome}</td>
-                    <td>
-                      <Link
-                        style={{ textDecoration: 'none' }}
-                        to={`/user/pending/${user.id}`}
-                      >
-                        <FiEye size={24} color={theme.main} />
-                      </Link>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </DefaultTable>
+            {usersPending.length > 0 ? (
+              <DefaultTable tbh={['ID', 'Nome']}>
+                <tbody>
+                  {usersPending.map(user => (
+                    <tr key={user.id}>
+                      <td>{user.person.code}</td>
+                      <td>{user.person.nome}</td>
+                      <td>
+                        <Link
+                          style={{ textDecoration: 'none' }}
+                          to={`/user/pending/${user.id}`}
+                        >
+                          <FiEye size={24} color={theme.main} />
+                        </Link>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </DefaultTable>
+            ) : (
+              <EmptyData />
+            )}
           </div>
         </Main>
       </Container>

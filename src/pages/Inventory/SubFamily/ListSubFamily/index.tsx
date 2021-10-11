@@ -9,6 +9,7 @@ import NewButton from '../../../../components/NewButton';
 import DefaultTable from '../../../../components/DefaultTable';
 import Header from '../../../../components/Header';
 import ButtonBack from '../../../../components/ButtonBack';
+import EmptyData from '../../../../components/EmptyData';
 
 import { Container, Main } from './styles';
 
@@ -28,24 +29,28 @@ const ListSubFamily: React.FC = () => {
         <div id="align-content">
           <ButtonBack destinationBack="/inventory" />
           <NewButton to="/inventory/subfamily/register">Novo</NewButton>
-          <DefaultTable tbh={['Código', 'Sub-Família']}>
-            <tbody>
-              {subFamilies.map(subFamily => (
-                <tr key={subFamily.code}>
-                  <td>{subFamily.code}</td>
-                  <td>{subFamily.description}</td>
-                  <td>
-                    <Link
-                      style={{ textDecoration: 'none' }}
-                      to={`/inventory/subfamily/${subFamily.code}`}
-                    >
-                      <FiEye size={24} color={theme.main} />
-                    </Link>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </DefaultTable>
+          {subFamilies.length > 0 ? (
+            <DefaultTable tbh={['Código', 'Sub-Família']}>
+              <tbody>
+                {subFamilies.map(subFamily => (
+                  <tr key={subFamily.code}>
+                    <td>{subFamily.code}</td>
+                    <td>{subFamily.description}</td>
+                    <td>
+                      <Link
+                        style={{ textDecoration: 'none' }}
+                        to={`/inventory/subfamily/${subFamily.code}`}
+                      >
+                        <FiEye size={24} color={theme.main} />
+                      </Link>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </DefaultTable>
+          ) : (
+            <EmptyData />
+          )}
         </div>
       </Main>
     </Container>

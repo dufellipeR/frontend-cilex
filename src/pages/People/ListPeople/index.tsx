@@ -14,6 +14,7 @@ import DefaultTable from '../../../components/DefaultTable';
 import ChangeCompany from '../../../components/ChangeCompany';
 import Modal from '../../../components/Modal';
 import Header from '../../../components/Header';
+import EmptyData from '../../../components/EmptyData';
 
 import {
   Container,
@@ -65,10 +66,10 @@ const ListPeople: React.FC = () => {
           <div id="align-content">
             <ButtonBack destinationBack="/menu" />
             <NewButton to="/people/register">Novo</NewButton>
-            <DefaultTable tbh={['Código', 'CNPJ/CPF', 'Razão Social/Nome']}>
-              <tbody>
-                {peoples &&
-                  peoples.map(people => (
+            {peoples.length > 0 ? (
+              <DefaultTable tbh={['Código', 'CNPJ/CPF', 'Razão Social/Nome']}>
+                <tbody>
+                  {peoples.map(people => (
                     <tr key={people.code}>
                       <td>{people.code}</td>
                       <td>{people.cnpj || people.cpf}</td>
@@ -95,8 +96,11 @@ const ListPeople: React.FC = () => {
                       </td>
                     </tr>
                   ))}
-              </tbody>
-            </DefaultTable>
+                </tbody>
+              </DefaultTable>
+            ) : (
+              <EmptyData />
+            )}
             <Modal
               visible={visibleModalShare}
               setVisible={setVisibleModalShare}

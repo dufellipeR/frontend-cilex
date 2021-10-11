@@ -11,6 +11,7 @@ import DefaultTable from '../../../components/DefaultTable';
 import ChangeCompany from '../../../components/ChangeCompany';
 import Header from '../../../components/Header';
 import ButtonBack from '../../../components/ButtonBack';
+import EmptyData from '../../../components/EmptyData';
 
 import { Container, Main } from './styles';
 
@@ -40,10 +41,10 @@ const ListRole: React.FC = () => {
           <div id="align-content">
             <ButtonBack destinationBack="/menu" />
             <NewButton to="/role/register">Novo</NewButton>
-            <DefaultTable tbh={['Código', 'Cargo', 'Função']}>
-              <tbody>
-                {roles &&
-                  roles.map(role => (
+            {roles.length > 0 ? (
+              <DefaultTable tbh={['Código', 'Cargo', 'Função']}>
+                <tbody>
+                  {roles.map(role => (
                     <tr key={role.id}>
                       <td>{role.code}</td>
                       <td>{role.role}</td>
@@ -58,8 +59,11 @@ const ListRole: React.FC = () => {
                       </td>
                     </tr>
                   ))}
-              </tbody>
-            </DefaultTable>
+                </tbody>
+              </DefaultTable>
+            ) : (
+              <EmptyData />
+            )}
           </div>
         </Main>
       </Container>

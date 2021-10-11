@@ -9,6 +9,7 @@ import NewButton from '../../../../components/NewButton';
 import DefaultTable from '../../../../components/DefaultTable';
 import Header from '../../../../components/Header';
 import ButtonBack from '../../../../components/ButtonBack';
+import EmptyData from '../../../../components/EmptyData';
 
 import { Container, Main } from './styles';
 
@@ -28,24 +29,28 @@ const ListFamily: React.FC = () => {
         <div id="align-content">
           <ButtonBack destinationBack="/inventory" />
           <NewButton to="/inventory/family/register">Novo</NewButton>
-          <DefaultTable tbh={['Código', 'Família']}>
-            <tbody>
-              {families.map(family => (
-                <tr key={family.code}>
-                  <td>{family.code}</td>
-                  <td>{family.description}</td>
-                  <td>
-                    <Link
-                      style={{ textDecoration: 'none' }}
-                      to={`/inventory/family/${family.code}`}
-                    >
-                      <FiEye size={24} color={theme.main} />
-                    </Link>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </DefaultTable>
+          {families.length > 0 ? (
+            <DefaultTable tbh={['Código', 'Família']}>
+              <tbody>
+                {families.map(family => (
+                  <tr key={family.code}>
+                    <td>{family.code}</td>
+                    <td>{family.description}</td>
+                    <td>
+                      <Link
+                        style={{ textDecoration: 'none' }}
+                        to={`/inventory/family/${family.code}`}
+                      >
+                        <FiEye size={24} color={theme.main} />
+                      </Link>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </DefaultTable>
+          ) : (
+            <EmptyData />
+          )}
         </div>
       </Main>
     </Container>
