@@ -22,6 +22,8 @@ import {
   Container,
   Main,
   HeaderContent,
+  ContainerProductData,
+  InfoCard,
   FormCustom,
   ContainerInputFile,
 } from './styles';
@@ -72,9 +74,9 @@ const formSchemaProduct = Yup.object().shape({
 });
 
 const types = [
-  { id: 1, name: 'Tipo 1' },
-  { id: 2, name: 'Tipo 2' },
-  { id: 3, name: 'Tipo 3' },
+  { id: 'Tipo 1', name: 'Tipo 1' },
+  { id: 'Tipo 2', name: 'Tipo 2' },
+  { id: 'Tipo 3', name: 'Tipo 3' },
 ];
 
 const EditProduct: React.FC = () => {
@@ -88,23 +90,23 @@ const EditProduct: React.FC = () => {
   const [editting, setEditting] = useState<boolean>(false);
   const [showModalDelete, setShowModalDelete] = useState<boolean>(false);
   const [product, setProduct] = useState<RegisterProductForm | null>({
-    code: 'Asd',
-    description: 'Asd',
+    code: '1000',
+    description: 'Shampoo',
     type: 'Asd',
 
-    group: 'Asd',
-    subGroup: 'Asd',
+    group: 'Tipo 1',
+    subGroup: 'Tipo 2',
 
-    family: 'Asd',
-    subFamily: 'Asd',
+    family: 'Tipo 3',
+    subFamily: 'Tipo 2',
 
-    application: 'Asd',
-    dimension: 'Asd',
+    application: 'Tipo 1',
+    dimension: 'Tipo 2',
 
-    umPurchase: 'Asd',
-    umUse: 'Asd',
+    umPurchase: 'Tipo 3',
+    umUse: 'Tipo 3',
 
-    technicalDescription: 'Asd',
+    technicalDescription: 'Tipo 3',
     techicalDrawing: null,
     photo: null,
   });
@@ -176,7 +178,7 @@ const EditProduct: React.FC = () => {
   return (
     <>
       <Container>
-        <Header pageName="Editar Grupo" />
+        <Header pageName="Editar Produto" />
         {product && (
           <Main>
             <HeaderContent>
@@ -202,6 +204,31 @@ const EditProduct: React.FC = () => {
                 </Button>
               </div>
             </HeaderContent>
+
+            <ContainerProductData>
+              <InfoCard>
+                <h4>Grupo</h4>
+                <span> {product.group}</span>
+                <span> {product.subGroup}</span>
+              </InfoCard>
+              <InfoCard>
+                <h4>Família</h4>
+                <span>{product.family}</span>
+                <span>{product.subFamily}</span>
+              </InfoCard>
+              <InfoCard>
+                <h4>Quantidades</h4>
+                <span>{product.application}</span>
+                <span>{product.dimension}</span>
+              </InfoCard>
+              <InfoCard />
+              <InfoCard>
+                <h4>Medidas</h4>
+                <span>{product.umPurchase}</span>
+                <span>{product.umUse}</span>
+              </InfoCard>
+              <InfoCard />
+            </ContainerProductData>
 
             {editting && (
               <Formik

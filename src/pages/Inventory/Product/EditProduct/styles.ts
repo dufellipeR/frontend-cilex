@@ -39,6 +39,33 @@ export const HeaderContent = styled.div`
   }
 `;
 
+export const ContainerProductData = styled.div`
+  display: grid;
+  grid-template-columns: repeat(3, 30%);
+  justify-content: space-around;
+  align-items: center;
+
+  margin: 4rem 2rem;
+`;
+
+export const InfoCard = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 0.5rem 0;
+
+  h4 {
+    font-weight: bold;
+    color: ${props => props.theme.main};
+  }
+
+  span {
+    max-width: 100%;
+    word-break: break-all;
+    text-align: center;
+  }
+`;
+
 export const FormCustom = styled.form`
   margin: 2rem 4rem;
 
