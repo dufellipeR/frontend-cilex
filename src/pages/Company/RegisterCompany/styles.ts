@@ -90,10 +90,18 @@ export const Module = styled.div<ModuleProps>`
   .back {
     width: 100%;
     height: 100%;
+    overflow-y: overlay;
     position: absolute;
     top: 0;
     left: 0;
     backface-visibility: hidden;
+
+    ::-webkit-scrollbar {
+      width: 2px;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: ${props => props.theme.main};
+    }
   }
 
   .front {
@@ -128,9 +136,15 @@ export const Module = styled.div<ModuleProps>`
       display: flex;
       align-items: center;
       gap: 1rem;
+      margin: 4px 0;
+      border-bottom: 1px solid #fff;
 
       i {
         font-size: 1rem;
+      }
+
+      p {
+        text-align: start;
       }
     }
 
