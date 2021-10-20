@@ -10,6 +10,8 @@ import customized from './styles/theme/customized';
 import Routes from './routes';
 import AppProvider from './hooks';
 
+import { useToggleTheme } from './hooks/useToggleTheme';
+
 import 'react-toastify/dist/ReactToastify.css';
 import GlobalStyle from './styles/global';
 
@@ -22,12 +24,12 @@ toast.configure({
 });
 
 const App: React.FC = () => {
-  const [theme, setTheme] = usePersistedState<DefaultTheme>('theme', orange);
+  const { theme } = useToggleTheme();
 
   return (
     <BrowserRouter>
       <AppProvider>
-        <ThemeProvider theme={theme.title === 'orange' ? orange : customized}>
+        <ThemeProvider theme={theme}>
           <Routes />
           <GlobalStyle />
         </ThemeProvider>
