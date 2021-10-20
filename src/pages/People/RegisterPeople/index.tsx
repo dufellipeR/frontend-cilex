@@ -1,11 +1,12 @@
 /* eslint-disable jsx-a11y/label-has-for */
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState, useContext } from 'react';
 import { useHistory } from 'react-router-dom';
 import * as Yup from 'yup';
 import { Formik } from 'formik';
 import Switch from 'react-switch';
 import { FiSave } from 'react-icons/fi';
 import { toast } from 'react-toastify';
+import { ThemeContext } from 'styled-components';
 
 import { useAuth } from '../../../hooks/auth';
 import api from '../../../services/api';
@@ -16,7 +17,6 @@ import {
   unformatCEP,
   unformatCNPJ,
 } from '../../../utils/unformat';
-import { theme } from '../../../App';
 
 import Button from '../../../components/Button';
 import Header from '../../../components/Header';
@@ -69,6 +69,7 @@ const optionsSelect = [
 const RegisterPeople: React.FC = () => {
   const history = useHistory();
   const { user } = useAuth();
+  const { colors } = useContext(ThemeContext);
 
   const [isPhysicalPerson, setIsPhysicalPerson] = useState(false);
   const [roles, setRoles] = useState<IRole[]>([]);
@@ -202,8 +203,8 @@ const RegisterPeople: React.FC = () => {
                       checked={isPhysicalPerson}
                       checkedIcon={false}
                       uncheckedIcon={false}
-                      onColor={theme.main}
-                      offColor={theme.main}
+                      onColor={colors.main}
+                      offColor={colors.main}
                     />
                     <p>Pessoa Física</p>
                   </div>

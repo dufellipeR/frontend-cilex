@@ -60,7 +60,7 @@ export const InfoCard = styled.div`
 
   h4 {
     font-weight: bold;
-    color: ${props => props.theme.main};
+    color: ${props => props.theme.colors.main};
   }
 
   span {
@@ -72,8 +72,8 @@ export const InfoCard = styled.div`
 
 export const Badge = styled.span`
   background-color: transparent;
-  border: 1px solid ${props => props.theme.main};
-  color: ${props => props.theme.main};
+  border: 1px solid ${props => props.theme.colors.main};
+  color: ${props => props.theme.colors.main};
   padding: 5px;
 
   @media (max-width: 900px) {

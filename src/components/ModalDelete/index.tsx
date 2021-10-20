@@ -1,9 +1,9 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { MdClose } from 'react-icons/md';
+import { ThemeContext } from 'styled-components';
 
 import Button from '../Button';
 
-import { theme } from '../../App';
 import { Background, Content } from './styles';
 
 interface ModalDeleteProps {
@@ -21,6 +21,8 @@ const ModalDelete: React.FC<ModalDeleteProps> = ({
   heightRem = 15,
   actionToDelete,
 }) => {
+  const { colors } = useContext(ThemeContext);
+
   return visible ? (
     <Background>
       <Content widthRem={widthRem} heightRem={heightRem}>
@@ -31,7 +33,7 @@ const ModalDelete: React.FC<ModalDeleteProps> = ({
             setVisible(false);
           }}
         >
-          <MdClose size={20} color={theme.main} />
+          <MdClose size={20} color={colors.main} />
         </button>
         <h3>Realmente deseja excluir essa informação ?</h3>
 

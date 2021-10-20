@@ -5,8 +5,8 @@ export const Container = styled.button`
   bottom: 1rem;
   left: 1rem;
 
-  background: ${props => props.theme.main};
-  border: 1px solid ${props => props.theme.main};
+  background: ${props => props.theme.colors.main};
+  border: 1px solid ${props => props.theme.colors.main};
   border-radius: 50%;
   border: 0;
 
@@ -17,6 +17,6 @@ export const Container = styled.button`
   align-items: center;
 
   &:hover {
-    background: ${props => props.theme.mainHover};
+    background: ${props => props.theme.colors.mainHover};
   }
 `;

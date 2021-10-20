@@ -1,13 +1,13 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState, useContext } from 'react';
 import { useHistory, useParams } from 'react-router-dom';
 import * as Yup from 'yup';
 import { Formik } from 'formik';
 import { FiSave } from 'react-icons/fi';
 import { HiOutlinePencilAlt, HiOutlineTrash } from 'react-icons/hi';
 import { toast } from 'react-toastify';
+import { ThemeContext } from 'styled-components';
 
 import api from '../../../../services/api';
-import { theme } from '../../../../App';
 import { useCrudModules } from '../../../../hooks/useCrudModules';
 
 import Header from '../../../../components/Header';
@@ -32,6 +32,7 @@ const formSchemaUMUse = Yup.object().shape({
 
 const EditUMUse: React.FC = () => {
   const history = useHistory();
+  const { colors } = useContext(ThemeContext);
   const { id }: any = useParams();
   const { deleteDataFromModule } = useCrudModules();
 
@@ -94,7 +95,7 @@ const EditUMUse: React.FC = () => {
                   layoutColor="button-outline"
                   onClick={() => setShowModalDelete(true)}
                 >
-                  <HiOutlineTrash size={24} color={theme.main} />
+                  <HiOutlineTrash size={24} color={colors.main} />
                 </Button>
               </div>
             </HeaderContent>

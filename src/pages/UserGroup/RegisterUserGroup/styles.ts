@@ -44,7 +44,7 @@ export const FormCustom = styled.form`
     width: 100%;
 
     .bi {
-      color: ${props => props.theme.main};
+      color: ${props => props.theme.colors.main};
     }
   }
 `;

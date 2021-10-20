@@ -16,7 +16,7 @@ export const Container = styled.select<ContainerStatusProps>`
   ${props =>
     props.isFocus &&
     css`
-      border-color: ${props.theme.main};
+      border-color: ${props.theme.colors.main};
     `}
 
   ${props =>

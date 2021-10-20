@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState, useContext } from 'react';
 import { useHistory, useParams } from 'react-router-dom';
 import * as Yup from 'yup';
 import { Formik } from 'formik';
@@ -10,9 +10,9 @@ import {
   HiOutlineUser,
 } from 'react-icons/hi';
 import { toast } from 'react-toastify';
+import { ThemeContext } from 'styled-components';
 
 import api from '../../../services/api';
-import { theme } from '../../../App';
 import { maskPhone, maskCPF, maskCEP, maskCNPJ } from '../../../utils/masks';
 import {
   unformatTel,
@@ -69,6 +69,7 @@ export interface IRole {
 
 const EditPeople: React.FC = () => {
   const history = useHistory();
+  const { colors } = useContext(ThemeContext);
   const { id }: any = useParams();
 
   const [editting, setEditting] = useState<boolean>(false);
@@ -216,7 +217,7 @@ const EditPeople: React.FC = () => {
                 <ButtonBack destinationBack="/people" />
               </div>
               <div id="container-titles">
-                <HiOutlineUser size={32} color={theme.main} />
+                <HiOutlineUser size={32} color={colors.main} />
                 <div>
                   <h2>{person.nome ? person.nome : person.nome_fantasia}</h2>
                   {person.razao_social && <p>{person.razao_social}</p>}
@@ -234,7 +235,7 @@ const EditPeople: React.FC = () => {
                   layoutColor="button-outline"
                   onClick={() => setShowModalDelete(true)}
                 >
-                  <HiOutlineTrash size={24} color={theme.main} />
+                  <HiOutlineTrash size={24} color={colors.main} />
                 </Button>
               </div>
             </HeaderContent>
@@ -294,8 +295,8 @@ const EditPeople: React.FC = () => {
                           checked={isPhysicalPerson}
                           checkedIcon={false}
                           uncheckedIcon={false}
-                          onColor={theme.main}
-                          offColor={theme.main}
+                          onColor={colors.main}
+                          offColor={colors.main}
                         />
                         <p>Pessoa Física</p>
                       </div>

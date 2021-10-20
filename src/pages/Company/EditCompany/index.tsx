@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState, useContext } from 'react';
 import { useHistory, useParams } from 'react-router-dom';
 import * as Yup from 'yup';
 import { Formik } from 'formik';
@@ -9,10 +9,10 @@ import {
   HiOutlineTrash,
 } from 'react-icons/hi';
 import { toast } from 'react-toastify';
+import { ThemeContext } from 'styled-components';
 
 import { useAuth } from '../../../hooks/auth';
 import api from '../../../services/api';
-import { theme } from '../../../App';
 import { maskPhone, maskCEP, maskCNPJ } from '../../../utils/masks';
 
 import Header from '../../../components/Header';
@@ -67,6 +67,7 @@ interface MatrizID {
 
 const EditCompany: React.FC = () => {
   const history = useHistory();
+  const { colors } = useContext(ThemeContext);
   const { user } = useAuth();
   const { id } = useParams();
 
@@ -180,7 +181,7 @@ const EditCompany: React.FC = () => {
                 <ButtonBack destinationBack="/company" />
               </div>
               <div id="company-titles">
-                <HiOutlineOfficeBuilding size={32} color={theme.main} />
+                <HiOutlineOfficeBuilding size={32} color={colors.main} />
                 <div>
                   <h2>{company.razao_social}</h2>
                   <p>{company.nome_fantasia}</p>
@@ -202,7 +203,7 @@ const EditCompany: React.FC = () => {
                   layoutColor="button-outline"
                   onClick={() => setShowModalDelete(true)}
                 >
-                  <HiOutlineTrash size={24} color={theme.main} />
+                  <HiOutlineTrash size={24} color={colors.main} />
                 </Button>
               </div>
             </HeaderContent>

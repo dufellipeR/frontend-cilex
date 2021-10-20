@@ -1,14 +1,6 @@
 import { createGlobalStyle } from 'styled-components';
 
-interface ThemeProps {
-  theme: {
-    main: string;
-    mainHover: string;
-    greenColor: string;
-  };
-}
-
-export default createGlobalStyle<ThemeProps>`
+export default createGlobalStyle`
   * {
     margin: 0;
     padding: 0;
@@ -45,22 +37,22 @@ export default createGlobalStyle<ThemeProps>`
   }
 
   .button-filled {
-    background: ${props => props.theme.main};
+    background: ${props => props.theme.colors.main};
     color: #fff;
 
     &:hover {
-      background-color: ${props => props.theme.mainHover};
+      background-color: ${props => props.theme.colors.mainHover};
     }
   }
 
   .button-outline {
     background: rgba(0, 0, 0, 0);
-    color: ${props => props.theme.main};
-    border: 1px solid ${props => props.theme.main};
+    color: ${props => props.theme.colors.main};
+    border: 1px solid ${props => props.theme.colors.main};
   }
 
   .button-green {
-    background-color: ${props => props.theme.greenColor};
+    background-color: ${props => props.theme.colors.green};
     color: #fff;
   }
 `;

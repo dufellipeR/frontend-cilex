@@ -1,8 +1,7 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useContext } from 'react';
 import { useHistory } from 'react-router-dom';
 import { HiOutlineArrowLeft } from 'react-icons/hi';
-
-import { theme } from '../../App';
+import { ThemeContext } from 'styled-components';
 
 import { Container } from './styles';
 
@@ -12,6 +11,7 @@ interface ButtonBackProps {
 
 const ButtonBack: React.FC<ButtonBackProps> = ({ destinationBack }) => {
   const history = useHistory();
+  const { colors } = useContext(ThemeContext);
 
   const handleBack = useCallback((): void => {
     history.push(destinationBack);
@@ -19,7 +19,7 @@ const ButtonBack: React.FC<ButtonBackProps> = ({ destinationBack }) => {
 
   return (
     <Container type="button" onClick={() => handleBack()}>
-      <HiOutlineArrowLeft size={42} color={theme.main} />
+      <HiOutlineArrowLeft size={42} color={colors.main} />
     </Container>
   );
 };

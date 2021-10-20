@@ -10,6 +10,8 @@ import Menu from '../pages/Menu';
 
 import Module from '../pages/Module';
 
+import GeneralParams from '../pages/GeneralParams';
+
 import MenuUsers from '../pages/MenuUsers';
 import ListUserActive from '../pages/UserActive/ListUserActive';
 import EditUserActive from '../pages/UserActive/EditUserActive';
@@ -87,6 +89,8 @@ const Routes: React.FC = () => {
       <Route path="/menu" exact component={Menu} />
 
       <Route path="/module" exact component={Module} />
+
+      <Route path="/generalParams" component={GeneralParams} />
 
       <Route path="/menu/users" component={MenuUsers} />
       <Route path="/users/active" component={ListUserActive} />

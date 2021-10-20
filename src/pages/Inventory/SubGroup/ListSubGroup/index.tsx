@@ -1,9 +1,7 @@
-import React from 'react';
-
+import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
 import { FiEye } from 'react-icons/fi';
-
-import { theme } from '../../../../App';
+import { ThemeContext } from 'styled-components';
 
 import NewButton from '../../../../components/NewButton';
 import DefaultTable from '../../../../components/DefaultTable';
@@ -14,6 +12,8 @@ import EmptyData from '../../../../components/EmptyData';
 import { Container, Main } from './styles';
 
 const ListSubGroup: React.FC = () => {
+  const { colors } = useContext(ThemeContext);
+
   const subGroups = [
     { code: 1, description: 'Sub-Grupo 01' },
     { code: 2, description: 'Sub-Grupo 02' },
@@ -41,7 +41,7 @@ const ListSubGroup: React.FC = () => {
                         style={{ textDecoration: 'none' }}
                         to={`/inventory/subgroup/${subgroup.code}`}
                       >
-                        <FiEye size={24} color={theme.main} />
+                        <FiEye size={24} color={colors.main} />
                       </Link>
                     </td>
                   </tr>

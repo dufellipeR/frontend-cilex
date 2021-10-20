@@ -40,7 +40,7 @@ export const Module = styled(Link)`
   color: #6a6c72;
   cursor: pointer;
 
-  border: 1px solid ${props => props.theme.mainHover};
+  border: 1px solid ${props => props.theme.colors.mainHover};
   border-radius: 5%;
 
   display: flex;
@@ -54,12 +54,12 @@ export const Module = styled(Link)`
   }
 
   &:hover {
-    background-color: ${props => props.theme.mainHover};
+    background-color: ${props => props.theme.colors.mainHover};
   }
 
   #notification {
     position: absolute;
-    background: ${props => props.theme.main};
+    background: ${props => props.theme.colors.main};
 
     display: flex;
     justify-content: center;

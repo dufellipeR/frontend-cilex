@@ -67,15 +67,15 @@ export const Module = styled.div<ModuleProps>`
   }
 
   .card {
-    background: ${props => props.theme.main};
+    background: ${props => props.theme.colors.main};
 
     ${props =>
       props.selected
         ? css`
-            border: 5px solid ${props.theme.greenColor};
+            border: 5px solid ${props.theme.colors.green};
           `
         : css`
-            border: 2px solid ${props.theme.mainHover};
+            border: 2px solid ${props.theme.colors.mainHover};
           `}
 
     border-radius: 5%;
@@ -100,7 +100,7 @@ export const Module = styled.div<ModuleProps>`
       width: 2px;
     }
     ::-webkit-scrollbar-thumb {
-      background: ${props => props.theme.main};
+      background: ${props => props.theme.colors.main};
     }
   }
 

@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { useContext } from 'react';
+import { ThemeContext } from 'styled-components';
 import { MdClose } from 'react-icons/md';
 
-import { theme } from '../../App';
 import { Background, Content } from './styles';
 
 interface ModalProps {
@@ -18,6 +18,8 @@ const Modal: React.FC<ModalProps> = ({
   heightRem = 0,
   children,
 }) => {
+  const { colors } = useContext(ThemeContext);
+
   return visible ? (
     <Background>
       {widthRem && heightRem ? (
@@ -29,7 +31,7 @@ const Modal: React.FC<ModalProps> = ({
               setVisible(false);
             }}
           >
-            <MdClose size={20} color={theme.main} />
+            <MdClose size={20} color={colors.main} />
           </button>
           {children}
         </Content>
@@ -42,7 +44,7 @@ const Modal: React.FC<ModalProps> = ({
               setVisible(false);
             }}
           >
-            <MdClose size={20} color={theme.main} />
+            <MdClose size={20} color={colors.main} />
           </button>
           {children}
         </Content>

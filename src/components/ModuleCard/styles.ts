@@ -11,14 +11,14 @@ export const Container = styled(Link)`
   color: #6a6c72;
   cursor: pointer;
 
-  border: 1px solid ${props => props.theme.mainHover};
+  border: 1px solid ${props => props.theme.colors.mainHover};
   border-radius: 5%;
 
   display: flex;
   flex-direction: column;
 
   .bi {
-    color: ${props => props.theme.main};
+    color: ${props => props.theme.colors.main};
     font-size: 2.5rem;
   }
 
@@ -28,12 +28,12 @@ export const Container = styled(Link)`
   }
 
   &:hover {
-    background-color: ${props => props.theme.mainHover};
+    background-color: ${props => props.theme.colors.mainHover};
   }
 
   #notification {
     position: absolute;
-    background: ${props => props.theme.main};
+    background: ${props => props.theme.colors.main};
 
     display: flex;
     justify-content: center;

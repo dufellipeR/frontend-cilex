@@ -1,9 +1,7 @@
-import React from 'react';
-
+import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
 import { FiEye } from 'react-icons/fi';
-
-import { theme } from '../../../../App';
+import { ThemeContext } from 'styled-components';
 
 import NewButton from '../../../../components/NewButton';
 import DefaultTable from '../../../../components/DefaultTable';
@@ -14,6 +12,8 @@ import EmptyData from '../../../../components/EmptyData';
 import { Container, Main } from './styles';
 
 const ListFamily: React.FC = () => {
+  const { colors } = useContext(ThemeContext);
+
   const families = [
     { code: 1, description: 'Família 01' },
     { code: 2, description: 'Família 02' },
@@ -41,7 +41,7 @@ const ListFamily: React.FC = () => {
                         style={{ textDecoration: 'none' }}
                         to={`/inventory/family/${family.code}`}
                       >
-                        <FiEye size={24} color={theme.main} />
+                        <FiEye size={24} color={colors.main} />
                       </Link>
                     </td>
                   </tr>

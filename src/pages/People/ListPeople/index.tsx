@@ -1,11 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import { Link } from 'react-router-dom';
 import { FiEye, FiShare2 } from 'react-icons/fi';
 import { Checkbox } from '@material-ui/core';
+import { ThemeContext } from 'styled-components';
 
 import { useAuth } from '../../../hooks/auth';
 import api from '../../../services/api';
-import { theme } from '../../../App';
 
 import Button from '../../../components/Button';
 import ButtonBack from '../../../components/ButtonBack';
@@ -41,6 +41,7 @@ interface UserCompany {
 
 const ListPeople: React.FC = () => {
   const { user } = useAuth();
+  const { colors } = useContext(ThemeContext);
 
   const [peoples, setPeoples] = useState<Person[]>([]);
   const [userCompanies, setUserCompanies] = useState<UserCompany[]>([]);
@@ -85,13 +86,13 @@ const ListPeople: React.FC = () => {
                           id="share"
                           onClick={() => setVisibleModalShare(true)}
                         >
-                          <FiShare2 size={24} color={theme.main} />
+                          <FiShare2 size={24} color={colors.main} />
                         </button>
                         <Link
                           style={{ textDecoration: 'none' }}
                           to={`/people/${people.id}`}
                         >
-                          <FiEye size={24} color={theme.main} />
+                          <FiEye size={24} color={colors.main} />
                         </Link>
                       </td>
                     </tr>

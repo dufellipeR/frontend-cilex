@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import { Link } from 'react-router-dom';
 import { FiEye } from 'react-icons/fi';
+import { ThemeContext } from 'styled-components';
 
 import api from '../../../services/api';
-import { theme } from '../../../App';
 
 import Header from '../../../components/Header';
 import ButtonBack from '../../../components/ButtonBack';
@@ -21,6 +21,8 @@ interface UsersPending {
 }
 
 const ListUserPending: React.FC = () => {
+  const { colors } = useContext(ThemeContext);
+
   const [usersPending, setUsersPending] = useState<UsersPending[]>([]);
 
   useEffect(() => {
@@ -50,7 +52,7 @@ const ListUserPending: React.FC = () => {
                           style={{ textDecoration: 'none' }}
                           to={`/user/pending/${user.id}`}
                         >
-                          <FiEye size={24} color={theme.main} />
+                          <FiEye size={24} color={colors.main} />
                         </Link>
                       </td>
                     </tr>

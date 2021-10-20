@@ -1,12 +1,12 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useContext } from 'react';
 import { useHistory } from 'react-router-dom';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
 import { toast } from 'react-toastify';
 import { FiSave } from 'react-icons/fi';
 import Switch from 'react-switch';
+import { ThemeContext } from 'styled-components';
 
-import { theme } from '../../../../App';
 import api from '../../../../services/api';
 
 import Button from '../../../../components/Button';
@@ -30,6 +30,7 @@ const formSchemaType = Yup.object().shape({
 
 const RegisterType: React.FC = () => {
   const history = useHistory();
+  const { colors } = useContext(ThemeContext);
 
   const [acceptStructure, setAcceptStructure] = useState(false);
 
@@ -103,7 +104,7 @@ const RegisterType: React.FC = () => {
                       checked={acceptStructure}
                       checkedIcon={false}
                       uncheckedIcon={false}
-                      onColor={theme.main}
+                      onColor={colors.main}
                     />
                   </div>
                 </div>

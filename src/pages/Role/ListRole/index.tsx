@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import { Link } from 'react-router-dom';
 import { FiEye } from 'react-icons/fi';
+import { ThemeContext } from 'styled-components';
 
 import { useAuth } from '../../../hooks/auth';
 import api from '../../../services/api';
-import { theme } from '../../../App';
 
 import NewButton from '../../../components/NewButton';
 import DefaultTable from '../../../components/DefaultTable';
@@ -24,6 +24,7 @@ export interface IRole {
 
 const ListRole: React.FC = () => {
   const { user } = useAuth();
+  const { colors } = useContext(ThemeContext);
 
   const [roles, setRoles] = useState<IRole[]>([]);
 
@@ -54,7 +55,7 @@ const ListRole: React.FC = () => {
                           style={{ textDecoration: 'none' }}
                           to={`/role/${role.id}`}
                         >
-                          <FiEye size={24} color={theme.main} />
+                          <FiEye size={24} color={colors.main} />
                         </Link>
                       </td>
                     </tr>

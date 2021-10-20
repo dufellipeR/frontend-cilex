@@ -38,7 +38,7 @@ export const Header = styled.div`
   h1 {
     font-size: 2.5rem;
     margin-bottom: 0.6rem;
-    color: ${props => props.theme.main};
+    color: ${props => props.theme.colors.main};
   }
 `;
 

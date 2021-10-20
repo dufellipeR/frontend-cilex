@@ -56,7 +56,7 @@ export const InfoCard = styled.div`
 
   h4 {
     font-weight: bold;
-    color: ${props => props.theme.main};
+    color: ${props => props.theme.colors.main};
   }
 
   span {

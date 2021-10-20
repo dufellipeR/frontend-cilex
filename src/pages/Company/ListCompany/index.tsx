@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import { Link } from 'react-router-dom';
 import { FiEye } from 'react-icons/fi';
+import { ThemeContext } from 'styled-components';
 
 import { useAuth } from '../../../hooks/auth';
 import api from '../../../services/api';
-import { theme } from '../../../App';
 
 import ButtonBack from '../../../components/ButtonBack';
 import NewButton from '../../../components/NewButton';
@@ -24,6 +24,7 @@ export interface Icompany {
 }
 
 const ListCompany: React.FC = () => {
+  const { colors } = useContext(ThemeContext);
   const { user } = useAuth();
 
   const [companies, setCompanies] = useState<Icompany[]>([]);
@@ -59,7 +60,7 @@ const ListCompany: React.FC = () => {
                             style={{ textDecoration: 'none' }}
                             to={`/company/${company.id}`}
                           >
-                            <FiEye size={24} color={theme.main} />
+                            <FiEye size={24} color={colors.main} />
                           </Link>
                         </td>
                       </tr>

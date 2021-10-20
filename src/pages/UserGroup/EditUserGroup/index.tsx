@@ -1,13 +1,13 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState, useContext } from 'react';
 import { useHistory, useParams } from 'react-router-dom';
 import * as Yup from 'yup';
 import { Formik, Field } from 'formik';
 import { FiSave } from 'react-icons/fi';
 import { HiOutlinePencilAlt, HiOutlineTrash } from 'react-icons/hi';
 import { toast } from 'react-toastify';
+import { ThemeContext } from 'styled-components';
 
 import api from '../../../services/api';
-import { theme } from '../../../App';
 
 import Header from '../../../components/Header';
 import Button from '../../../components/Button';
@@ -49,6 +49,8 @@ interface SelectFields {
 const EditUserGroup: React.FC = () => {
   const history = useHistory();
   const { id }: any = useParams();
+  const { colors } = useContext(ThemeContext);
+
   const company = localStorage.getItem('@Cilex:companySelected');
 
   const [editting, setEditting] = useState<boolean>(false);
@@ -220,7 +222,7 @@ const EditUserGroup: React.FC = () => {
                   layoutColor="button-outline"
                   onClick={() => setShowModalDelete(true)}
                 >
-                  <HiOutlineTrash size={24} color={theme.main} />
+                  <HiOutlineTrash size={24} color={colors.main} />
                 </Button>
               </div>
             </HeaderContent>

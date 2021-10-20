@@ -2,6 +2,7 @@ import React from 'react';
 import { BrowserRouter } from 'react-router-dom';
 import { Bounce, toast } from 'react-toastify';
 import { ThemeProvider } from 'styled-components';
+import orange from './styles/theme/orange';
 
 import Routes from './routes';
 import AppProvider from './hooks';
@@ -17,18 +18,12 @@ toast.configure({
   autoClose: 3000,
 });
 
-export const theme = {
-  main: '#ff7a00',
-  mainHover: 'rgba(255,122,0,0.2)',
-  greenColor: '#8DC73E',
-};
-
 const App: React.FC = () => {
   return (
     <>
       <BrowserRouter>
         <AppProvider>
-          <ThemeProvider theme={theme}>
+          <ThemeProvider theme={orange}>
             <Routes />
             <GlobalStyle />
           </ThemeProvider>

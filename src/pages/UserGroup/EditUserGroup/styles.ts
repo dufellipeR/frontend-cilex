@@ -85,7 +85,7 @@ export const ContainerListModules = styled.div`
     width: 100%;
 
     h3 {
-      color: ${props => props.theme.main};
+      color: ${props => props.theme.colors.main};
     }
 
     ul {
@@ -101,7 +101,7 @@ export const ContainerListModules = styled.div`
           background-color: transparent;
 
           .bi {
-            color: ${props => props.theme.main};
+            color: ${props => props.theme.colors.main};
             font-size: 1rem;
             margin: 0.3rem;
           }

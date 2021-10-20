@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState, useContext } from 'react';
 import { useHistory, useParams } from 'react-router-dom';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
@@ -6,8 +6,7 @@ import { toast } from 'react-toastify';
 import { FiSave } from 'react-icons/fi';
 import { HiOutlinePencilAlt } from 'react-icons/hi';
 import Switch from 'react-switch';
-
-import { theme } from '../../../App';
+import { ThemeContext } from 'styled-components';
 
 import api from '../../../services/api';
 
@@ -51,6 +50,7 @@ export interface UserGroup {
 const EditUserActive: React.FC = () => {
   const history = useHistory();
   const { id }: any = useParams();
+  const { colors } = useContext(ThemeContext);
 
   const [user, setUser] = useState<User>({} as User);
   const [userGroups, setUserGroups] = useState<UserGroup[]>([]);
@@ -145,7 +145,7 @@ const EditUserActive: React.FC = () => {
                       checked={userActive}
                       checkedIcon={false}
                       uncheckedIcon={false}
-                      onColor={theme.main}
+                      onColor={colors.main}
                     />
                     <p>Ativo</p>
                   </div>

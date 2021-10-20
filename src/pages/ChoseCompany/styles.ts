@@ -38,7 +38,7 @@ export const Header = styled.div`
   h1 {
     font-size: 2.5rem;
     margin-bottom: 0.6rem;
-    color: ${props => props.theme.main};
+    color: ${props => props.theme.colors.main};
   }
 `;
 
@@ -106,7 +106,7 @@ export const Companies = styled.div`
 export const Company = styled.button`
   display: flex;
   align-items: center;
-  border: 1px solid ${props => props.theme.main};
+  border: 1px solid ${props => props.theme.colors.main};
   border-radius: 3rem;
   padding: 1rem;
   margin-bottom: 1rem;
@@ -117,11 +117,11 @@ export const Company = styled.button`
   }
 
   svg {
-    color: ${props => props.theme.main};
+    color: ${props => props.theme.colors.main};
   }
 
   &:hover {
-    background-color: ${props => props.theme.main};
+    background-color: ${props => props.theme.colors.main};
     color: white;
 
     svg {

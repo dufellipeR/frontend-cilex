@@ -27,7 +27,7 @@ export const Main = styled.main`
     text-align: center;
 
     span:not(#activate-user) {
-      color: ${props => props.theme.main};
+      color: ${props => props.theme.colors.main};
       font-weight: bold;
     }
 
