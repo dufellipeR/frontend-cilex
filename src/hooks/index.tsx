@@ -3,15 +3,15 @@ import React from 'react';
 import { AuthProvider } from './auth';
 import { CrudModulesProvider } from './useCrudModules';
 import { HasUserCompanyProvider } from './useHasUserCompany';
-import { GeneralParamsProvider } from './useGeneralParams';
+import { ToggleThemeProvider } from './useToggleTheme';
 
 const AppProvider: React.FC = ({ children }) => (
   <AuthProvider>
-    <GeneralParamsProvider>
+    <ToggleThemeProvider>
       <HasUserCompanyProvider>
         <CrudModulesProvider>{children}</CrudModulesProvider>
       </HasUserCompanyProvider>
-    </GeneralParamsProvider>
+    </ToggleThemeProvider>
   </AuthProvider>
 );
 

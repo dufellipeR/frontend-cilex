@@ -1,11 +1,11 @@
 import { transparentize } from 'polished';
 
 export default {
-  title: 'orange',
+  title: 'customized',
 
   colors: {
-    main: '#ff7a00',
-    mainHover: transparentize(0.8, '#ff7a00'),
+    main: '#405CB8',
+    mainHover: transparentize(0.8, '#405CB8'),
     green: '#8DC73E',
   },
 };

@@ -9,6 +9,7 @@ import { HiOutlineOfficeBuilding } from 'react-icons/hi';
 import chooseSvg from '../../assets/town.svg';
 import { useAuth } from '../../hooks/auth';
 import { useHasUserCompany } from '../../hooks/useHasUserCompany';
+import { useToggleTheme } from '../../hooks/useToggleTheme';
 
 import Button from '../../components/Button';
 
@@ -33,6 +34,7 @@ const ChoseCompany: React.FC = () => {
   const history = useHistory();
   const { user, signOut } = useAuth();
   const { setHasUserCompany } = useHasUserCompany();
+  const { toggleTheme } = useToggleTheme();
 
   const [date, setDate] = useState<string[]>([]);
   const [userCompanies, setUserCompanies] = useState<IUserCompany[]>([]);
@@ -40,9 +42,10 @@ const ChoseCompany: React.FC = () => {
   const handleChoice = useCallback(
     (company: IUserCompany) => {
       localStorage.setItem('@Cilex:companySelected', JSON.stringify(company));
+      toggleTheme('customized');
       history.push('home');
     },
-    [history],
+    [history, toggleTheme],
   );
 
   useEffect(() => {
