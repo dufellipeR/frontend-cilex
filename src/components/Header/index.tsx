@@ -4,6 +4,7 @@ import { FiHome, FiPower } from 'react-icons/fi';
 
 import Logo from '../../assets/cilex-logo.png';
 import Button from '../Button';
+import { useToggleTheme } from '../../hooks/useToggleTheme';
 
 import { Container } from './styles';
 import { useAuth } from '../../hooks/auth';
@@ -22,6 +23,7 @@ interface CompanySelected {
 const Header: React.FC<HeaderProps> = ({ pageName, disabledHome = false }) => {
   const history = useHistory();
   const { signOut } = useAuth();
+  const { toggleTheme } = useToggleTheme();
 
   const [companySelected, setCompanySelected] = useState({} as CompanySelected);
 
@@ -32,8 +34,9 @@ const Header: React.FC<HeaderProps> = ({ pageName, disabledHome = false }) => {
 
   const handleLogout = useCallback((): void => {
     signOut();
+    toggleTheme('orange');
     history.push('/');
-  }, [history, signOut]);
+  }, [history, signOut, toggleTheme]);
 
   const handleHome = useCallback((): void => {
     history.push('/home');
