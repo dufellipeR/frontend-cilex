@@ -4,7 +4,7 @@ import { FiHome, FiPower } from 'react-icons/fi';
 
 import Logo from '../../assets/cilex-logo.png';
 import Button from '../Button';
-import { useToggleTheme } from '../../hooks/useToggleTheme';
+import useToggleTheme from '../../hooks/useToggleTheme';
 
 import { Container } from './styles';
 import { useAuth } from '../../hooks/auth';

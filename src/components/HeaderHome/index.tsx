@@ -5,7 +5,7 @@ import { FiPower } from 'react-icons/fi';
 import { format } from 'date-fns';
 import ptBR from 'date-fns/locale/pt-BR';
 
-import { useToggleTheme } from '../../hooks/useToggleTheme';
+import useToggleTheme from '../../hooks/useToggleTheme';
 import { useAuth } from '../../hooks/auth';
 
 import Button from '../Button';

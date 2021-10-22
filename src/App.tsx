@@ -1,16 +1,12 @@
 import React from 'react';
 import { BrowserRouter } from 'react-router-dom';
 import { Bounce, toast } from 'react-toastify';
-import { ThemeProvider, DefaultTheme } from 'styled-components';
-
-import usePersistedState from './utils/usePersistedState';
-import orange from './styles/theme/orange';
-import customized from './styles/theme/customized';
+import { ThemeProvider } from 'styled-components';
 
 import Routes from './routes';
 import AppProvider from './hooks';
 
-import { useToggleTheme } from './hooks/useToggleTheme';
+import useToggleTheme from './hooks/useToggleTheme';
 
 import 'react-toastify/dist/ReactToastify.css';
 import GlobalStyle from './styles/global';
@@ -27,14 +23,16 @@ const App: React.FC = () => {
   const { theme } = useToggleTheme();
 
   return (
-    <BrowserRouter>
+    <ThemeProvider theme={theme}>
       <AppProvider>
-        <ThemeProvider theme={theme}>
-          <Routes />
-          <GlobalStyle />
-        </ThemeProvider>
+        <div id="App">
+          <BrowserRouter>
+            <Routes />
+            <GlobalStyle />
+          </BrowserRouter>
+        </div>
       </AppProvider>
-    </BrowserRouter>
+    </ThemeProvider>
   );
 };
 

@@ -2,13 +2,13 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import App from './App';
 
-import { ToggleThemeProvider } from './hooks/useToggleTheme';
+import { ThemeContextProvider } from './context/toggleTheme';
 
 ReactDOM.render(
   <React.StrictMode>
-    <ToggleThemeProvider>
+    <ThemeContextProvider>
       <App />
-    </ToggleThemeProvider>
+    </ThemeContextProvider>
   </React.StrictMode>,
   document.getElementById('root'),
 );
