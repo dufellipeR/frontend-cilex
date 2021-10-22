@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import App from './App';
 
-import { ThemeContextProvider } from './context/toggleTheme';
+import { ThemeContextProvider } from './hooks/useToggleTheme';
 
 ReactDOM.render(
   <React.StrictMode>

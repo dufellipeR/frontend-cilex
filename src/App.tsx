@@ -6,7 +6,7 @@ import { ThemeProvider } from 'styled-components';
 import Routes from './routes';
 import AppProvider from './hooks';
 
-import useToggleTheme from './hooks/useToggleTheme';
+import { useToggleTheme } from './hooks/useToggleTheme';
 
 import 'react-toastify/dist/ReactToastify.css';
 import GlobalStyle from './styles/global';
@@ -25,12 +25,10 @@ const App: React.FC = () => {
   return (
     <ThemeProvider theme={theme}>
       <AppProvider>
-        <div id="App">
-          <BrowserRouter>
-            <Routes />
-            <GlobalStyle />
-          </BrowserRouter>
-        </div>
+        <BrowserRouter>
+          <Routes />
+          <GlobalStyle />
+        </BrowserRouter>
       </AppProvider>
     </ThemeProvider>
   );

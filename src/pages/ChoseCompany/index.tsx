@@ -6,7 +6,7 @@ import chooseSvg from '../../assets/town.svg';
 import api from '../../services/api';
 import { useAuth } from '../../hooks/auth';
 import { useHasUserCompany } from '../../hooks/useHasUserCompany';
-import useToggleTheme from '../../hooks/useToggleTheme';
+import { useToggleTheme } from '../../hooks/useToggleTheme';
 
 import HeaderHome from '../../components/HeaderHome';
 

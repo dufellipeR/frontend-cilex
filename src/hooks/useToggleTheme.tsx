@@ -1,7 +1,7 @@
-import React, { createContext } from 'react';
+import React, { createContext, useContext } from 'react';
 import { DefaultTheme } from 'styled-components';
 
-import usePersistedState from '../hooks/usePersistedState';
+import usePersistedState from './usePersistedState';
 
 import orange from '../styles/theme/orange';
 import customized from '../styles/theme/customized';
@@ -13,7 +13,7 @@ interface ThemeContextData {
 
 const ThemeContext = createContext<ThemeContextData>({} as ThemeContextData);
 
-const ThemeContextProvider: React.FC = ({ children }) => {
+export const ThemeContextProvider: React.FC = ({ children }) => {
   const [theme, setTheme] = usePersistedState<DefaultTheme>('theme', orange);
 
   const toggleTheme = (newTheme: 'orange' | 'customized') => {
@@ -21,10 +21,14 @@ const ThemeContextProvider: React.FC = ({ children }) => {
   };
 
   return (
-    <ThemeContext.Provider value={{ toggleTheme, theme }}>
+    <ThemeContext.Provider value={{ theme, toggleTheme }}>
       {children}
     </ThemeContext.Provider>
   );
 };
 
-export { ThemeContext, ThemeContextProvider };
+export const useToggleTheme = (): ThemeContextData => {
+  const context = useContext(ThemeContext);
+
+  return context;
+};
