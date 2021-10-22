@@ -5,8 +5,10 @@ import { FiPower } from 'react-icons/fi';
 import { format } from 'date-fns';
 import ptBR from 'date-fns/locale/pt-BR';
 
+import orange from '../../styles/theme/orange';
 import { useToggleTheme } from '../../hooks/useToggleTheme';
 import { useAuth } from '../../hooks/auth';
+import { useUpdateLogo } from '../../hooks/useUpdateLogo';
 
 import Button from '../Button';
 
@@ -20,6 +22,7 @@ const Header: React.FC<HeaderProps> = ({ message }) => {
   const history = useHistory();
   const { user, signOut } = useAuth();
   const { toggleTheme } = useToggleTheme();
+  const { logo } = useUpdateLogo();
 
   const [date, setDate] = useState<string[]>([]);
 
@@ -38,13 +41,15 @@ const Header: React.FC<HeaderProps> = ({ message }) => {
 
   const handleLogout = useCallback((): void => {
     signOut();
-    toggleTheme('orange');
+    toggleTheme(orange);
     history.push('/');
   }, [history, signOut, toggleTheme]);
 
   return (
     <Container>
-      <h1>Cilex</h1>
+      <div id="container-logo">
+        <img src={logo} alt="logo" />
+      </div>
 
       <Greetings>
         <h2>Bom Dia {user.name.split(' ')[0]} !</h2>

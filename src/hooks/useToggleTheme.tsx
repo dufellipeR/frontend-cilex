@@ -4,11 +4,10 @@ import { DefaultTheme } from 'styled-components';
 import usePersistedState from './usePersistedState';
 
 import orange from '../styles/theme/orange';
-import customized from '../styles/theme/customized';
 
 interface ThemeContextData {
   theme: DefaultTheme;
-  toggleTheme: (newTheme: 'orange' | 'customized') => void;
+  toggleTheme: (newTheme: DefaultTheme) => void;
 }
 
 const ThemeContext = createContext<ThemeContextData>({} as ThemeContextData);
@@ -16,8 +15,8 @@ const ThemeContext = createContext<ThemeContextData>({} as ThemeContextData);
 export const ThemeContextProvider: React.FC = ({ children }) => {
   const [theme, setTheme] = usePersistedState<DefaultTheme>('theme', orange);
 
-  const toggleTheme = (newTheme: 'orange' | 'customized') => {
-    setTheme(newTheme === 'customized' ? customized : orange);
+  const toggleTheme = (newTheme: DefaultTheme) => {
+    setTheme(newTheme.title === 'customized' ? newTheme : orange);
   };
 
   return (

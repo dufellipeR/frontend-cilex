@@ -12,12 +12,14 @@ export const Container = styled.div`
   #container-logo {
     @media (max-width: 900px) {
       img {
+        max-height: 10vh;
         width: 15vw;
       }
     }
 
     @media (min-width: 900px) {
       img {
+        max-height: 10vh;
         width: 10vw;
       }
     }

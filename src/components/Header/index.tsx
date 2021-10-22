@@ -2,12 +2,14 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { FiHome, FiPower } from 'react-icons/fi';
 
-import Logo from '../../assets/cilex-logo.png';
-import Button from '../Button';
+import orange from '../../styles/theme/orange';
 import { useToggleTheme } from '../../hooks/useToggleTheme';
+import { useAuth } from '../../hooks/auth';
+import { useUpdateLogo } from '../../hooks/useUpdateLogo';
+
+import Button from '../Button';
 
 import { Container } from './styles';
-import { useAuth } from '../../hooks/auth';
 
 interface HeaderProps {
   pageName: string;
@@ -24,6 +26,7 @@ const Header: React.FC<HeaderProps> = ({ pageName, disabledHome = false }) => {
   const history = useHistory();
   const { signOut } = useAuth();
   const { toggleTheme } = useToggleTheme();
+  const { logo } = useUpdateLogo();
 
   const [companySelected, setCompanySelected] = useState({} as CompanySelected);
 
@@ -34,7 +37,7 @@ const Header: React.FC<HeaderProps> = ({ pageName, disabledHome = false }) => {
 
   const handleLogout = useCallback((): void => {
     signOut();
-    toggleTheme('orange');
+    toggleTheme(orange);
     history.push('/');
   }, [history, signOut, toggleTheme]);
 
@@ -45,7 +48,7 @@ const Header: React.FC<HeaderProps> = ({ pageName, disabledHome = false }) => {
   return (
     <Container>
       <div id="container-logo">
-        <img src={Logo} alt="logo" />
+        <img src={logo} alt="logo" />
       </div>
 
       <div id="container-texts">
