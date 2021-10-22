@@ -14,10 +14,20 @@ export const Container = styled.div`
     margin: 0 auto;
   }
 
-  h1 {
-    font-size: 2.5rem;
-    margin-bottom: 0.6rem;
-    color: ${props => props.theme.colors.main};
+  #container-logo {
+    @media (max-width: 900px) {
+      img {
+        max-height: 10vh;
+        width: 15vw;
+      }
+    }
+
+    @media (min-width: 900px) {
+      img {
+        max-height: 10vh;
+        width: 10vw;
+      }
+    }
   }
 `;
 
