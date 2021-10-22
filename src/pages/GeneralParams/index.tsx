@@ -17,15 +17,6 @@ const GeneralParams: React.FC = () => {
   const [mainColor, setMainColor] = useState('');
   const [stateLogo, setStateLogo] = useState('');
 
-  // useEffect(() => {
-  //   if (!stateLogo) {
-  //     return;
-  //   }
-
-  //   const objectUrl = URL.createObjectURL(stateLogo);
-  //   setLogo(objectUrl);
-  // }, [stateLogo, setLogo]);
-
   const onSelectFile = (e: any) => {
     if (!e.target.files || e.target.files.length === 0) {
       return;
