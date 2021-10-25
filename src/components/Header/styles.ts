@@ -10,17 +10,21 @@ export const Container = styled.div`
   padding: 1rem 2rem;
 
   #container-logo {
+    width: 5rem;
+
     @media (max-width: 900px) {
       img {
-        max-height: 10vh;
-        width: 15vw;
+        display: block;
+        width: 100%;
+        height: auto;
       }
     }
 
     @media (min-width: 900px) {
       img {
-        max-height: 10vh;
-        width: 10vw;
+        display: block;
+        width: 100%;
+        height: auto;
       }
     }
   }

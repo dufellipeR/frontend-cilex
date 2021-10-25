@@ -2,7 +2,7 @@ import styled from 'styled-components';
 
 export const Container = styled.div`
   display: grid;
-  grid-template-columns: 0.2fr 1fr 0.3fr;
+  grid-template-columns: 15% 1fr 15%;
   text-align: center;
   align-items: center;
   margin-top: 1rem;
@@ -15,17 +15,22 @@ export const Container = styled.div`
   }
 
   #container-logo {
+    width: 5rem;
+    margin: 0 auto;
+
     @media (max-width: 900px) {
       img {
-        max-height: 10vh;
-        width: 15vw;
+        display: block;
+        width: 100%;
+        height: auto;
       }
     }
 
     @media (min-width: 900px) {
       img {
-        max-height: 10vh;
-        width: 10vw;
+        display: block;
+        width: 100%;
+        height: auto;
       }
     }
   }

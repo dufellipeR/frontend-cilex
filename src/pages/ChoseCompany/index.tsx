@@ -1,13 +1,13 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { HiOutlineOfficeBuilding } from 'react-icons/hi';
-import { transparentize } from 'polished';
+// import { transparentize } from 'polished';
 
 import chooseSvg from '../../assets/town.svg';
 import api from '../../services/api';
 import { useAuth } from '../../hooks/auth';
 import { useHasUserCompany } from '../../hooks/useHasUserCompany';
-import { useToggleTheme } from '../../hooks/useToggleTheme';
+// import { useToggleTheme } from '../../hooks/useToggleTheme';
 
 import HeaderHome from '../../components/HeaderHome';
 
@@ -23,24 +23,24 @@ const ChoseCompany: React.FC = () => {
   const history = useHistory();
   const { user } = useAuth();
   const { setHasUserCompany } = useHasUserCompany();
-  const { toggleTheme } = useToggleTheme();
+  // const { toggleTheme } = useToggleTheme();
 
   const [userCompanies, setUserCompanies] = useState<IUserCompany[]>([]);
 
   const handleChoice = useCallback(
     (company: IUserCompany) => {
       localStorage.setItem('@Cilex:companySelected', JSON.stringify(company));
-      toggleTheme({
-        title: 'customized',
-        colors: {
-          main: '#000',
-          mainHover: transparentize(0.8, '#000'),
-          green: '#8DC73E',
-        },
-      });
+      // toggleTheme({
+      //   title: 'customized',
+      //   colors: {
+      //     main: '#000',
+      //     mainHover: transparentize(0.8, '#000'),
+      //     green: '#8DC73E',
+      //   },
+      // });
       history.push('home');
     },
-    [history, toggleTheme],
+    [history /* toggleTheme */],
   );
 
   useEffect(() => {

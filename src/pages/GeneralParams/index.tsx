@@ -1,14 +1,16 @@
-import React, { useEffect, useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { transparentize } from 'polished';
 
 import { useToggleTheme } from '../../hooks/useToggleTheme';
 import { useUpdateLogo } from '../../hooks/useUpdateLogo';
 
+import camera from '../../assets/camera.svg';
+
 import Header from '../../components/Header';
 import Button from '../../components/Button';
 import ButtonBack from '../../components/ButtonBack';
 
-import { Container, Main, Section } from './styles';
+import { Container, ContainerInputFile, Main, Section } from './styles';
 
 const GeneralParams: React.FC = () => {
   const { toggleTheme } = useToggleTheme();
@@ -24,6 +26,10 @@ const GeneralParams: React.FC = () => {
 
     setStateLogo(e.target.files[0]);
   };
+
+  const previewLogo = useMemo(() => {
+    return stateLogo ? URL.createObjectURL(stateLogo) : null;
+  }, [stateLogo]);
 
   return (
     <Container>
@@ -48,8 +54,14 @@ const GeneralParams: React.FC = () => {
           <h3>Imagens</h3>
 
           <div className="box-input">
-            <span>Logo</span>
-            <input type="file" name="logo" onChange={onSelectFile} />
+            <ContainerInputFile
+              style={{ backgroundImage: `url(${previewLogo})` }}
+              hasThumb={stateLogo}
+            >
+              <span>Logo</span>
+              <input type="file" name="logo" onChange={onSelectFile} />
+              <img src={camera} alt="Select img" />
+            </ContainerInputFile>
           </div>
         </Section>
         <Button
