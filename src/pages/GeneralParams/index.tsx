@@ -5,18 +5,25 @@ import { useToggleTheme } from '../../hooks/useToggleTheme';
 import { useUpdateLogo } from '../../hooks/useUpdateLogo';
 
 import camera from '../../assets/camera.svg';
+import cilexLogo from '../../assets/cilex-logo.png';
 
 import Header from '../../components/Header';
 import Button from '../../components/Button';
 import ButtonBack from '../../components/ButtonBack';
 
-import { Container, ContainerInputFile, Main, Section } from './styles';
+import {
+  Container,
+  ContainerActions,
+  ContainerInputFile,
+  Main,
+  Section,
+} from './styles';
 
 const GeneralParams: React.FC = () => {
-  const { toggleTheme } = useToggleTheme();
+  const { theme, toggleTheme } = useToggleTheme();
   const { setLogo } = useUpdateLogo();
 
-  const [mainColor, setMainColor] = useState('');
+  const [mainColor, setMainColor] = useState(theme.colors.main);
   const [stateLogo, setStateLogo] = useState('');
 
   const onSelectFile = (e: any) => {
@@ -30,6 +37,37 @@ const GeneralParams: React.FC = () => {
   const previewLogo = useMemo(() => {
     return stateLogo ? URL.createObjectURL(stateLogo) : null;
   }, [stateLogo]);
+
+  const handleSaveParams = () => {
+    if (mainColor) {
+      toggleTheme({
+        title: 'customized',
+        colors: {
+          main: mainColor,
+          mainHover: transparentize(0.8, mainColor),
+          green: '#8DC73E',
+        },
+      });
+    }
+
+    if (stateLogo) {
+      const objectUrl = URL.createObjectURL(stateLogo);
+      setLogo(objectUrl);
+    }
+  };
+
+  const handleResetParams = () => {
+    toggleTheme({
+      title: 'orange',
+      colors: {
+        main: '#ff7a00',
+        mainHover: transparentize(0.8, '#ff7a00'),
+        green: '#8DC73E',
+      },
+    });
+
+    setLogo(cilexLogo);
+  };
 
   return (
     <Container>
@@ -64,28 +102,14 @@ const GeneralParams: React.FC = () => {
             </ContainerInputFile>
           </div>
         </Section>
-        <Button
-          onClick={() => {
-            if (mainColor) {
-              toggleTheme({
-                title: 'customized',
-                colors: {
-                  main: mainColor,
-                  mainHover: transparentize(0.8, mainColor),
-                  green: '#8DC73E',
-                },
-              });
-            }
-
-            if (stateLogo) {
-              const objectUrl = URL.createObjectURL(stateLogo);
-              setLogo(objectUrl);
-            }
-          }}
-          layoutColor="button-green"
-        >
-          Salvar
-        </Button>
+        <ContainerActions>
+          <Button onClick={handleResetParams} layoutColor="button-outline">
+            Reiniciar
+          </Button>
+          <Button onClick={handleSaveParams} layoutColor="button-green">
+            Salvar
+          </Button>
+        </ContainerActions>
       </Main>
     </Container>
   );

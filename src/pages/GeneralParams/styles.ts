@@ -63,11 +63,15 @@ export const ContainerInputFile = styled.label<InputFileProps>`
     props.hasThumb &&
     css`
       border: 0;
-      padding: 10rem;
 
       img,
       span {
         display: none;
       }
     `}
+`;
+
+export const ContainerActions = styled.div`
+  display: flex;
+  gap: 1rem;
 `;
