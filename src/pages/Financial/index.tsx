@@ -1,6 +1,7 @@
 import React from 'react';
 
 import Header from '../../components/Header';
+import ButtonBack from '../../components/ButtonBack';
 import ModuleCard from '../../components/ModuleCard';
 
 import { Container, Main } from './styles';
@@ -8,7 +9,8 @@ import { Container, Main } from './styles';
 const Financial: React.FC = () => {
   return (
     <Container>
-      <Header pageName="Estoque" />
+      <Header pageName="Financeiro" />
+      <ButtonBack destinationBack="/menu" />
       <Main>
         <ModuleCard
           to="/home"

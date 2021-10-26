@@ -1,5 +1,7 @@
 import React, { useMemo, useState } from 'react';
+import { useHistory } from 'react-router-dom';
 import { transparentize } from 'polished';
+import { toast } from 'react-toastify';
 
 import { useToggleTheme } from '../../hooks/useToggleTheme';
 import { useUpdateLogo } from '../../hooks/useUpdateLogo';
@@ -22,6 +24,7 @@ import {
 const GeneralParams: React.FC = () => {
   const { theme, toggleTheme } = useToggleTheme();
   const { setLogo } = useUpdateLogo();
+  const history = useHistory();
 
   const [mainColor, setMainColor] = useState(theme.colors.main);
   const [stateLogo, setStateLogo] = useState('');
@@ -54,6 +57,9 @@ const GeneralParams: React.FC = () => {
       const objectUrl = URL.createObjectURL(stateLogo);
       setLogo(objectUrl);
     }
+
+    toast.success('Parâmetros atualizados!');
+    history.push('/menu');
   };
 
   const handleResetParams = () => {
@@ -67,6 +73,7 @@ const GeneralParams: React.FC = () => {
     });
 
     setLogo(cilexLogo);
+    toast.success('Parâmetros reiniciados!');
   };
 
   return (
