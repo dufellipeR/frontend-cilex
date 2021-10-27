@@ -23,8 +23,10 @@ interface RegisterTypeForm {
 }
 
 const formSchemaType = Yup.object().shape({
-  code: Yup.string().required('Código Obrigatório'),
-  description: Yup.string().required('Descrição Obrigatório'),
+  code: Yup.string()
+    .required('Código Obrigatório')
+    .max(6, 'Tamanho máximo de 6 caracteres'),
+  description: Yup.string().required('Descrição Obrigatória'),
   acceptStructure: Yup.boolean(),
 });
 
@@ -39,10 +41,10 @@ const RegisterType: React.FC = () => {
       try {
         const { code, description } = data;
         api
-          .post('/type', {
-            code: String(code),
+          .post('/product_type', {
+            code,
             description,
-            acceptStructure,
+            accept_structure: acceptStructure,
           })
           .then(() => {
             toast.success('Registrado com sucesso');
@@ -75,9 +77,7 @@ const RegisterType: React.FC = () => {
                 <div id="align-inputs">
                   <Input
                     name="code"
-                    min={1000}
-                    max={9999}
-                    type="number"
+                    type="text"
                     placeholder="Código"
                     value={values.code}
                     onChange={handleChange('code')}
@@ -88,7 +88,7 @@ const RegisterType: React.FC = () => {
                   <Input
                     name="description"
                     type="text"
-                    placeholder="Tipo"
+                    placeholder="Descrição"
                     value={values.description}
                     onChange={handleChange('description')}
                     messageError={

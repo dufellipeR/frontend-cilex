@@ -21,13 +21,15 @@ import { Container, Main, HeaderContent, FormCustom } from './styles';
 
 interface RegisterTypeForm {
   code: string;
+  accept_structure: boolean;
   description: string;
-  acceptStructure: boolean;
 }
 
 const formSchemaType = Yup.object().shape({
-  code: Yup.string().required('Código Obrigatório'),
-  description: Yup.string().required('Descrição Obrigatório'),
+  code: Yup.string()
+    .required('Código Obrigatório')
+    .max(6, 'Tamanho máximo de 6 caracteres'),
+  description: Yup.string().required('Descrição Obrigatória'),
   acceptStructure: Yup.boolean(),
 });
 
@@ -40,16 +42,12 @@ const EditType: React.FC = () => {
   const [editting, setEditting] = useState<boolean>(false);
   const [showModalDelete, setShowModalDelete] = useState<boolean>(false);
   const [acceptStructure, setAcceptStructure] = useState(false);
-  const [type, setType] = useState<RegisterTypeForm | null>({
-    code: '1',
-    description: 'Asd',
-    acceptStructure: true,
-  });
+  const [type, setType] = useState({} as RegisterTypeForm);
 
   useEffect(() => {
-    api.get<RegisterTypeForm | null>(`/type/${id}`).then(response => {
+    api.get<RegisterTypeForm>(`/product_type/${id}`).then(response => {
       setType(response.data);
-      if (response.data) setAcceptStructure(response.data.acceptStructure);
+      if (response.data) setAcceptStructure(response.data.accept_structure);
     });
   }, [id]);
 
@@ -57,17 +55,17 @@ const EditType: React.FC = () => {
     async (data: RegisterTypeForm) => {
       try {
         api
-          .put(`/type/${id}`, {
-            code: String(data.code),
+          .put(`/product_type/${id}`, {
+            code: data.code,
             description: data.description,
-            acceptStructure,
+            accept_structure: acceptStructure,
           })
           .then(() => {
             toast.success('Atualizado com sucesso');
             history.push('/inventory');
           });
-      } catch (err) {
-        toast.error('Ocorreu um erro na atualização do Cargo!');
+      } catch {
+        toast.error('Ocorreu um erro na atualização do Tipo!');
       }
     },
     [history, id, acceptStructure],
@@ -81,14 +79,14 @@ const EditType: React.FC = () => {
           <Main>
             <HeaderContent>
               <div id="container-arrow">
-                <ButtonBack destinationBack="/inventory" />
+                <ButtonBack destinationBack="/inventory/type" />
               </div>
               <div id="container-titles">
                 <h2>{type.code}</h2>
                 <p>{type.description}</p>
                 <p>
                   Aceita Estrutura ?{' '}
-                  {type.acceptStructure === true ? 'Sim' : 'Não'}
+                  {type.accept_structure === true ? 'Sim' : 'Não'}
                 </p>
               </div>
               <div id="container-buttons-actions">
@@ -112,7 +110,7 @@ const EditType: React.FC = () => {
                 initialValues={{
                   code: type.code,
                   description: type.description,
-                  acceptStructure: type.acceptStructure,
+                  accept_structure: type.accept_structure,
                 }}
                 validationSchema={formSchemaType}
                 onSubmit={handleSubmitForm}
@@ -122,9 +120,7 @@ const EditType: React.FC = () => {
                     <div id="align-inputs">
                       <Input
                         name="code"
-                        min={1000}
-                        max={9999}
-                        type="number"
+                        type="text"
                         placeholder="Código"
                         value={values.code}
                         onChange={handleChange('code')}
@@ -135,7 +131,7 @@ const EditType: React.FC = () => {
                       <Input
                         name="description"
                         type="text"
-                        placeholder="Tipo"
+                        placeholder="Descrição"
                         value={values.description}
                         onChange={handleChange('description')}
                         messageError={

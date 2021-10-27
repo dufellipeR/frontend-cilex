@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { FiEye } from 'react-icons/fi';
 import { ThemeContext } from 'styled-components';
@@ -10,17 +10,24 @@ import ButtonBack from '../../../../components/ButtonBack';
 import EmptyData from '../../../../components/EmptyData';
 
 import { Container, Main } from './styles';
+import api from '../../../../services/api';
+
+interface Type {
+  id: string;
+  code: string;
+  accept_structure: boolean;
+  description: string;
+}
 
 const ListType: React.FC = () => {
   const { colors } = useContext(ThemeContext);
+  const [types, setTypes] = useState<Type[]>([]);
 
-  const types = [
-    { code: 1, description: 'Tipo 01', accept: false },
-    { code: 2, description: 'Tipo 02', accept: true },
-    { code: 3, description: 'Tipo 03', accept: false },
-    { code: 4, description: 'Tipo 04', accept: true },
-    { code: 5, description: 'Tipo 05', accept: false },
-  ];
+  useEffect(() => {
+    api.get('/product_type').then(response => {
+      setTypes(response.data);
+    });
+  }, []);
 
   return (
     <Container>
@@ -36,11 +43,11 @@ const ListType: React.FC = () => {
                   <tr key={type.code}>
                     <td>{type.code}</td>
                     <td>{type.description}</td>
-                    <td>{type.accept === true ? 'Sim' : 'Não'}</td>
+                    <td>{type.accept_structure === true ? 'Sim' : 'Não'}</td>
                     <td>
                       <Link
                         style={{ textDecoration: 'none' }}
-                        to={`/inventory/type/${type.code}`}
+                        to={`/inventory/type/${type.id}`}
                       >
                         <FiEye size={24} color={colors.main} />
                       </Link>
