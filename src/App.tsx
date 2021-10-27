@@ -24,12 +24,12 @@ const App: React.FC = () => {
 
   return (
     <ThemeProvider theme={theme}>
-      <AppProvider>
-        <BrowserRouter>
+      <BrowserRouter>
+        <AppProvider>
           <Routes />
           <GlobalStyle />
-        </BrowserRouter>
-      </AppProvider>
+        </AppProvider>
+      </BrowserRouter>
     </ThemeProvider>
   );
 };

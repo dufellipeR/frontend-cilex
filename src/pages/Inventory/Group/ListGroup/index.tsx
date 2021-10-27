@@ -1,7 +1,9 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { FiEye } from 'react-icons/fi';
 import { ThemeContext } from 'styled-components';
+
+import api from '../../../../services/api';
 
 import NewButton from '../../../../components/NewButton';
 import DefaultTable from '../../../../components/DefaultTable';
@@ -11,16 +13,21 @@ import EmptyData from '../../../../components/EmptyData';
 
 import { Container, Main } from './styles';
 
+interface Group {
+  id: string;
+  code: string;
+  description: string;
+}
+
 const ListGroup: React.FC = () => {
   const { colors } = useContext(ThemeContext);
+  const [groups, setGroups] = useState<Group[]>([]);
 
-  const groups = [
-    { code: 1, description: 'Grupo 01' },
-    { code: 2, description: 'Grupo 02' },
-    { code: 3, description: 'Grupo 03' },
-    { code: 4, description: 'Grupo 04' },
-    { code: 5, description: 'Grupo 05' },
-  ];
+  useEffect(() => {
+    api.get('/product_group').then(response => {
+      setGroups(response.data);
+    });
+  }, []);
 
   return (
     <Container>
@@ -39,7 +46,7 @@ const ListGroup: React.FC = () => {
                     <td>
                       <Link
                         style={{ textDecoration: 'none' }}
-                        to={`/inventory/group/${group.code}`}
+                        to={`/inventory/group/${group.id}`}
                       >
                         <FiEye size={24} color={colors.main} />
                       </Link>

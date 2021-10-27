@@ -20,8 +20,10 @@ interface RegisterGroupForm {
 }
 
 const formSchemaGroup = Yup.object().shape({
-  code: Yup.string().required('Código Obrigatório'),
-  description: Yup.string().required('Grupo Obrigatório'),
+  code: Yup.string()
+    .required('Código Obrigatório')
+    .max(6, 'Tamanho máximo de 6 caracteres'),
+  description: Yup.string().required('Descrição Obrigatória'),
 });
 
 const RegisterGroup: React.FC = () => {
@@ -32,8 +34,8 @@ const RegisterGroup: React.FC = () => {
       try {
         const { code, description } = data;
         api
-          .post('/group', {
-            code: String(code),
+          .post('/product_group', {
+            code,
             description,
           })
           .then(() => {
@@ -66,20 +68,19 @@ const RegisterGroup: React.FC = () => {
                 <div id="align-inputs">
                   <Input
                     name="code"
-                    min={1000}
-                    max={9999}
-                    type="number"
+                    type="text"
                     placeholder="Código"
                     value={values.code}
                     onChange={handleChange('code')}
                     messageError={
                       errors.code && touched.code ? errors.code : ''
                     }
+                    maxLength={6}
                   />
                   <Input
                     name="description"
                     type="text"
-                    placeholder="Grupo"
+                    placeholder="Descrição"
                     value={values.description}
                     onChange={handleChange('description')}
                     messageError={

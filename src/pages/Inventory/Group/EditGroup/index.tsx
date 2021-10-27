@@ -24,8 +24,10 @@ interface RegisterGroupForm {
 }
 
 const formSchemaGroup = Yup.object().shape({
-  code: Yup.string().required('Código Obrigatório'),
-  description: Yup.string().required('Grupo Obrigatório'),
+  code: Yup.string()
+    .required('Código Obrigatório')
+    .max(6, 'Tamanho máximo de 6 caracteres'),
+  description: Yup.string().required('Descrição Obrigatória'),
 });
 
 const EditGroup: React.FC = () => {
@@ -36,13 +38,10 @@ const EditGroup: React.FC = () => {
 
   const [editting, setEditting] = useState<boolean>(false);
   const [showModalDelete, setShowModalDelete] = useState<boolean>(false);
-  const [group, setGroup] = useState<RegisterGroupForm | null>({
-    code: '1',
-    description: 'Asd',
-  });
+  const [group, setGroup] = useState({} as RegisterGroupForm);
 
   useEffect(() => {
-    api.get<RegisterGroupForm | null>(`/group/${id}`).then(response => {
+    api.get<RegisterGroupForm>(`/product_group/${id}`).then(response => {
       setGroup(response.data);
     });
   }, [id]);
@@ -51,8 +50,8 @@ const EditGroup: React.FC = () => {
     async (data: RegisterGroupForm) => {
       try {
         api
-          .put(`/group/${id}`, {
-            code: String(data.code),
+          .put(`/product_group/${id}`, {
+            code: data.code,
             description: data.description,
           })
           .then(() => {
@@ -74,7 +73,7 @@ const EditGroup: React.FC = () => {
           <Main>
             <HeaderContent>
               <div id="container-arrow">
-                <ButtonBack destinationBack="/inventory" />
+                <ButtonBack destinationBack="/inventory/group" />
               </div>
               <div id="container-titles">
                 <h2>{group.code}</h2>
@@ -110,20 +109,19 @@ const EditGroup: React.FC = () => {
                     <div id="align-inputs">
                       <Input
                         name="code"
-                        min={1000}
-                        max={9999}
-                        type="number"
+                        type="text"
                         placeholder="Código"
                         value={values.code}
                         onChange={handleChange('code')}
                         messageError={
                           errors.code && touched.code ? errors.code : ''
                         }
+                        maxLength={6}
                       />
                       <Input
                         name="description"
                         type="text"
-                        placeholder="Grupo"
+                        placeholder="Descrição"
                         value={values.description}
                         onChange={handleChange('description')}
                         messageError={
@@ -152,7 +150,7 @@ const EditGroup: React.FC = () => {
         actionToDelete={() => {
           deleteDataFromModule({
             id,
-            route: 'group',
+            route: 'product_group',
             routePush: 'inventory',
           });
         }}

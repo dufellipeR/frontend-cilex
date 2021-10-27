@@ -84,6 +84,7 @@ const RegisterType: React.FC = () => {
                     messageError={
                       errors.code && touched.code ? errors.code : ''
                     }
+                    maxLength={6}
                   />
                   <Input
                     name="description"

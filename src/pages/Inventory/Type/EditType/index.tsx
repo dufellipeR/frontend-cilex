@@ -127,6 +127,7 @@ const EditType: React.FC = () => {
                         messageError={
                           errors.code && touched.code ? errors.code : ''
                         }
+                        maxLength={6}
                       />
                       <Input
                         name="description"
@@ -170,7 +171,7 @@ const EditType: React.FC = () => {
         actionToDelete={() => {
           deleteDataFromModule({
             id,
-            route: 'type',
+            route: 'product_type',
             routePush: 'inventory',
           });
         }}
