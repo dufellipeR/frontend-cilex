@@ -14,6 +14,18 @@ const Inventory: React.FC = () => {
       <Main>
         <ModuleCard
           to="/inventory/product"
+          classIcon="bi bi-arrow-left-right"
+          title="Transações"
+          description="Gerencie suas transações"
+        />
+        <ModuleCard
+          to="/inventory/product"
+          classIcon="bi bi-handbag"
+          title="Estoques"
+          description="Gerencie seus estoques"
+        />
+        <ModuleCard
+          to="/inventory/product"
           classIcon="bi bi-box-seam"
           title="Produtos"
           description="Gerencie seus produtos"
