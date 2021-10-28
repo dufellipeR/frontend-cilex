@@ -20,8 +20,10 @@ interface RegisterFamilyForm {
 }
 
 const formSchemaFamily = Yup.object().shape({
-  code: Yup.string().required('Código Obrigatório'),
-  description: Yup.string().required('Família Obrigatória'),
+  code: Yup.string()
+    .required('Código Obrigatório')
+    .max(6, 'Tamanho máximo de 6 caracteres'),
+  description: Yup.string().required('Descrição Obrigatória'),
 });
 
 const RegisterFamily: React.FC = () => {
@@ -32,8 +34,8 @@ const RegisterFamily: React.FC = () => {
       try {
         const { code, description } = data;
         api
-          .post('/family', {
-            code: String(code),
+          .post('/product_family', {
+            code,
             description,
           })
           .then(() => {
@@ -66,9 +68,7 @@ const RegisterFamily: React.FC = () => {
                 <div id="align-inputs">
                   <Input
                     name="code"
-                    min={1000}
-                    max={9999}
-                    type="number"
+                    type="text"
                     placeholder="Código"
                     value={values.code}
                     onChange={handleChange('code')}
@@ -79,7 +79,7 @@ const RegisterFamily: React.FC = () => {
                   <Input
                     name="description"
                     type="text"
-                    placeholder="Família"
+                    placeholder="Descrição"
                     value={values.description}
                     onChange={handleChange('description')}
                     messageError={

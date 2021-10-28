@@ -24,8 +24,10 @@ interface RegisterFamilyForm {
 }
 
 const formSchemaFamily = Yup.object().shape({
-  code: Yup.string().required('Código Obrigatório'),
-  description: Yup.string().required('Família Obrigatória'),
+  code: Yup.string()
+    .required('Código Obrigatório')
+    .max(6, 'Tamanho máximo de 6 caracteres'),
+  description: Yup.string().required('Descrição Obrigatória'),
 });
 
 const EditFamily: React.FC = () => {
@@ -36,13 +38,10 @@ const EditFamily: React.FC = () => {
 
   const [editting, setEditting] = useState<boolean>(false);
   const [showModalDelete, setShowModalDelete] = useState<boolean>(false);
-  const [family, setFamily] = useState<RegisterFamilyForm | null>({
-    code: '1',
-    description: 'Asd',
-  });
+  const [family, setFamily] = useState({} as RegisterFamilyForm);
 
   useEffect(() => {
-    api.get<RegisterFamilyForm | null>(`/family/${id}`).then(response => {
+    api.get<RegisterFamilyForm>(`/product_family/${id}`).then(response => {
       setFamily(response.data);
     });
   }, [id]);
@@ -51,8 +50,8 @@ const EditFamily: React.FC = () => {
     async (data: RegisterFamilyForm) => {
       try {
         api
-          .put(`/family/${id}`, {
-            code: String(data.code),
+          .put(`/product_family/${id}`, {
+            code: data.code,
             description: data.description,
           })
           .then(() => {
@@ -60,7 +59,7 @@ const EditFamily: React.FC = () => {
             history.push('/inventory');
           });
       } catch (err) {
-        toast.error('Ocorreu um erro na atualização do Cargo!');
+        toast.error('Ocorreu um erro na atualização da Família');
       }
     },
     [history, id],
@@ -110,9 +109,7 @@ const EditFamily: React.FC = () => {
                     <div id="align-inputs">
                       <Input
                         name="code"
-                        min={1000}
-                        max={9999}
-                        type="number"
+                        type="text"
                         placeholder="Código"
                         value={values.code}
                         onChange={handleChange('code')}
@@ -123,7 +120,7 @@ const EditFamily: React.FC = () => {
                       <Input
                         name="description"
                         type="text"
-                        placeholder="Família"
+                        placeholder="Descrição"
                         value={values.description}
                         onChange={handleChange('description')}
                         messageError={
@@ -152,7 +149,7 @@ const EditFamily: React.FC = () => {
         actionToDelete={() => {
           deleteDataFromModule({
             id,
-            route: 'family',
+            route: 'product_family',
             routePush: 'inventory',
           });
         }}

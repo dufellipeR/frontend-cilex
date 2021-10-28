@@ -41,7 +41,7 @@ const ListType: React.FC = () => {
             <DefaultTable tbh={['Código', 'Tipo', 'Aceita Estrutura?']}>
               <tbody>
                 {types.map(type => (
-                  <tr key={type.code}>
+                  <tr key={type.id}>
                     <td>{type.code}</td>
                     <td>{type.description}</td>
                     <td>{type.accept_structure === true ? 'Sim' : 'Não'}</td>

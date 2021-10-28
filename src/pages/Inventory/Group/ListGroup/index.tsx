@@ -40,7 +40,7 @@ const ListGroup: React.FC = () => {
             <DefaultTable tbh={['Código', 'Grupo']}>
               <tbody>
                 {groups.map(group => (
-                  <tr key={group.code}>
+                  <tr key={group.id}>
                     <td>{group.code}</td>
                     <td>{group.description}</td>
                     <td>

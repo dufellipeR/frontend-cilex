@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { FiEye } from 'react-icons/fi';
 import { ThemeContext } from 'styled-components';
@@ -10,17 +10,24 @@ import ButtonBack from '../../../../components/ButtonBack';
 import EmptyData from '../../../../components/EmptyData';
 
 import { Container, Main } from './styles';
+import api from '../../../../services/api';
+
+interface Family {
+  id: string;
+  code: string;
+  description: string;
+}
 
 const ListFamily: React.FC = () => {
   const { colors } = useContext(ThemeContext);
 
-  const families = [
-    { code: 1, description: 'Família 01' },
-    { code: 2, description: 'Família 02' },
-    { code: 3, description: 'Família 03' },
-    { code: 4, description: 'Família 04' },
-    { code: 5, description: 'Família 05' },
-  ];
+  const [families, setFamilies] = useState<Family[]>([]);
+
+  useEffect(() => {
+    api.get('product_family').then(response => {
+      setFamilies(response.data);
+    });
+  }, []);
 
   return (
     <Container>
@@ -33,13 +40,13 @@ const ListFamily: React.FC = () => {
             <DefaultTable tbh={['Código', 'Família']}>
               <tbody>
                 {families.map(family => (
-                  <tr key={family.code}>
+                  <tr key={family.id}>
                     <td>{family.code}</td>
                     <td>{family.description}</td>
                     <td>
                       <Link
                         style={{ textDecoration: 'none' }}
-                        to={`/inventory/family/${family.code}`}
+                        to={`/inventory/family/${family.id}`}
                       >
                         <FiEye size={24} color={colors.main} />
                       </Link>
