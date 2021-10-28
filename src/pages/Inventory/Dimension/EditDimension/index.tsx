@@ -8,6 +8,7 @@ import { toast } from 'react-toastify';
 import { ThemeContext } from 'styled-components';
 
 import api from '../../../../services/api';
+
 import { useCrudModules } from '../../../../hooks/useCrudModules';
 
 import Header from '../../../../components/Header';
@@ -24,8 +25,10 @@ interface RegisterDimensionForm {
 }
 
 const formSchemaDimension = Yup.object().shape({
-  code: Yup.string().required('Código Obrigatório'),
-  description: Yup.string().required('Dimensão Obrigatória'),
+  code: Yup.string()
+    .required('Código Obrigatório')
+    .max(6, 'Tamanho máximo de 6 caracteres'),
+  description: Yup.string().required('Descrição Obrigatória'),
 });
 
 const EditDimension: React.FC = () => {
@@ -36,23 +39,22 @@ const EditDimension: React.FC = () => {
 
   const [editting, setEditting] = useState<boolean>(false);
   const [showModalDelete, setShowModalDelete] = useState<boolean>(false);
-  const [dimension, setDimension] = useState<RegisterDimensionForm | null>({
-    code: '1',
-    description: 'Asd',
-  });
+  const [dimension, setDimension] = useState({} as RegisterDimensionForm);
 
   useEffect(() => {
-    api.get<RegisterDimensionForm | null>(`/dimension/${id}`).then(response => {
-      setDimension(response.data);
-    });
+    api
+      .get<RegisterDimensionForm>(`/product_dimension/${id}`)
+      .then(response => {
+        setDimension(response.data);
+      });
   }, [id]);
 
   const handleSubmitForm = useCallback(
     async (data: RegisterDimensionForm) => {
       try {
         api
-          .put(`/dimension/${id}`, {
-            code: String(data.code),
+          .put(`/product_dimension/${id}`, {
+            code: data.code,
             description: data.description,
           })
           .then(() => {
@@ -110,15 +112,14 @@ const EditDimension: React.FC = () => {
                     <div id="align-inputs">
                       <Input
                         name="code"
-                        min={1000}
-                        max={9999}
-                        type="number"
+                        type="text"
                         placeholder="Código"
                         value={values.code}
                         onChange={handleChange('code')}
                         messageError={
                           errors.code && touched.code ? errors.code : ''
                         }
+                        maxLength={6}
                       />
                       <Input
                         name="description"
@@ -152,7 +153,7 @@ const EditDimension: React.FC = () => {
         actionToDelete={() => {
           deleteDataFromModule({
             id,
-            route: 'dimension',
+            route: 'product_dimension',
             routePush: 'inventory',
           });
         }}

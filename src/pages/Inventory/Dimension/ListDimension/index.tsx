@@ -1,7 +1,9 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { FiEye } from 'react-icons/fi';
 import { ThemeContext } from 'styled-components';
+
+import api from '../../../../services/api';
 
 import NewButton from '../../../../components/NewButton';
 import DefaultTable from '../../../../components/DefaultTable';
@@ -11,16 +13,22 @@ import EmptyData from '../../../../components/EmptyData';
 
 import { Container, Main } from './styles';
 
+interface Dimension {
+  id: string;
+  code: string;
+  description: string;
+}
+
 const ListDimension: React.FC = () => {
   const { colors } = useContext(ThemeContext);
 
-  const dimensions = [
-    { code: 1, description: 'Dimensão 01' },
-    { code: 2, description: 'Dimensão 02' },
-    { code: 3, description: 'Dimensão 03' },
-    { code: 4, description: 'Dimensão 04' },
-    { code: 5, description: 'Dimensão 05' },
-  ];
+  const [dimensions, setDimensions] = useState<Dimension[]>([]);
+
+  useEffect(() => {
+    api.get('/product_dimension').then(response => {
+      setDimensions(response.data);
+    });
+  }, []);
 
   return (
     <Container>
@@ -33,13 +41,13 @@ const ListDimension: React.FC = () => {
             <DefaultTable tbh={['Código', 'Dimensão']}>
               <tbody>
                 {dimensions.map(dimension => (
-                  <tr key={dimension.code}>
+                  <tr key={dimension.id}>
                     <td>{dimension.code}</td>
                     <td>{dimension.description}</td>
                     <td>
                       <Link
                         style={{ textDecoration: 'none' }}
-                        to={`/inventory/dimension/${dimension.code}`}
+                        to={`/inventory/dimension/${dimension.id}`}
                       >
                         <FiEye size={24} color={colors.main} />
                       </Link>
