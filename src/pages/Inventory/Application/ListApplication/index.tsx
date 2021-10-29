@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { FiEye } from 'react-icons/fi';
 import { ThemeContext } from 'styled-components';
@@ -10,17 +10,23 @@ import ButtonBack from '../../../../components/ButtonBack';
 import EmptyData from '../../../../components/EmptyData';
 
 import { Container, Main } from './styles';
+import api from '../../../../services/api';
+
+interface Application {
+  id: string;
+  code: string;
+  description: string;
+}
 
 const ListApplication: React.FC = () => {
   const { colors } = useContext(ThemeContext);
+  const [applications, setApplications] = useState<Application[]>([]);
 
-  const applications = [
-    { code: 1, description: 'Aplicação 01' },
-    { code: 2, description: 'Aplicação 02' },
-    { code: 3, description: 'Aplicação 03' },
-    { code: 4, description: 'Aplicação 04' },
-    { code: 5, description: 'Aplicação 05' },
-  ];
+  useEffect(() => {
+    api.get('/product_application').then(response => {
+      setApplications(response.data);
+    });
+  }, []);
 
   return (
     <Container>
@@ -33,13 +39,13 @@ const ListApplication: React.FC = () => {
             <DefaultTable tbh={['Código', 'Aplicação']}>
               <tbody>
                 {applications.map(application => (
-                  <tr key={application.code}>
+                  <tr key={application.id}>
                     <td>{application.code}</td>
                     <td>{application.description}</td>
                     <td>
                       <Link
                         style={{ textDecoration: 'none' }}
-                        to={`/inventory/application/${application.code}`}
+                        to={`/inventory/application/${application.id}`}
                       >
                         <FiEye size={24} color={colors.main} />
                       </Link>

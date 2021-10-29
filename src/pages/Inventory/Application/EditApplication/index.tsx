@@ -24,8 +24,10 @@ interface RegisterApplicationForm {
 }
 
 const formSchemaApplication = Yup.object().shape({
-  code: Yup.string().required('Código Obrigatório'),
-  description: Yup.string().required('Aplicação Obrigatória'),
+  code: Yup.string()
+    .required('Código Obrigatório')
+    .max(6, 'Tamanho máximo de 6 caracteres'),
+  description: Yup.string().required('Descrição Obrigatória'),
 });
 
 const EditApplication: React.FC = () => {
@@ -36,15 +38,11 @@ const EditApplication: React.FC = () => {
 
   const [editting, setEditting] = useState<boolean>(false);
   const [showModalDelete, setShowModalDelete] = useState<boolean>(false);
-  const [application, setApplication] =
-    useState<RegisterApplicationForm | null>({
-      code: '1',
-      description: 'Asd',
-    });
+  const [application, setApplication] = useState({} as RegisterApplicationForm);
 
   useEffect(() => {
     api
-      .get<RegisterApplicationForm | null>(`/application/${id}`)
+      .get<RegisterApplicationForm>(`/product_application/${id}`)
       .then(response => {
         setApplication(response.data);
       });
@@ -54,8 +52,8 @@ const EditApplication: React.FC = () => {
     async (data: RegisterApplicationForm) => {
       try {
         api
-          .put(`/application/${id}`, {
-            code: String(data.code),
+          .put(`/product_application/${id}`, {
+            code: data.code,
             description: data.description,
           })
           .then(() => {
@@ -113,15 +111,14 @@ const EditApplication: React.FC = () => {
                     <div id="align-inputs">
                       <Input
                         name="code"
-                        min={1000}
-                        max={9999}
-                        type="number"
+                        type="text"
                         placeholder="Código"
                         value={values.code}
                         onChange={handleChange('code')}
                         messageError={
                           errors.code && touched.code ? errors.code : ''
                         }
+                        maxLength={6}
                       />
                       <Input
                         name="description"
@@ -155,7 +152,7 @@ const EditApplication: React.FC = () => {
         actionToDelete={() => {
           deleteDataFromModule({
             id,
-            route: 'application',
+            route: 'product_application',
             routePush: 'inventory',
           });
         }}

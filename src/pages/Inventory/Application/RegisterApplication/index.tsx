@@ -20,8 +20,10 @@ interface RegisterApplicationForm {
 }
 
 const formSchemaApplication = Yup.object().shape({
-  code: Yup.string().required('Código Obrigatório'),
-  description: Yup.string().required('Aplicação Obrigatória'),
+  code: Yup.string()
+    .required('Código Obrigatório')
+    .max(6, 'Tamanho máximo de 6 caracteres'),
+  description: Yup.string().required('Descrição Obrigatória'),
 });
 
 const RegisterApplication: React.FC = () => {
@@ -32,8 +34,8 @@ const RegisterApplication: React.FC = () => {
       try {
         const { code, description } = data;
         api
-          .post('/application', {
-            code: String(code),
+          .post('/product_application', {
+            code,
             description,
           })
           .then(() => {
@@ -66,20 +68,19 @@ const RegisterApplication: React.FC = () => {
                 <div id="align-inputs">
                   <Input
                     name="code"
-                    min={1000}
-                    max={9999}
-                    type="number"
+                    type="text"
                     placeholder="Código"
                     value={values.code}
                     onChange={handleChange('code')}
                     messageError={
                       errors.code && touched.code ? errors.code : ''
                     }
+                    maxLength={6}
                   />
                   <Input
                     name="description"
                     type="text"
-                    placeholder="Aplicação"
+                    placeholder="Descrição"
                     value={values.description}
                     onChange={handleChange('description')}
                     messageError={
