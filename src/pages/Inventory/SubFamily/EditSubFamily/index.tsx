@@ -15,10 +15,18 @@ import Button from '../../../../components/Button';
 import Input from '../../../../components/Input';
 import ButtonBack from '../../../../components/ButtonBack';
 import ModalDelete from '../../../../components/ModalDelete';
+import Select from '../../../../components/Select';
 
 import { Container, Main, HeaderContent, FormCustom } from './styles';
 
 interface RegisterSubFamilyForm {
+  code: string;
+  description: string;
+  product_family_id: string;
+}
+
+interface Family {
+  id: string;
   code: string;
   description: string;
 }
@@ -26,6 +34,7 @@ interface RegisterSubFamilyForm {
 const formSchemaSubFamily = Yup.object().shape({
   code: Yup.string().required('Código Obrigatório'),
   description: Yup.string().required('Sub-Família Obrigatória'),
+  product_family_id: Yup.string().required('Família Obrigatória'),
 });
 
 const EditSubFamily: React.FC = () => {
@@ -36,14 +45,17 @@ const EditSubFamily: React.FC = () => {
 
   const [editting, setEditting] = useState<boolean>(false);
   const [showModalDelete, setShowModalDelete] = useState<boolean>(false);
-  const [subFamily, setSubFamily] = useState<RegisterSubFamilyForm | null>({
-    code: '1',
-    description: 'Asd',
-  });
+  const [subFamily, setSubFamily] = useState({} as RegisterSubFamilyForm);
+  const [families, setFamilies] = useState<Family[]>([]);
 
   useEffect(() => {
-    api.get<RegisterSubFamilyForm | null>(`/subfamily/${id}`).then(response => {
-      setSubFamily(response.data);
+    api
+      .get<RegisterSubFamilyForm>(`/product_subfamily/${id}`)
+      .then(response => {
+        setSubFamily(response.data);
+      });
+    api.get('/product_family').then(response => {
+      setFamilies(response.data);
     });
   }, [id]);
 
@@ -51,9 +63,10 @@ const EditSubFamily: React.FC = () => {
     async (data: RegisterSubFamilyForm) => {
       try {
         api
-          .put(`/subfamily/${id}`, {
-            code: String(data.code),
+          .put(`/product_subfamily/${id}`, {
+            code: data.code,
             description: data.description,
+            product_family_id: data.product_family_id,
           })
           .then(() => {
             toast.success('Atualizado com sucesso');
@@ -101,6 +114,7 @@ const EditSubFamily: React.FC = () => {
                 initialValues={{
                   code: subFamily.code,
                   description: subFamily.description,
+                  product_family_id: subFamily.product_family_id,
                 }}
                 validationSchema={formSchemaSubFamily}
                 onSubmit={handleSubmitForm}
@@ -110,20 +124,19 @@ const EditSubFamily: React.FC = () => {
                     <div id="align-inputs">
                       <Input
                         name="code"
-                        min={1000}
-                        max={9999}
-                        type="number"
+                        type="text"
                         placeholder="Código"
                         value={values.code}
                         onChange={handleChange('code')}
                         messageError={
                           errors.code && touched.code ? errors.code : ''
                         }
+                        maxLength={6}
                       />
                       <Input
                         name="description"
                         type="text"
-                        placeholder="Sub-Família"
+                        placeholder="Descrição"
                         value={values.description}
                         onChange={handleChange('description')}
                         messageError={
@@ -132,6 +145,23 @@ const EditSubFamily: React.FC = () => {
                             : ''
                         }
                       />
+                      <Select
+                        name="product_family_id"
+                        value={values.product_family_id}
+                        onChange={handleChange('product_family_id')}
+                        messageError={
+                          errors.product_family_id && touched.product_family_id
+                            ? errors.product_family_id
+                            : ''
+                        }
+                      >
+                        <option value="">Fampilia</option>
+                        {families.map(family => (
+                          <option value={family.id}>
+                            {family.code} - {family.description}
+                          </option>
+                        ))}
+                      </Select>
                     </div>
                     <div id="align-button-save">
                       <Button layoutColor="button-green" type="submit">
@@ -152,7 +182,7 @@ const EditSubFamily: React.FC = () => {
         actionToDelete={() => {
           deleteDataFromModule({
             id,
-            route: 'subfamily',
+            route: 'product_subfamily',
             routePush: 'inventory',
           });
         }}

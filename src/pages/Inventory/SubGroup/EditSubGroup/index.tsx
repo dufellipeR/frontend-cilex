@@ -180,7 +180,7 @@ const EditSubGroup: React.FC = () => {
         actionToDelete={() => {
           deleteDataFromModule({
             id,
-            route: 'subgroup',
+            route: 'product_subgroup',
             routePush: 'inventory',
           });
         }}

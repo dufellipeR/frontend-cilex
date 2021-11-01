@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { FiEye } from 'react-icons/fi';
 import { ThemeContext } from 'styled-components';
@@ -10,17 +10,23 @@ import ButtonBack from '../../../../components/ButtonBack';
 import EmptyData from '../../../../components/EmptyData';
 
 import { Container, Main } from './styles';
+import api from '../../../../services/api';
+
+interface SubFamily {
+  id: string;
+  code: string;
+  description: string;
+}
 
 const ListSubFamily: React.FC = () => {
   const { colors } = useContext(ThemeContext);
+  const [subFamilies, setSubFamilies] = useState<SubFamily[]>([]);
 
-  const subFamilies = [
-    { code: 1, description: 'Sub-Família 01' },
-    { code: 2, description: 'Sub-Família 02' },
-    { code: 3, description: 'Sub-Família 03' },
-    { code: 4, description: 'Sub-Família 04' },
-    { code: 5, description: 'Sub-Família 05' },
-  ];
+  useEffect(() => {
+    api.get('/product_subfamily').then(response => {
+      setSubFamilies(response.data);
+    });
+  }, []);
 
   return (
     <Container>
@@ -33,13 +39,13 @@ const ListSubFamily: React.FC = () => {
             <DefaultTable tbh={['Código', 'Sub-Família']}>
               <tbody>
                 {subFamilies.map(subFamily => (
-                  <tr key={subFamily.code}>
+                  <tr key={subFamily.id}>
                     <td>{subFamily.code}</td>
                     <td>{subFamily.description}</td>
                     <td>
                       <Link
                         style={{ textDecoration: 'none' }}
-                        to={`/inventory/subfamily/${subFamily.code}`}
+                        to={`/inventory/subfamily/${subFamily.id}`}
                       >
                         <FiEye size={24} color={colors.main} />
                       </Link>
