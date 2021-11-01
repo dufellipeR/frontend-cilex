@@ -15,10 +15,18 @@ import Button from '../../../../components/Button';
 import Input from '../../../../components/Input';
 import ButtonBack from '../../../../components/ButtonBack';
 import ModalDelete from '../../../../components/ModalDelete';
+import Select from '../../../../components/Select';
 
 import { Container, Main, HeaderContent, FormCustom } from './styles';
 
 interface RegisterSubGroupForm {
+  code: string;
+  description: string;
+  product_group_id: string;
+}
+
+interface Group {
+  id: string;
   code: string;
   description: string;
 }
@@ -26,6 +34,7 @@ interface RegisterSubGroupForm {
 const formSchemaSubGroup = Yup.object().shape({
   code: Yup.string().required('Código Obrigatório'),
   description: Yup.string().required('Sub-Grupo Obrigatório'),
+  product_group_id: Yup.string().required('Grupo Obrigatório'),
 });
 
 const EditSubGroup: React.FC = () => {
@@ -36,14 +45,15 @@ const EditSubGroup: React.FC = () => {
 
   const [editting, setEditting] = useState<boolean>(false);
   const [showModalDelete, setShowModalDelete] = useState<boolean>(false);
-  const [subGroup, setSubGroup] = useState<RegisterSubGroupForm | null>({
-    code: '1',
-    description: 'Asd',
-  });
+  const [subGroup, setSubGroup] = useState({} as RegisterSubGroupForm);
+  const [groups, setGroups] = useState<Group[]>([]);
 
   useEffect(() => {
-    api.get<RegisterSubGroupForm | null>(`/subgroup/${id}`).then(response => {
+    api.get<RegisterSubGroupForm>(`/product_subgroup/${id}`).then(response => {
       setSubGroup(response.data);
+    });
+    api.get('/product_group').then(response => {
+      setGroups(response.data);
     });
   }, [id]);
 
@@ -51,9 +61,10 @@ const EditSubGroup: React.FC = () => {
     async (data: RegisterSubGroupForm) => {
       try {
         api
-          .put(`/subgroup/${id}`, {
-            code: String(data.code),
+          .put(`/product_subgroup/${id}`, {
+            code: data.code,
             description: data.description,
+            product_group_id: data.product_group_id,
           })
           .then(() => {
             toast.success('Atualizado com sucesso');
@@ -101,6 +112,7 @@ const EditSubGroup: React.FC = () => {
                 initialValues={{
                   code: subGroup.code,
                   description: subGroup.description,
+                  product_group_id: subGroup.product_group_id,
                 }}
                 validationSchema={formSchemaSubGroup}
                 onSubmit={handleSubmitForm}
@@ -110,20 +122,19 @@ const EditSubGroup: React.FC = () => {
                     <div id="align-inputs">
                       <Input
                         name="code"
-                        min={1000}
-                        max={9999}
-                        type="number"
+                        type="text"
                         placeholder="Código"
                         value={values.code}
                         onChange={handleChange('code')}
                         messageError={
                           errors.code && touched.code ? errors.code : ''
                         }
+                        maxLength={6}
                       />
                       <Input
                         name="description"
                         type="text"
-                        placeholder="Sub-Grupo"
+                        placeholder="Descrição"
                         value={values.description}
                         onChange={handleChange('description')}
                         messageError={
@@ -132,6 +143,23 @@ const EditSubGroup: React.FC = () => {
                             : ''
                         }
                       />
+                      <Select
+                        name="product_group_id"
+                        value={values.product_group_id}
+                        onChange={handleChange('product_group_id')}
+                        messageError={
+                          errors.product_group_id && touched.product_group_id
+                            ? errors.product_group_id
+                            : ''
+                        }
+                      >
+                        <option value="">Grupo</option>
+                        {groups.map(group => (
+                          <option value={group.id}>
+                            {group.code} - {group.description}
+                          </option>
+                        ))}
+                      </Select>
                     </div>
                     <div id="align-button-save">
                       <Button layoutColor="button-green" type="submit">

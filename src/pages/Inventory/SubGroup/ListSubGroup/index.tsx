@@ -1,7 +1,9 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { FiEye } from 'react-icons/fi';
 import { ThemeContext } from 'styled-components';
+
+import api from '../../../../services/api';
 
 import NewButton from '../../../../components/NewButton';
 import DefaultTable from '../../../../components/DefaultTable';
@@ -11,16 +13,21 @@ import EmptyData from '../../../../components/EmptyData';
 
 import { Container, Main } from './styles';
 
+interface SubGroup {
+  id: string;
+  code: string;
+  description: string;
+}
+
 const ListSubGroup: React.FC = () => {
   const { colors } = useContext(ThemeContext);
+  const [subGroups, setSubGroups] = useState<SubGroup[]>([]);
 
-  const subGroups = [
-    { code: 1, description: 'Sub-Grupo 01' },
-    { code: 2, description: 'Sub-Grupo 02' },
-    { code: 3, description: 'Sub-Grupo 03' },
-    { code: 4, description: 'Sub-Grupo 04' },
-    { code: 5, description: 'Sub-Grupo 05' },
-  ];
+  useEffect(() => {
+    api.get('/product_subgroup').then(response => {
+      setSubGroups(response.data);
+    });
+  }, []);
 
   return (
     <Container>
@@ -33,13 +40,13 @@ const ListSubGroup: React.FC = () => {
             <DefaultTable tbh={['Código', 'Sub-Grupo']}>
               <tbody>
                 {subGroups.map(subgroup => (
-                  <tr key={subgroup.code}>
+                  <tr key={subgroup.id}>
                     <td>{subgroup.code}</td>
                     <td>{subgroup.description}</td>
                     <td>
                       <Link
                         style={{ textDecoration: 'none' }}
-                        to={`/inventory/subgroup/${subgroup.code}`}
+                        to={`/inventory/subgroup/${subgroup.id}`}
                       >
                         <FiEye size={24} color={colors.main} />
                       </Link>

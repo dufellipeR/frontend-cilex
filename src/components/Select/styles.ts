@@ -25,21 +25,3 @@ export const Container = styled.select<ContainerStatusProps>`
       border-color: #c53030;
     `}
 `;
-
-export const Error = styled(Tooltip)`
-  height: 1.25rem;
-  margin-right: 0.5rem;
-
-  svg {
-    margin: 0;
-  }
-
-  span {
-    background: #c53030;
-    color: #fff;
-
-    &::before {
-      border-color: #c53030 transparent;
-    }
-  }
-`;

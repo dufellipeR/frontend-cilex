@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
@@ -11,30 +11,50 @@ import Button from '../../../../components/Button';
 import Header from '../../../../components/Header';
 import Input from '../../../../components/Input';
 import ButtonBack from '../../../../components/ButtonBack';
+import Select from '../../../../components/Select';
 
 import { Container, Main, FormCustom } from './styles';
 
 interface RegisterSubGroupForm {
   code: string;
   description: string;
+  product_group_id: string;
+}
+
+interface Group {
+  id: string;
+  code: string;
+  description: string;
 }
 
 const formSchemaSubGroup = Yup.object().shape({
-  code: Yup.string().required('Código Obrigatório'),
-  description: Yup.string().required('Sub-Grupo Obrigatório'),
+  code: Yup.string()
+    .required('Código Obrigatório')
+    .max(6, 'Tamanho máximo de 6 caracteres'),
+  description: Yup.string().required('Descrição Obrigatória'),
+  product_group_id: Yup.string().required('Grupo Obrigatório'),
 });
 
 const RegisterSubGroup: React.FC = () => {
   const history = useHistory();
 
+  const [groups, setGroups] = useState<Group[]>([]);
+
+  useEffect(() => {
+    api.get('/product_group').then(response => {
+      setGroups(response.data);
+    });
+  }, []);
+
   const handleSubmitForm = useCallback(
     async (data: RegisterSubGroupForm) => {
       try {
-        const { code, description } = data;
+        const { code, description, product_group_id } = data;
         api
-          .post('/subgroup', {
-            code: String(code),
+          .post('/product_subgroup', {
+            code,
             description,
+            product_group_id,
           })
           .then(() => {
             toast.success('Registrado com sucesso');
@@ -57,6 +77,7 @@ const RegisterSubGroup: React.FC = () => {
             initialValues={{
               code: '',
               description: '',
+              product_group_id: '',
             }}
             validationSchema={formSchemaSubGroup}
             onSubmit={handleSubmitForm}
@@ -66,20 +87,19 @@ const RegisterSubGroup: React.FC = () => {
                 <div id="align-inputs">
                   <Input
                     name="code"
-                    min={1000}
-                    max={9999}
-                    type="number"
+                    type="text"
                     placeholder="Código"
                     value={values.code}
                     onChange={handleChange('code')}
                     messageError={
                       errors.code && touched.code ? errors.code : ''
                     }
+                    maxLength={6}
                   />
                   <Input
                     name="description"
                     type="text"
-                    placeholder="Sub-Grupo"
+                    placeholder="Descrição"
                     value={values.description}
                     onChange={handleChange('description')}
                     messageError={
@@ -88,6 +108,23 @@ const RegisterSubGroup: React.FC = () => {
                         : ''
                     }
                   />
+                  <Select
+                    name="product_group_id"
+                    value={values.product_group_id}
+                    onChange={handleChange('product_group_id')}
+                    messageError={
+                      errors.product_group_id && touched.product_group_id
+                        ? errors.product_group_id
+                        : ''
+                    }
+                  >
+                    <option value="">Grupo</option>
+                    {groups.map(group => (
+                      <option value={group.id}>
+                        {group.code} - {group.description}
+                      </option>
+                    ))}
+                  </Select>
                 </div>
                 <div id="align-button-save">
                   <Button layoutColor="button-green" type="submit">
