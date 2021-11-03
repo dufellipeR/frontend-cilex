@@ -70,13 +70,9 @@ import ListDimension from '../pages/Inventory/Dimension/ListDimension';
 import RegisterDimension from '../pages/Inventory/Dimension/RegisterDimension';
 import EditDimension from '../pages/Inventory/Dimension/EditDimension';
 
-import ListUMPurchase from '../pages/Inventory/UMPurchase/ListUMPurchase';
-import RegisterUMPurchase from '../pages/Inventory/UMPurchase/RegisterUMPurchase';
-import EditUMPurchase from '../pages/Inventory/UMPurchase/EditUMPurchase';
-
-import ListUMUse from '../pages/Inventory/UMUse/ListUMUse';
-import RegisterUMUse from '../pages/Inventory/UMUse/RegisterUMUse';
-import EditUMUse from '../pages/Inventory/UMUse/EditUMUse';
+import ListUnitMeasure from '../pages/Inventory/UnitMeasure/ListUnitMeasure';
+import RegisterUnitMeasure from '../pages/Inventory/UnitMeasure/RegisterUnitMeasure';
+import EditUnitMeasure from '../pages/Inventory/UnitMeasure/EditUnitMeasure';
 
 const Routes: React.FC = () => {
   return (
@@ -174,17 +170,13 @@ const Routes: React.FC = () => {
       />
       <Route path="/inventory/dimension/:id" component={EditDimension} />
 
-      <Route path="/inventory/umPurchase" exact component={ListUMPurchase} />
+      <Route path="/inventory/unitmeasure" exact component={ListUnitMeasure} />
       <Route
-        path="/inventory/umPurchase/register"
+        path="/inventory/unitmeasure/register"
         exact
-        component={RegisterUMPurchase}
+        component={RegisterUnitMeasure}
       />
-      <Route path="/inventory/umPurchase/:id" component={EditUMPurchase} />
-
-      <Route path="/inventory/umUse" exact component={ListUMUse} />
-      <Route path="/inventory/umUse/register" exact component={RegisterUMUse} />
-      <Route path="/inventory/umUse/:id" component={EditUMUse} />
+      <Route path="/inventory/unitmeasure/:id" component={EditUnitMeasure} />
 
       <Route path="/forgot-password" component={ForgotPassword} />
     </Switch>

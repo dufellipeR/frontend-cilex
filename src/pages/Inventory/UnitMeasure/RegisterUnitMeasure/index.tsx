@@ -14,38 +14,36 @@ import ButtonBack from '../../../../components/ButtonBack';
 
 import { Container, Main, FormCustom } from './styles';
 
-interface RegisterUMPurchaseForm {
-  purchaseUM: string;
-  transformationUM: string;
+interface RegisterUnitMeasureForm {
+  code: string;
+  description: string;
 }
 
-const formSchemaUMPurchase = Yup.object().shape({
-  purchaseUM: Yup.string().required('Unidade de Medida de Compra Obrigatória'),
-  transformationUM: Yup.string().required(
-    'Transformação da Unidade de Medida Obrigatório',
-  ),
+const formSchemaUnitMeasure = Yup.object().shape({
+  code: Yup.string()
+    .required('Código Obrigatório')
+    .max(6, 'Tamanho máximo de 6 caracteres'),
+  description: Yup.string().required('Descrição Obrigatória'),
 });
 
-const RegisterUMPurchase: React.FC = () => {
+const RegisterUnitMeasure: React.FC = () => {
   const history = useHistory();
 
   const handleSubmitForm = useCallback(
-    async (data: RegisterUMPurchaseForm) => {
+    async (data: RegisterUnitMeasureForm) => {
       try {
-        const { purchaseUM, transformationUM } = data;
+        const { code, description } = data;
         api
-          .post('/umPurchase', {
-            transformationUM,
-            purchaseUM,
+          .post('/product_um', {
+            code,
+            description,
           })
           .then(() => {
             toast.success('Registrado com sucesso');
-            history.push('/inventory/umPurchase');
+            history.push('/inventory/unitmeasure');
           });
       } catch (err) {
-        toast.error(
-          'Ocorreu um erro no registro da Unidade de Medida de Compra!',
-        );
+        toast.error('Ocorreu um erro no registro da Unidade de Medida!');
       }
     },
     [history],
@@ -54,41 +52,40 @@ const RegisterUMPurchase: React.FC = () => {
   return (
     <>
       <Container>
-        <Header pageName="Registro de Unidade de Medida de Compra" />
-        <ButtonBack destinationBack="/inventory/umPurchase" />
+        <Header pageName="Registro de Unidade de Medida" />
+        <ButtonBack destinationBack="/inventory/unitmeasure" />
         <Main>
           <Formik
             initialValues={{
-              purchaseUM: '',
-              transformationUM: '',
+              code: '',
+              description: '',
             }}
-            validationSchema={formSchemaUMPurchase}
+            validationSchema={formSchemaUnitMeasure}
             onSubmit={handleSubmitForm}
           >
             {({ handleChange, touched, values, errors, handleSubmit }) => (
               <FormCustom onSubmit={handleSubmit}>
                 <div id="align-inputs">
                   <Input
-                    name="transformationUM"
+                    name="code"
                     type="text"
-                    placeholder="Transformação da Unidade de Medida"
-                    value={values.transformationUM}
-                    onChange={handleChange('transformationUM')}
+                    placeholder="Código"
+                    value={values.code}
+                    onChange={handleChange('code')}
                     messageError={
-                      errors.transformationUM && touched.transformationUM
-                        ? errors.transformationUM
-                        : ''
+                      errors.code && touched.code ? errors.code : ''
                     }
+                    maxLength={6}
                   />
                   <Input
-                    name="purchaseUM"
+                    name="description"
                     type="text"
-                    placeholder="Unidade de Medida de Compra"
-                    value={values.purchaseUM}
-                    onChange={handleChange('purchaseUM')}
+                    placeholder="Descrição"
+                    value={values.description}
+                    onChange={handleChange('description')}
                     messageError={
-                      errors.purchaseUM && touched.purchaseUM
-                        ? errors.purchaseUM
+                      errors.description && touched.description
+                        ? errors.description
                         : ''
                     }
                   />
@@ -108,4 +105,4 @@ const RegisterUMPurchase: React.FC = () => {
   );
 };
 
-export default RegisterUMPurchase;
+export default RegisterUnitMeasure;

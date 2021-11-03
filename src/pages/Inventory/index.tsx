@@ -73,16 +73,10 @@ const Inventory: React.FC = () => {
           description="Gerencie suas dimensões dos produtos"
         />
         <ModuleCard
-          to="/inventory/umPurchase"
+          to="/inventory/unitmeasure"
           classIcon="bi bi-box-seam"
-          title="U.M. de Compra"
-          description="Gerencie suas unidades de medida de compras"
-        />
-        <ModuleCard
-          to="/inventory/umUse"
-          classIcon="bi bi-box-seam"
-          title="U.M. de Uso"
-          description="Gerencie suas unidades de medida de uso"
+          title="Unidade de Medida"
+          description="Gerencie suas unidades de medidas"
         />
       </Main>
     </Container>

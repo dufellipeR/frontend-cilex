@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { FiEye } from 'react-icons/fi';
 import { ThemeContext } from 'styled-components';
@@ -10,17 +10,23 @@ import ButtonBack from '../../../../components/ButtonBack';
 
 import { Container, Main } from './styles';
 import EmptyData from '../../../../components/EmptyData';
+import api from '../../../../services/api';
 
-const ListUMPurchase: React.FC = () => {
+interface UnitMeasure {
+  id: string;
+  code: string;
+  description: string;
+}
+
+const ListUnitMeasure: React.FC = () => {
   const { colors } = useContext(ThemeContext);
+  const [unitsMeasure, setUnitsMeasure] = useState<UnitMeasure[]>([]);
 
-  const UMPurchases = [
-    { description: 1, transformationUM: 'Unidade de Medida de Compra 01' },
-    { description: 2, transformationUM: 'Unidade de Medida de Compra 02' },
-    { description: 3, transformationUM: 'Unidade de Medida de Compra 03' },
-    { description: 4, transformationUM: 'Unidade de Medida de Compra 04' },
-    { description: 5, transformationUM: 'Unidade de Medida de Compra 05' },
-  ];
+  useEffect(() => {
+    api.get('/product_um').then(response => {
+      setUnitsMeasure(response.data);
+    });
+  }, []);
 
   return (
     <Container>
@@ -28,18 +34,18 @@ const ListUMPurchase: React.FC = () => {
       <Main>
         <div id="align-content">
           <ButtonBack destinationBack="/inventory" />
-          <NewButton to="/inventory/umPurchase/register">Novo</NewButton>
-          {UMPurchases.length > 0 ? (
-            <DefaultTable tbh={['Descrição', 'Unidade de Medida de Compra']}>
+          <NewButton to="/inventory/unitmeasure/register">Novo</NewButton>
+          {unitsMeasure.length > 0 ? (
+            <DefaultTable tbh={['Descrição', 'Unidade de Medida']}>
               <tbody>
-                {UMPurchases.map(unit => (
-                  <tr key={unit.description}>
+                {unitsMeasure.map(unit => (
+                  <tr key={unit.id}>
+                    <td>{unit.code}</td>
                     <td>{unit.description}</td>
-                    <td>{unit.transformationUM}</td>
                     <td>
                       <Link
                         style={{ textDecoration: 'none' }}
-                        to={`/inventory/umPurchase/${unit.description}`}
+                        to={`/inventory/unitmeasure/${unit.id}`}
                       >
                         <FiEye size={24} color={colors.main} />
                       </Link>
@@ -57,4 +63,4 @@ const ListUMPurchase: React.FC = () => {
   );
 };
 
-export default ListUMPurchase;
+export default ListUnitMeasure;
