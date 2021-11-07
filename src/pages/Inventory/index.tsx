@@ -19,7 +19,7 @@ const Inventory: React.FC = () => {
           description="Gerencie suas transações"
         />
         <ModuleCard
-          to="/inventory/product"
+          to="/inventory/storage"
           classIcon="bi bi-handbag"
           title="Estoques"
           description="Gerencie seus estoques"

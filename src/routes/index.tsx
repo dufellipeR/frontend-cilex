@@ -38,6 +38,10 @@ import Financial from '../pages/Financial';
 
 import Inventory from '../pages/Inventory';
 
+import RegisterStorage from '../pages/Inventory/Storage/RegisterStorage';
+import ListStorage from '../pages/Inventory/Storage/ListStorage';
+import EditStorage from '../pages/Inventory/Storage/EditStorage';
+
 import RegisterProduct from '../pages/Inventory/Product/RegisterProduct';
 import ListProduct from '../pages/Inventory/Product/ListProduct';
 import EditProduct from '../pages/Inventory/Product/EditProduct';
@@ -113,6 +117,14 @@ const Routes: React.FC = () => {
       <Route path="/financial" component={Financial} />
 
       <Route path="/inventory" exact component={Inventory} />
+
+      <Route path="/inventory/storage" exact component={ListStorage} />
+      <Route
+        path="/inventory/storage/register"
+        exact
+        component={RegisterStorage}
+      />
+      <Route path="/inventory/storage/:id" component={EditStorage} />
 
       <Route path="/inventory/product" exact component={ListProduct} />
       <Route
