@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, useState } from 'react';
+import React, { useCallback, useMemo, useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
@@ -16,59 +16,62 @@ import Select from '../../../../components/Select';
 
 import { Container, Main, FormCustom, ContainerInputFile } from './styles';
 
-interface RegisterGroupForm {
+interface RegisterProductForm {
   code: string;
   description: string;
-  type: string;
 
-  group: string;
-  subGroup: string;
+  type_id: string;
 
-  family: string;
-  subFamily: string;
+  group_id: string;
+  subgroup_id: string;
 
-  application: string;
-  dimension: string;
+  family_id: string;
+  subfamily_id: string;
 
-  umPurchase: string;
-  umUse: string;
+  application_id: string;
+  dimensions_id: string;
 
-  technicalDescription: string;
-  techicalDrawing: any;
-  photo: any;
+  umc_id: string;
+  umu_id: string;
+
+  technical_description: string;
+  technical_picture: any;
+  picture: any;
 }
 
-const formSchemaGroup = Yup.object().shape({
+const formSchemaProduct = Yup.object().shape({
   code: Yup.string().required('Código Obrigatório'),
-  description: Yup.string().required('Grupo Obrigatório'),
-  type: Yup.string().required(),
+  description: Yup.string().required('Descrição Obrigatória'),
+  type_id: Yup.string().required(),
 
-  group: Yup.string().required(),
-  subGroup: Yup.string().required(),
+  group_id: Yup.string().required(),
+  subgroup_id: Yup.string().required(),
 
-  family: Yup.string().required(),
-  subFamily: Yup.string().required(),
+  family_id: Yup.string().required(),
+  subfamily_id: Yup.string().required(),
 
-  application: Yup.string().required(),
-  dimension: Yup.string().required(),
+  application_id: Yup.string().required(),
+  dimensions_id: Yup.string().required(),
 
-  umPurchase: Yup.string().required(),
-  umUse: Yup.string().required(),
+  umc_id: Yup.string().required(),
+  umu_id: Yup.string().required(),
 
-  technicalDescription: Yup.string().required('Descrição Técnica Obrigatória'),
-  techicalDrawing: Yup.mixed().required('Desenho Técnico Obrigatório'),
-
-  photo: Yup.mixed().required('Foto Obrigatória'),
+  technical_description: Yup.string(),
+  technical_picture: Yup.mixed(),
+  picture: Yup.mixed(),
 });
-
-const types = [
-  { id: 1, name: 'Tipo 1' },
-  { id: 2, name: 'Tipo 2' },
-  { id: 3, name: 'Tipo 3' },
-];
 
 const RegisterGroup: React.FC = () => {
   const history = useHistory();
+
+  const [types, setTypes] = useState<any[]>([]);
+  const [groups, setGroups] = useState<any[]>([]);
+  const [families, setFamilies] = useState<any[]>([]);
+  const [unitMeasures, setUnitMeasures] = useState<any[]>([]);
+  const [applications, setApplications] = useState<any[]>([]);
+  const [dimensions, setDimensions] = useState<any[]>([]);
+  const [subGroups, setSubGroups] = useState<any[]>([]);
+  const [subFamilies, setSubFamilies] = useState<any[]>([]);
 
   const [statePhoto, setStatePhoto] = useState<any>(null);
   const [stateTechicalDrawing, setStateTechnicalDrawing] = useState<any>(null);
@@ -83,46 +86,73 @@ const RegisterGroup: React.FC = () => {
       : null;
   }, [stateTechicalDrawing]);
 
+  useEffect(() => {
+    api.get('/product_type').then(response => {
+      setTypes(response.data);
+    });
+    api.get('/product_group').then(response => {
+      setGroups(response.data);
+    });
+    api.get('/product_family').then(response => {
+      setFamilies(response.data);
+    });
+    api.get('/product_um').then(response => {
+      setUnitMeasures(response.data);
+    });
+    api.get('/product_application').then(response => {
+      setApplications(response.data);
+    });
+    api.get('/product_dimension').then(response => {
+      setDimensions(response.data);
+    });
+    api.get('/product_subgroup').then(response => {
+      setSubGroups(response.data);
+    });
+    api.get('/product_subfamily').then(response => {
+      setSubFamilies(response.data);
+    });
+  }, []);
+
   const handleSubmitForm = useCallback(
-    async (data: RegisterGroupForm) => {
+    async (data: RegisterProductForm) => {
       try {
         const {
           code,
           description,
-          type,
-          group,
-          subGroup,
-          family,
-          subFamily,
-          application,
-          dimension,
-          umPurchase,
-          umUse,
-          technicalDescription,
-          techicalDrawing,
-          photo,
+          type_id,
+          group_id,
+          subgroup_id,
+          family_id,
+          subfamily_id,
+          application_id,
+          dimensions_id,
+          umc_id,
+          umu_id,
+          technical_description,
+          technical_picture,
+          picture,
         } = data;
 
         api
-          .post('/group', {
-            code: String(code),
+          .post('/product', {
+            code,
             description,
-            type,
-            group,
-            subGroup,
-            family,
-            subFamily,
-            application,
-            dimension,
-            umPurchase,
-            umUse,
-            technicalDescription,
-            techicalDrawing,
-            photo,
+            type_id,
+            group_id,
+            subgroup_id,
+            family_id,
+            subfamily_id,
+            application_id,
+            dimensions_id,
+            umc_id,
+            umu_id,
+            technical_description,
+            // technical_picture, -> error: must be a string
+            // picture, -> error: must be a string
           })
           .then(() => {
             toast.success('Registrado com sucesso');
-            history.push('/inventory/group');
+            history.push('/inventory/product');
           });
       } catch (err) {
         toast.error('Ocorreu um erro no registro do Grupo!');
@@ -141,20 +171,20 @@ const RegisterGroup: React.FC = () => {
             initialValues={{
               code: '',
               description: '',
-              type: '',
-              group: '',
-              subGroup: '',
-              family: '',
-              subFamily: '',
-              application: '',
-              dimension: '',
-              umPurchase: '',
-              umUse: '',
-              technicalDescription: '',
-              techicalDrawing: null,
-              photo: null,
+              type_id: '',
+              group_id: '',
+              subgroup_id: '',
+              family_id: '',
+              subfamily_id: '',
+              application_id: '',
+              dimensions_id: '',
+              umc_id: '',
+              umu_id: '',
+              technical_description: '',
+              technical_picture: null,
+              picture: null,
             }}
-            validationSchema={formSchemaGroup}
+            validationSchema={formSchemaProduct}
             onSubmit={handleSubmitForm}
           >
             {({
@@ -169,15 +199,14 @@ const RegisterGroup: React.FC = () => {
                 <div id="align-inputs">
                   <Input
                     name="code"
-                    min={1000}
-                    max={9999}
-                    type="number"
+                    type="text"
                     placeholder="Código"
                     value={values.code}
                     onChange={handleChange('code')}
                     messageError={
                       errors.code && touched.code ? errors.code : ''
                     }
+                    maxLength={6}
                   />
                   <Input
                     name="description"
@@ -192,140 +221,146 @@ const RegisterGroup: React.FC = () => {
                     }
                   />
                   <Select
-                    name="type"
-                    value={values.type}
-                    onChange={handleChange('type')}
+                    name="type_id"
+                    value={values.type_id}
+                    onChange={handleChange('type_id')}
                     messageError={
-                      errors.type && touched.type ? errors.type : ''
+                      errors.type_id && touched.type_id ? errors.type_id : ''
                     }
                   >
                     <option value="">Tipo</option>
                     {types.map(type => (
-                      <option value={type.name}>{type.name}</option>
+                      <option value={type.id}>{type.description}</option>
                     ))}
                   </Select>
                   <Select
-                    name="group"
-                    value={values.group}
-                    onChange={handleChange('group')}
+                    name="group_id"
+                    value={values.group_id}
+                    onChange={handleChange('group_id')}
                     messageError={
-                      errors.group && touched.group ? errors.group : ''
+                      errors.group_id && touched.group_id ? errors.group_id : ''
                     }
                   >
                     <option value="">Grupo</option>
-                    {types.map(type => (
-                      <option value={type.id}>{type.name}</option>
+                    {groups.map(group => (
+                      <option value={group.id}>{group.description}</option>
                     ))}
                   </Select>
                   <Select
-                    name="subGroup"
-                    value={values.subGroup}
-                    onChange={handleChange('subGroup')}
+                    name="subgroup_id"
+                    value={values.subgroup_id}
+                    onChange={handleChange('subgroup_id')}
                     messageError={
-                      errors.subGroup && touched.subGroup ? errors.subGroup : ''
+                      errors.subgroup_id && touched.subgroup_id
+                        ? errors.subgroup_id
+                        : ''
                     }
                   >
                     <option value="">Sub-Grupo</option>
-                    {types.map(type => (
-                      <option value={type.id}>{type.name}</option>
+                    {subGroups.map(group => (
+                      <option value={group.id}>{group.description}</option>
                     ))}
                   </Select>
                   <Select
-                    name="family"
-                    value={values.family}
-                    onChange={handleChange('family')}
+                    name="family_id"
+                    value={values.family_id}
+                    onChange={handleChange('family_id')}
                     messageError={
-                      errors.family && touched.family ? errors.family : ''
+                      errors.family_id && touched.family_id
+                        ? errors.family_id
+                        : ''
                     }
                   >
                     <option value="">Família</option>
-                    {types.map(type => (
-                      <option value={type.id}>{type.name}</option>
+                    {families.map(family => (
+                      <option value={family.id}>{family.description}</option>
                     ))}
                   </Select>
                   <Select
-                    name="subFamily"
-                    value={values.subFamily}
-                    onChange={handleChange('subFamily')}
+                    name="subfamily_id"
+                    value={values.subfamily_id}
+                    onChange={handleChange('subfamily_id')}
                     messageError={
-                      errors.subFamily && touched.subFamily
-                        ? errors.subFamily
+                      errors.subfamily_id && touched.subfamily_id
+                        ? errors.subfamily_id
                         : ''
                     }
                   >
                     <option value="">Sub-Família</option>
-                    {types.map(type => (
-                      <option value={type.id}>{type.name}</option>
+                    {subFamilies.map(family => (
+                      <option value={family.id}>{family.description}</option>
                     ))}
                   </Select>
                   <Select
-                    name="application"
-                    value={values.application}
-                    onChange={handleChange('application')}
+                    name="application_id"
+                    value={values.application_id}
+                    onChange={handleChange('application_id')}
                     messageError={
-                      errors.application && touched.application
-                        ? errors.application
+                      errors.application_id && touched.application_id
+                        ? errors.application_id
                         : ''
                     }
                   >
                     <option value="">Aplicação</option>
-                    {types.map(type => (
-                      <option value={type.id}>{type.name}</option>
+                    {applications.map(application => (
+                      <option value={application.id}>
+                        {application.description}
+                      </option>
                     ))}
                   </Select>
                   <Select
-                    name="dimension"
-                    value={values.dimension}
-                    onChange={handleChange('dimension')}
+                    name="dimensions_id"
+                    value={values.dimensions_id}
+                    onChange={handleChange('dimensions_id')}
                     messageError={
-                      errors.dimension && touched.dimension
-                        ? errors.dimension
+                      errors.dimensions_id && touched.dimensions_id
+                        ? errors.dimensions_id
                         : ''
                     }
                   >
                     <option value="">Dimensão do Produto</option>
-                    {types.map(type => (
-                      <option value={type.id}>{type.name}</option>
+                    {dimensions.map(dimension => (
+                      <option value={dimension.id}>
+                        {dimension.description}
+                      </option>
                     ))}
                   </Select>
                   <Select
-                    name="umPurchase"
-                    value={values.umPurchase}
-                    onChange={handleChange('umPurchase')}
+                    name="umc_id"
+                    value={values.umc_id}
+                    onChange={handleChange('umc_id')}
                     messageError={
-                      errors.umPurchase && touched.umPurchase
-                        ? errors.umPurchase
-                        : ''
+                      errors.umc_id && touched.umc_id ? errors.umc_id : ''
                     }
                   >
                     <option value="">Unidade de Medida de Compra</option>
-                    {types.map(type => (
-                      <option value={type.id}>{type.name}</option>
+                    {unitMeasures.map(unit => (
+                      <option value={unit.id}>{unit.description}</option>
                     ))}
                   </Select>
                   <Select
-                    name="umUse"
-                    value={values.umUse}
-                    onChange={handleChange('umUse')}
+                    name="umu_id"
+                    value={values.umu_id}
+                    onChange={handleChange('umu_id')}
                     messageError={
-                      errors.umUse && touched.umUse ? errors.umUse : ''
+                      errors.umu_id && touched.umu_id ? errors.umu_id : ''
                     }
                   >
                     <option value="">Unidade de Medida de Uso</option>
-                    {types.map(type => (
-                      <option value={type.id}>{type.name}</option>
+                    {unitMeasures.map(unit => (
+                      <option value={unit.id}>{unit.description}</option>
                     ))}
                   </Select>
                   <Input
-                    name="technicalDescription"
+                    name="technical_description"
                     type="text"
                     placeholder="Descrição Técnica"
-                    value={values.technicalDescription}
-                    onChange={handleChange('technicalDescription')}
+                    value={values.technical_description}
+                    onChange={handleChange('technical_description')}
                     messageError={
-                      errors.technicalDescription &&
-                      touched.technicalDescription
-                        ? errors.technicalDescription
+                      errors.technical_description &&
+                      touched.technical_description
+                        ? errors.technical_description
                         : ''
                     }
                   />
@@ -337,13 +372,13 @@ const RegisterGroup: React.FC = () => {
                   >
                     <p>Desenho Técnico</p>
                     <input
-                      id="techicalDrawing"
-                      name="techicalDrawing"
+                      id="technical_picture"
+                      name="technical_picture"
                       type="file"
                       onChange={event => {
                         setStateTechnicalDrawing(event.target.files![0]);
                         setFieldValue(
-                          'techicalDrawing',
+                          'technical_picture',
                           event.target.files![0],
                         );
                       }}
@@ -356,12 +391,12 @@ const RegisterGroup: React.FC = () => {
                   >
                     <p>Foto</p>
                     <input
-                      id="photo"
-                      name="photo"
+                      id="picture"
+                      name="picture"
                       type="file"
                       onChange={event => {
                         setStatePhoto(event.target.files![0]);
-                        setFieldValue('photo', event.target.files![0]);
+                        setFieldValue('picture', event.target.files![0]);
                       }}
                     />
                     <img src={camera} alt="Select img" />

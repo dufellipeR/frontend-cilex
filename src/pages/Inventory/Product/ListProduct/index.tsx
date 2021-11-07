@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { FiEye } from 'react-icons/fi';
 import { ThemeContext } from 'styled-components';
@@ -10,17 +10,23 @@ import ButtonBack from '../../../../components/ButtonBack';
 import EmptyData from '../../../../components/EmptyData';
 
 import { Container, Main } from './styles';
+import api from '../../../../services/api';
+
+interface Product {
+  id: string;
+  code: string;
+  description: string;
+}
 
 const ListGroup: React.FC = () => {
   const { colors } = useContext(ThemeContext);
+  const [products, setProducts] = useState<Product[]>([]);
 
-  const products = [
-    { code: 1, description: 'Produto 01' },
-    { code: 2, description: 'Produto 02' },
-    { code: 3, description: 'Produto 03' },
-    { code: 4, description: 'Produto 04' },
-    { code: 5, description: 'Produto 05' },
-  ];
+  useEffect(() => {
+    api.get('/product').then(response => {
+      setProducts(response.data);
+    });
+  }, []);
 
   return (
     <Container>
@@ -33,13 +39,13 @@ const ListGroup: React.FC = () => {
             <DefaultTable tbh={['Código', 'Produto']}>
               <tbody>
                 {products.map(product => (
-                  <tr key={product.code}>
+                  <tr key={product.id}>
                     <td>{product.code}</td>
                     <td>{product.description}</td>
                     <td>
                       <Link
                         style={{ textDecoration: 'none' }}
-                        to={`/inventory/product/${product.code}`}
+                        to={`/inventory/product/${product.id}`}
                       >
                         <FiEye size={24} color={colors.main} />
                       </Link>
