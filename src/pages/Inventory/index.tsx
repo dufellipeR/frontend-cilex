@@ -13,7 +13,7 @@ const Inventory: React.FC = () => {
       <ButtonBack destinationBack="/menu" />
       <Main>
         <ModuleCard
-          to="/inventory/product"
+          to="/inventory/transaction"
           classIcon="bi bi-arrow-left-right"
           title="Transações"
           description="Gerencie suas transações"
