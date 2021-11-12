@@ -51,6 +51,13 @@ const Menu: React.FC = () => {
       <Container>
         <Header pageName="Menu" />
         <Main>
+          <ModuleCard
+            key="123"
+            to="schedule"
+            classIcon="bi bi-calendar"
+            title="Agenda"
+            description="Gerencie sua agenda de serviços"
+          />
           {listModules.map(module => (
             <ModuleCard
               key={module.title}

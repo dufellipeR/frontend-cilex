@@ -82,10 +82,13 @@ import ListUnitMeasure from '../pages/Inventory/UnitMeasure/ListUnitMeasure';
 import RegisterUnitMeasure from '../pages/Inventory/UnitMeasure/RegisterUnitMeasure';
 import EditUnitMeasure from '../pages/Inventory/UnitMeasure/EditUnitMeasure';
 
+import Schedule from '../pages/Schedule';
+
 const Routes: React.FC = () => {
   return (
     <Switch>
       <Route path="/" exact component={SignIn} />
+      <Route path="/forgot-password" component={ForgotPassword} />
 
       <Route path="/chosecompany" component={ChoseCompany} />
       <Route path="/home" exact component={Home} />
@@ -118,8 +121,11 @@ const Routes: React.FC = () => {
       <Route path="/role/register" exact component={RegisterRole} />
       <Route path="/role/:id" component={EditRole} />
 
+      {/* ---------------------- INÍCIO FINANCEIRO ---------------------- */}
       <Route path="/financial" component={Financial} />
+      {/* ---------------------- FIM FINANCEIRO ---------------------- */}
 
+      {/* ---------------------- INÍCIO LOGÍSTICA ---------------------- */}
       <Route path="/inventory" exact component={Inventory} />
 
       <Route path="/inventory/transaction" exact component={ListTransaction} />
@@ -201,8 +207,9 @@ const Routes: React.FC = () => {
         component={RegisterUnitMeasure}
       />
       <Route path="/inventory/unitmeasure/:id" component={EditUnitMeasure} />
+      {/* ---------------------- FIM LOGÍSTICA ---------------------- */}
 
-      <Route path="/forgot-password" component={ForgotPassword} />
+      <Route path="/schedule" component={Schedule} />
     </Switch>
   );
 };
