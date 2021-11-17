@@ -5,4 +5,5 @@ export const Container = styled.button`
   border: 0;
 
   width: 8rem;
+  height: 4rem;
 `;

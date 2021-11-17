@@ -30,7 +30,13 @@ export const FormCustom = styled.form`
   #align-switch {
     display: flex;
     align-items: center;
-    justify-content: space-evenly;
+    justify-content: space-between;
+
+    #container-switch {
+      display: flex;
+      align-items: center;
+      gap: 2rem;
+    }
   }
 
   #align-button-save {

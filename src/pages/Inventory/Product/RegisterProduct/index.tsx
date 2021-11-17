@@ -42,19 +42,19 @@ interface RegisterProductForm {
 const formSchemaProduct = Yup.object().shape({
   code: Yup.string().required('Código Obrigatório'),
   description: Yup.string().required('Descrição Obrigatória'),
-  type_id: Yup.string().required(),
+  type_id: Yup.string(),
 
-  group_id: Yup.string().required(),
-  subgroup_id: Yup.string().required(),
+  group_id: Yup.string(),
+  subgroup_id: Yup.string(),
 
-  family_id: Yup.string().required(),
-  subfamily_id: Yup.string().required(),
+  family_id: Yup.string(),
+  subfamily_id: Yup.string(),
 
-  application_id: Yup.string().required(),
-  dimensions_id: Yup.string().required(),
+  application_id: Yup.string(),
+  dimensions_id: Yup.string(),
 
-  umc_id: Yup.string().required(),
-  umu_id: Yup.string().required(),
+  umc_id: Yup.string(),
+  umu_id: Yup.string(),
 
   technical_description: Yup.string(),
   technical_picture: Yup.mixed(),
@@ -137,15 +137,15 @@ const RegisterGroup: React.FC = () => {
           .post('/product', {
             code,
             description,
-            type_id,
-            group_id,
-            subgroup_id,
-            family_id,
-            subfamily_id,
-            application_id,
-            dimensions_id,
-            umc_id,
-            umu_id,
+            type_id: type_id || undefined,
+            group_id: group_id || undefined,
+            subgroup_id: subgroup_id || undefined,
+            family_id: family_id || undefined,
+            subfamily_id: subfamily_id || undefined,
+            application_id: application_id || undefined,
+            dimensions_id: dimensions_id || undefined,
+            umc_id: umc_id || undefined,
+            umu_id: umu_id || undefined,
             technical_description,
             // technical_picture, -> error: must be a string
             // picture, -> error: must be a string
