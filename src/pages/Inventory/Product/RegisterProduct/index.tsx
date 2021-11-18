@@ -20,6 +20,7 @@ interface RegisterProductForm {
   code: string;
   description: string;
 
+  standard_storage: string;
   type_id: string;
 
   group_id: string;
@@ -42,6 +43,7 @@ interface RegisterProductForm {
 const formSchemaProduct = Yup.object().shape({
   code: Yup.string().required('Código Obrigatório'),
   description: Yup.string().required('Descrição Obrigatória'),
+  standard_storage: Yup.string().required(),
   type_id: Yup.string(),
 
   group_id: Yup.string(),
@@ -64,6 +66,7 @@ const formSchemaProduct = Yup.object().shape({
 const RegisterGroup: React.FC = () => {
   const history = useHistory();
 
+  const [storages, setStorages] = useState<any[]>([]);
   const [types, setTypes] = useState<any[]>([]);
   const [groups, setGroups] = useState<any[]>([]);
   const [families, setFamilies] = useState<any[]>([]);
@@ -87,6 +90,9 @@ const RegisterGroup: React.FC = () => {
   }, [stateTechicalDrawing]);
 
   useEffect(() => {
+    api.get('/storage').then(response => {
+      setStorages(response.data);
+    });
     api.get('/product_type').then(response => {
       setTypes(response.data);
     });
@@ -119,6 +125,7 @@ const RegisterGroup: React.FC = () => {
         const {
           code,
           description,
+          standard_storage,
           type_id,
           group_id,
           subgroup_id,
@@ -133,27 +140,30 @@ const RegisterGroup: React.FC = () => {
           picture,
         } = data;
 
-        api
-          .post('/product', {
-            code,
-            description,
-            type_id: type_id || undefined,
-            group_id: group_id || undefined,
-            subgroup_id: subgroup_id || undefined,
-            family_id: family_id || undefined,
-            subfamily_id: subfamily_id || undefined,
-            application_id: application_id || undefined,
-            dimensions_id: dimensions_id || undefined,
-            umc_id: umc_id || undefined,
-            umu_id: umu_id || undefined,
-            technical_description,
-            // technical_picture, -> error: must be a string
-            // picture, -> error: must be a string
-          })
-          .then(() => {
-            toast.success('Registrado com sucesso');
-            history.push('/inventory/product');
-          });
+        const formData = new FormData();
+        formData.append('code', code);
+        formData.append('description', description);
+        formData.append('standard_storage', standard_storage);
+
+        if (type_id) formData.append('type_id', type_id);
+        if (group_id) formData.append('group_id', group_id);
+        if (subgroup_id) formData.append('subgroup_id', subgroup_id);
+        if (family_id) formData.append('family_id', family_id);
+        if (subfamily_id) formData.append('subfamily_id', subfamily_id);
+        if (application_id) formData.append('application_id', application_id);
+        if (dimensions_id) formData.append('dimensions_id', dimensions_id);
+        if (umc_id) formData.append('umc_id', umc_id);
+        if (umu_id) formData.append('umu_id', umu_id);
+        if (technical_description)
+          formData.append('technical_description', technical_description);
+
+        formData.append('picture', picture);
+        formData.append('technical_picture', technical_picture);
+
+        api.post('/product', formData).then(() => {
+          toast.success('Registrado com sucesso');
+          history.push('/inventory/product');
+        });
       } catch (err) {
         toast.error('Ocorreu um erro no registro do Grupo!');
       }
@@ -171,6 +181,7 @@ const RegisterGroup: React.FC = () => {
             initialValues={{
               code: '',
               description: '',
+              standard_storage: '',
               type_id: '',
               group_id: '',
               subgroup_id: '',
@@ -220,6 +231,21 @@ const RegisterGroup: React.FC = () => {
                         : ''
                     }
                   />
+                  <Select
+                    name="standard_storage"
+                    value={values.standard_storage}
+                    onChange={handleChange('standard_storage')}
+                    messageError={
+                      errors.standard_storage && touched.standard_storage
+                        ? errors.standard_storage
+                        : ''
+                    }
+                  >
+                    <option value="">Estoque Inicial</option>
+                    {storages.map(storage => (
+                      <option value={storage.id}>{storage.description}</option>
+                    ))}
+                  </Select>
                   <Select
                     name="type_id"
                     value={values.type_id}
@@ -364,6 +390,7 @@ const RegisterGroup: React.FC = () => {
                         : ''
                     }
                   />
+                  <div />
                   <ContainerInputFile
                     style={{
                       backgroundImage: `url(${previewTechicalDrawing})`,
@@ -375,12 +402,11 @@ const RegisterGroup: React.FC = () => {
                       id="technical_picture"
                       name="technical_picture"
                       type="file"
-                      onChange={event => {
-                        setStateTechnicalDrawing(event.target.files![0]);
-                        setFieldValue(
-                          'technical_picture',
-                          event.target.files![0],
-                        );
+                      onChange={e => {
+                        if (e.target.files) {
+                          setStateTechnicalDrawing(e.target.files[0]);
+                          setFieldValue('technical_picture', e.target.files[0]);
+                        }
                       }}
                     />
                     <img src={camera} alt="Select img" />
@@ -394,9 +420,11 @@ const RegisterGroup: React.FC = () => {
                       id="picture"
                       name="picture"
                       type="file"
-                      onChange={event => {
-                        setStatePhoto(event.target.files![0]);
-                        setFieldValue('picture', event.target.files![0]);
+                      onChange={e => {
+                        if (e.target.files) {
+                          setStatePhoto(e.target.files[0]);
+                          setFieldValue('picture', e.target.files[0]);
+                        }
                       }}
                     />
                     <img src={camera} alt="Select img" />
