@@ -6,6 +6,7 @@ import { toast } from 'react-toastify';
 import { FiSave } from 'react-icons/fi';
 
 import api from '../../../../services/api';
+import { IRegisterDimension } from '../../../../types/storage/dimension';
 
 import Button from '../../../../components/Button';
 import Header from '../../../../components/Header';
@@ -13,11 +14,6 @@ import Input from '../../../../components/Input';
 import ButtonBack from '../../../../components/ButtonBack';
 
 import { Container, Main, FormCustom } from './styles';
-
-interface RegisterDimensionForm {
-  code: string;
-  description: string;
-}
 
 const formSchemaDimension = Yup.object().shape({
   code: Yup.string()
@@ -30,7 +26,7 @@ const RegisterDimension: React.FC = () => {
   const history = useHistory();
 
   const handleSubmitForm = useCallback(
-    async (data: RegisterDimensionForm) => {
+    async (data: IRegisterDimension) => {
       try {
         const { code, description } = data;
         api

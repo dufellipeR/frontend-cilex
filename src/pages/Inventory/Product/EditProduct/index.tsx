@@ -16,6 +16,16 @@ import { ThemeContext } from 'styled-components';
 import api from '../../../../services/api';
 import camera from '../../../../assets/camera.svg';
 import { useCrudModules } from '../../../../hooks/useCrudModules';
+import { IRegisterProduct } from '../../../../types/storage/product';
+import { IStorage } from '../../../../types/storage/storage';
+import { IType } from '../../../../types/storage/type';
+import { IGroup } from '../../../../types/storage/group';
+import { IFamily } from '../../../../types/storage/family';
+import { IUnitMeasure } from '../../../../types/storage/unitMeasure';
+import { IApplication } from '../../../../types/storage/application';
+import { IDimension } from '../../../../types/storage/dimension';
+import { ISubGroup } from '../../../../types/storage/subGroup';
+import { ISubFamily } from '../../../../types/storage/subFamily';
 
 import Header from '../../../../components/Header';
 import Button from '../../../../components/Button';
@@ -34,47 +44,26 @@ import {
   ContainerInputFile,
 } from './styles';
 
-interface RegisterProductForm {
-  code: string;
-  description: string;
-
-  type_id: string;
-
-  group_id: string;
-  subgroup_id: string;
-
-  family_id: string;
-  subfamily_id: string;
-
-  application_id: string;
-  dimensions_id: string;
-
-  umc_id: string;
-  umu_id: string;
-
-  technical_description: string;
-  technical_picture: any;
-  picture: any;
-}
-
 const formSchemaProduct = Yup.object().shape({
   code: Yup.string().required('Código Obrigatório'),
   description: Yup.string().required('Descrição Obrigatória'),
-  type_id: Yup.string().required(),
 
-  group_id: Yup.string().required(),
-  subgroup_id: Yup.string().required(),
+  standard_storage: Yup.string().required(),
+  type_id: Yup.string().nullable(),
 
-  family_id: Yup.string().required(),
-  subfamily_id: Yup.string().required(),
+  group_id: Yup.string().nullable(),
+  subgroup_id: Yup.string().nullable(),
 
-  application_id: Yup.string().required(),
-  dimensions_id: Yup.string().required(),
+  family_id: Yup.string().nullable(),
+  subfamily_id: Yup.string().nullable(),
 
-  umc_id: Yup.string().required(),
-  umu_id: Yup.string().required(),
+  application_id: Yup.string().nullable(),
+  dimensions_id: Yup.string().nullable(),
 
-  technical_description: Yup.string(),
+  umc_id: Yup.string().nullable(),
+  umu_id: Yup.string().nullable(),
+
+  technical_description: Yup.string().nullable(),
   technical_picture: Yup.mixed(),
   picture: Yup.mixed(),
 });
@@ -90,20 +79,24 @@ const EditProduct: React.FC = () => {
 
   const [editting, setEditting] = useState<boolean>(false);
   const [showModalDelete, setShowModalDelete] = useState<boolean>(false);
-  const [product, setProduct] = useState({} as RegisterProductForm);
+  const [product, setProduct] = useState({} as IRegisterProduct);
 
-  const [types, setTypes] = useState<any[]>([]);
-  const [groups, setGroups] = useState<any[]>([]);
-  const [families, setFamilies] = useState<any[]>([]);
-  const [unitMeasures, setUnitMeasures] = useState<any[]>([]);
-  const [applications, setApplications] = useState<any[]>([]);
-  const [dimensions, setDimensions] = useState<any[]>([]);
-  const [subGroups, setSubGroups] = useState<any[]>([]);
-  const [subFamilies, setSubFamilies] = useState<any[]>([]);
+  const [storages, setStorages] = useState<IStorage[]>([]);
+  const [types, setTypes] = useState<IType[]>([]);
+  const [groups, setGroups] = useState<IGroup[]>([]);
+  const [families, setFamilies] = useState<IFamily[]>([]);
+  const [unitMeasures, setUnitMeasures] = useState<IUnitMeasure[]>([]);
+  const [applications, setApplications] = useState<IApplication[]>([]);
+  const [dimensions, setDimensions] = useState<IDimension[]>([]);
+  const [subGroups, setSubGroups] = useState<ISubGroup[]>([]);
+  const [subFamilies, setSubFamilies] = useState<ISubFamily[]>([]);
 
   useEffect(() => {
-    api.get<RegisterProductForm>(`/product/${id}`).then(response => {
+    api.get<IRegisterProduct>(`/product/${id}`).then(response => {
       setProduct(response.data);
+    });
+    api.get('/storage').then(response => {
+      setStorages(response.data);
     });
     api.get('/product_type').then(response => {
       setTypes(response.data);
@@ -142,11 +135,12 @@ const EditProduct: React.FC = () => {
   }, [stateTechicalDrawing]);
 
   const handleSubmitForm = useCallback(
-    async (data: RegisterProductForm) => {
+    async (data: IRegisterProduct) => {
       try {
         const {
           code,
           description,
+          standard_storage,
           type_id,
           group_id,
           subgroup_id,
@@ -161,27 +155,30 @@ const EditProduct: React.FC = () => {
           picture,
         } = data;
 
-        api
-          .put(`/product/${id}`, {
-            code,
-            description,
-            type_id,
-            group_id,
-            subgroup_id,
-            family_id,
-            subfamily_id,
-            application_id,
-            dimensions_id,
-            umc_id,
-            umu_id,
-            technical_description,
-            technical_picture,
-            picture,
-          })
-          .then(() => {
-            toast.success('Atualizado com sucesso');
-            history.push('/inventory');
-          });
+        const formData = new FormData();
+        formData.append('code', code);
+        formData.append('description', description);
+        formData.append('standard_storage', standard_storage);
+
+        if (type_id) formData.append('type_id', type_id);
+        if (group_id) formData.append('group_id', group_id);
+        if (subgroup_id) formData.append('subgroup_id', subgroup_id);
+        if (family_id) formData.append('family_id', family_id);
+        if (subfamily_id) formData.append('subfamily_id', subfamily_id);
+        if (application_id) formData.append('application_id', application_id);
+        if (dimensions_id) formData.append('dimensions_id', dimensions_id);
+        if (umc_id) formData.append('umc_id', umc_id);
+        if (umu_id) formData.append('umu_id', umu_id);
+        if (technical_description)
+          formData.append('technical_description', technical_description);
+
+        formData.append('picture', picture);
+        formData.append('technical_picture', technical_picture);
+
+        api.put(`/product/${id}`, formData).then(() => {
+          toast.success('Atualizado com sucesso');
+          history.push('/inventory');
+        });
       } catch (err) {
         toast.error('Ocorreu um erro na atualização do Produto!');
       }
@@ -257,6 +254,7 @@ const EditProduct: React.FC = () => {
                 initialValues={{
                   code: product.code,
                   description: product.description,
+                  standard_storage: product.standard_storage,
                   type_id: product.type_id,
                   group_id: product.group_id,
                   subgroup_id: product.subgroup_id,
@@ -306,6 +304,23 @@ const EditProduct: React.FC = () => {
                             : ''
                         }
                       />
+                      <Select
+                        name="standard_storage"
+                        value={values.standard_storage}
+                        onChange={handleChange('standard_storage')}
+                        messageError={
+                          errors.standard_storage && touched.standard_storage
+                            ? errors.standard_storage
+                            : ''
+                        }
+                      >
+                        <option value="">Estoque Inicial</option>
+                        {storages.map(storage => (
+                          <option value={storage.id}>
+                            {storage.description}
+                          </option>
+                        ))}
+                      </Select>
                       <Select
                         name="type_id"
                         value={values.type_id}
@@ -458,7 +473,8 @@ const EditProduct: React.FC = () => {
                             : ''
                         }
                       />
-                      <ContainerInputFile
+                      <div />
+                      {/* <ContainerInputFile
                         style={{
                           backgroundImage: `url(${previewTechicalDrawing})`,
                         }}
@@ -469,12 +485,14 @@ const EditProduct: React.FC = () => {
                           id="technical_picture"
                           name="technical_picture"
                           type="file"
-                          onChange={event => {
-                            setStateTechnicalDrawing(event.target.files![0]);
-                            setFieldValue(
-                              'technical_picture',
-                              event.target.files![0],
-                            );
+                          onChange={e => {
+                            if (e.target.files) {
+                              setStateTechnicalDrawing(e.target.files[0]);
+                              setFieldValue(
+                                'technical_picture',
+                                e.target.files[0],
+                              );
+                            }
                           }}
                         />
                         <img src={camera} alt="Select img" />
@@ -488,13 +506,15 @@ const EditProduct: React.FC = () => {
                           id="picture"
                           name="picture"
                           type="file"
-                          onChange={event => {
-                            setStatePhoto(event.target.files![0]);
-                            setFieldValue('picture', event.target.files![0]);
+                          onChange={e => {
+                            if (e.target.files) {
+                              setStatePhoto(e.target.files[0]);
+                              setFieldValue('picture', e.target.files[0]);
+                            }
                           }}
                         />
                         <img src={camera} alt="Select img" />
-                      </ContainerInputFile>
+                      </ContainerInputFile> */}
                     </div>
                     <div id="align-button-save">
                       <Button layoutColor="button-green" type="submit">

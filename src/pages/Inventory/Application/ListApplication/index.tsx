@@ -3,6 +3,9 @@ import { Link } from 'react-router-dom';
 import { FiEye } from 'react-icons/fi';
 import { ThemeContext } from 'styled-components';
 
+import api from '../../../../services/api';
+import { IApplication } from '../../../../types/storage/application';
+
 import NewButton from '../../../../components/NewButton';
 import DefaultTable from '../../../../components/DefaultTable';
 import Header from '../../../../components/Header';
@@ -10,17 +13,10 @@ import ButtonBack from '../../../../components/ButtonBack';
 import EmptyData from '../../../../components/EmptyData';
 
 import { Container, Main } from './styles';
-import api from '../../../../services/api';
-
-interface Application {
-  id: string;
-  code: string;
-  description: string;
-}
 
 const ListApplication: React.FC = () => {
   const { colors } = useContext(ThemeContext);
-  const [applications, setApplications] = useState<Application[]>([]);
+  const [applications, setApplications] = useState<IApplication[]>([]);
 
   useEffect(() => {
     api.get('/product_application').then(response => {

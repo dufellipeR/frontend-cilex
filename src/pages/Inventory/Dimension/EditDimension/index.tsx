@@ -8,6 +8,7 @@ import { toast } from 'react-toastify';
 import { ThemeContext } from 'styled-components';
 
 import api from '../../../../services/api';
+import { IRegisterDimension } from '../../../../types/storage/dimension';
 
 import { useCrudModules } from '../../../../hooks/useCrudModules';
 
@@ -18,11 +19,6 @@ import ButtonBack from '../../../../components/ButtonBack';
 import ModalDelete from '../../../../components/ModalDelete';
 
 import { Container, Main, HeaderContent, FormCustom } from './styles';
-
-interface RegisterDimensionForm {
-  code: string;
-  description: string;
-}
 
 const formSchemaDimension = Yup.object().shape({
   code: Yup.string()
@@ -39,18 +35,16 @@ const EditDimension: React.FC = () => {
 
   const [editting, setEditting] = useState<boolean>(false);
   const [showModalDelete, setShowModalDelete] = useState<boolean>(false);
-  const [dimension, setDimension] = useState({} as RegisterDimensionForm);
+  const [dimension, setDimension] = useState({} as IRegisterDimension);
 
   useEffect(() => {
-    api
-      .get<RegisterDimensionForm>(`/product_dimension/${id}`)
-      .then(response => {
-        setDimension(response.data);
-      });
+    api.get<IRegisterDimension>(`/product_dimension/${id}`).then(response => {
+      setDimension(response.data);
+    });
   }, [id]);
 
   const handleSubmitForm = useCallback(
-    async (data: RegisterDimensionForm) => {
+    async (data: IRegisterDimension) => {
       try {
         api
           .put(`/product_dimension/${id}`, {

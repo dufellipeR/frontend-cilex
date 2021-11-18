@@ -4,6 +4,7 @@ import { FiEye } from 'react-icons/fi';
 import { ThemeContext } from 'styled-components';
 
 import api from '../../../../services/api';
+import { IGroup } from '../../../../types/storage/group';
 
 import NewButton from '../../../../components/NewButton';
 import DefaultTable from '../../../../components/DefaultTable';
@@ -13,15 +14,9 @@ import EmptyData from '../../../../components/EmptyData';
 
 import { Container, Main } from './styles';
 
-interface Group {
-  id: string;
-  code: string;
-  description: string;
-}
-
 const ListGroup: React.FC = () => {
   const { colors } = useContext(ThemeContext);
-  const [groups, setGroups] = useState<Group[]>([]);
+  const [groups, setGroups] = useState<IGroup[]>([]);
 
   useEffect(() => {
     api.get('/product_group').then(response => {

@@ -9,6 +9,8 @@ import { ThemeContext } from 'styled-components';
 
 import api from '../../../../services/api';
 import { useCrudModules } from '../../../../hooks/useCrudModules';
+import { IRegisterSubFamily } from '../../../../types/storage/subFamily';
+import { IFamily } from '../../../../types/storage/family';
 
 import Header from '../../../../components/Header';
 import Button from '../../../../components/Button';
@@ -18,18 +20,6 @@ import ModalDelete from '../../../../components/ModalDelete';
 import Select from '../../../../components/Select';
 
 import { Container, Main, HeaderContent, FormCustom } from './styles';
-
-interface RegisterSubFamilyForm {
-  code: string;
-  description: string;
-  product_family_id: string;
-}
-
-interface Family {
-  id: string;
-  code: string;
-  description: string;
-}
 
 const formSchemaSubFamily = Yup.object().shape({
   code: Yup.string().required('Código Obrigatório'),
@@ -45,22 +35,20 @@ const EditSubFamily: React.FC = () => {
 
   const [editting, setEditting] = useState<boolean>(false);
   const [showModalDelete, setShowModalDelete] = useState<boolean>(false);
-  const [subFamily, setSubFamily] = useState({} as RegisterSubFamilyForm);
-  const [families, setFamilies] = useState<Family[]>([]);
+  const [subFamily, setSubFamily] = useState({} as IRegisterSubFamily);
+  const [families, setFamilies] = useState<IFamily[]>([]);
 
   useEffect(() => {
-    api
-      .get<RegisterSubFamilyForm>(`/product_subfamily/${id}`)
-      .then(response => {
-        setSubFamily(response.data);
-      });
+    api.get<IRegisterSubFamily>(`/product_subfamily/${id}`).then(response => {
+      setSubFamily(response.data);
+    });
     api.get('/product_family').then(response => {
       setFamilies(response.data);
     });
   }, [id]);
 
   const handleSubmitForm = useCallback(
-    async (data: RegisterSubFamilyForm) => {
+    async (data: IRegisterSubFamily) => {
       try {
         api
           .put(`/product_subfamily/${id}`, {

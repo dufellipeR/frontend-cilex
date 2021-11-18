@@ -8,6 +8,7 @@ import { toast } from 'react-toastify';
 import Switch from 'react-switch';
 import { ThemeContext } from 'styled-components';
 
+import { IRegisterType } from '../../../../types/storage/type';
 import api from '../../../../services/api';
 import { useCrudModules } from '../../../../hooks/useCrudModules';
 
@@ -18,12 +19,6 @@ import ButtonBack from '../../../../components/ButtonBack';
 import ModalDelete from '../../../../components/ModalDelete';
 
 import { Container, Main, HeaderContent, FormCustom } from './styles';
-
-interface RegisterTypeForm {
-  code: string;
-  accept_structure: boolean;
-  description: string;
-}
 
 const formSchemaType = Yup.object().shape({
   code: Yup.string()
@@ -42,17 +37,17 @@ const EditType: React.FC = () => {
   const [editting, setEditting] = useState<boolean>(false);
   const [showModalDelete, setShowModalDelete] = useState<boolean>(false);
   const [acceptStructure, setAcceptStructure] = useState(false);
-  const [type, setType] = useState({} as RegisterTypeForm);
+  const [type, setType] = useState({} as IRegisterType);
 
   useEffect(() => {
-    api.get<RegisterTypeForm>(`/product_type/${id}`).then(response => {
+    api.get<IRegisterType>(`/product_type/${id}`).then(response => {
       setType(response.data);
       if (response.data) setAcceptStructure(response.data.accept_structure);
     });
   }, [id]);
 
   const handleSubmitForm = useCallback(
-    async (data: RegisterTypeForm) => {
+    async (data: IRegisterType) => {
       try {
         api
           .put(`/product_type/${id}`, {

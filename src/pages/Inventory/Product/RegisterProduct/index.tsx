@@ -7,6 +7,16 @@ import { FiSave } from 'react-icons/fi';
 
 import api from '../../../../services/api';
 import camera from '../../../../assets/camera.svg';
+import { IRegisterProduct } from '../../../../types/storage/product';
+import { IStorage } from '../../../../types/storage/storage';
+import { IType } from '../../../../types/storage/type';
+import { IGroup } from '../../../../types/storage/group';
+import { IFamily } from '../../../../types/storage/family';
+import { IUnitMeasure } from '../../../../types/storage/unitMeasure';
+import { IApplication } from '../../../../types/storage/application';
+import { IDimension } from '../../../../types/storage/dimension';
+import { ISubGroup } from '../../../../types/storage/subGroup';
+import { ISubFamily } from '../../../../types/storage/subFamily';
 
 import Button from '../../../../components/Button';
 import Header from '../../../../components/Header';
@@ -15,30 +25,6 @@ import ButtonBack from '../../../../components/ButtonBack';
 import Select from '../../../../components/Select';
 
 import { Container, Main, FormCustom, ContainerInputFile } from './styles';
-
-interface RegisterProductForm {
-  code: string;
-  description: string;
-
-  standard_storage: string;
-  type_id: string;
-
-  group_id: string;
-  subgroup_id: string;
-
-  family_id: string;
-  subfamily_id: string;
-
-  application_id: string;
-  dimensions_id: string;
-
-  umc_id: string;
-  umu_id: string;
-
-  technical_description: string;
-  technical_picture: any;
-  picture: any;
-}
 
 const formSchemaProduct = Yup.object().shape({
   code: Yup.string().required('Código Obrigatório'),
@@ -66,15 +52,15 @@ const formSchemaProduct = Yup.object().shape({
 const RegisterGroup: React.FC = () => {
   const history = useHistory();
 
-  const [storages, setStorages] = useState<any[]>([]);
-  const [types, setTypes] = useState<any[]>([]);
-  const [groups, setGroups] = useState<any[]>([]);
-  const [families, setFamilies] = useState<any[]>([]);
-  const [unitMeasures, setUnitMeasures] = useState<any[]>([]);
-  const [applications, setApplications] = useState<any[]>([]);
-  const [dimensions, setDimensions] = useState<any[]>([]);
-  const [subGroups, setSubGroups] = useState<any[]>([]);
-  const [subFamilies, setSubFamilies] = useState<any[]>([]);
+  const [storages, setStorages] = useState<IStorage[]>([]);
+  const [types, setTypes] = useState<IType[]>([]);
+  const [groups, setGroups] = useState<IGroup[]>([]);
+  const [families, setFamilies] = useState<IFamily[]>([]);
+  const [unitMeasures, setUnitMeasures] = useState<IUnitMeasure[]>([]);
+  const [applications, setApplications] = useState<IApplication[]>([]);
+  const [dimensions, setDimensions] = useState<IDimension[]>([]);
+  const [subGroups, setSubGroups] = useState<ISubGroup[]>([]);
+  const [subFamilies, setSubFamilies] = useState<ISubFamily[]>([]);
 
   const [statePhoto, setStatePhoto] = useState<any>(null);
   const [stateTechicalDrawing, setStateTechnicalDrawing] = useState<any>(null);
@@ -120,7 +106,7 @@ const RegisterGroup: React.FC = () => {
   }, []);
 
   const handleSubmitForm = useCallback(
-    async (data: RegisterProductForm) => {
+    async (data: IRegisterProduct) => {
       try {
         const {
           code,

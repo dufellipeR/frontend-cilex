@@ -3,24 +3,20 @@ import { Link } from 'react-router-dom';
 import { FiEye } from 'react-icons/fi';
 import { ThemeContext } from 'styled-components';
 
+import api from '../../../../services/api';
+import { IUnitMeasure } from '../../../../types/storage/unitMeasure';
+
 import NewButton from '../../../../components/NewButton';
 import DefaultTable from '../../../../components/DefaultTable';
 import Header from '../../../../components/Header';
 import ButtonBack from '../../../../components/ButtonBack';
+import EmptyData from '../../../../components/EmptyData';
 
 import { Container, Main } from './styles';
-import EmptyData from '../../../../components/EmptyData';
-import api from '../../../../services/api';
-
-interface UnitMeasure {
-  id: string;
-  code: string;
-  description: string;
-}
 
 const ListUnitMeasure: React.FC = () => {
   const { colors } = useContext(ThemeContext);
-  const [unitsMeasure, setUnitsMeasure] = useState<UnitMeasure[]>([]);
+  const [unitsMeasure, setUnitsMeasure] = useState<IUnitMeasure[]>([]);
 
   useEffect(() => {
     api.get('/product_um').then(response => {

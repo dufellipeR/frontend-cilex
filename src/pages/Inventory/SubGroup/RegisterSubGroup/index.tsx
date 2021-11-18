@@ -6,6 +6,8 @@ import { toast } from 'react-toastify';
 import { FiSave } from 'react-icons/fi';
 
 import api from '../../../../services/api';
+import { IGroup } from '../../../../types/storage/group';
+import { IRegisterSubGroup } from '../../../../types/storage/subGroup';
 
 import Button from '../../../../components/Button';
 import Header from '../../../../components/Header';
@@ -14,18 +16,6 @@ import ButtonBack from '../../../../components/ButtonBack';
 import Select from '../../../../components/Select';
 
 import { Container, Main, FormCustom } from './styles';
-
-interface RegisterSubGroupForm {
-  code: string;
-  description: string;
-  product_group_id: string;
-}
-
-interface Group {
-  id: string;
-  code: string;
-  description: string;
-}
 
 const formSchemaSubGroup = Yup.object().shape({
   code: Yup.string()
@@ -38,7 +28,7 @@ const formSchemaSubGroup = Yup.object().shape({
 const RegisterSubGroup: React.FC = () => {
   const history = useHistory();
 
-  const [groups, setGroups] = useState<Group[]>([]);
+  const [groups, setGroups] = useState<IGroup[]>([]);
 
   useEffect(() => {
     api.get('/product_group').then(response => {
@@ -47,7 +37,7 @@ const RegisterSubGroup: React.FC = () => {
   }, []);
 
   const handleSubmitForm = useCallback(
-    async (data: RegisterSubGroupForm) => {
+    async (data: IRegisterSubGroup) => {
       try {
         const { code, description, product_group_id } = data;
         api

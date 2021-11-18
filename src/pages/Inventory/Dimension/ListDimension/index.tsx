@@ -4,6 +4,7 @@ import { FiEye } from 'react-icons/fi';
 import { ThemeContext } from 'styled-components';
 
 import api from '../../../../services/api';
+import { IDimension } from '../../../../types/storage/dimension';
 
 import NewButton from '../../../../components/NewButton';
 import DefaultTable from '../../../../components/DefaultTable';
@@ -13,16 +14,10 @@ import EmptyData from '../../../../components/EmptyData';
 
 import { Container, Main } from './styles';
 
-interface Dimension {
-  id: string;
-  code: string;
-  description: string;
-}
-
 const ListDimension: React.FC = () => {
   const { colors } = useContext(ThemeContext);
 
-  const [dimensions, setDimensions] = useState<Dimension[]>([]);
+  const [dimensions, setDimensions] = useState<IDimension[]>([]);
 
   useEffect(() => {
     api.get('/product_dimension').then(response => {

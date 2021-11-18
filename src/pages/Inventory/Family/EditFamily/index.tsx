@@ -9,6 +9,7 @@ import { ThemeContext } from 'styled-components';
 
 import api from '../../../../services/api';
 import { useCrudModules } from '../../../../hooks/useCrudModules';
+import { IRegisterFamily } from '../../../../types/storage/family';
 
 import Header from '../../../../components/Header';
 import Button from '../../../../components/Button';
@@ -17,11 +18,6 @@ import ButtonBack from '../../../../components/ButtonBack';
 import ModalDelete from '../../../../components/ModalDelete';
 
 import { Container, Main, HeaderContent, FormCustom } from './styles';
-
-interface RegisterFamilyForm {
-  code: string;
-  description: string;
-}
 
 const formSchemaFamily = Yup.object().shape({
   code: Yup.string()
@@ -38,16 +34,16 @@ const EditFamily: React.FC = () => {
 
   const [editting, setEditting] = useState<boolean>(false);
   const [showModalDelete, setShowModalDelete] = useState<boolean>(false);
-  const [family, setFamily] = useState({} as RegisterFamilyForm);
+  const [family, setFamily] = useState({} as IRegisterFamily);
 
   useEffect(() => {
-    api.get<RegisterFamilyForm>(`/product_family/${id}`).then(response => {
+    api.get<IRegisterFamily>(`/product_family/${id}`).then(response => {
       setFamily(response.data);
     });
   }, [id]);
 
   const handleSubmitForm = useCallback(
-    async (data: RegisterFamilyForm) => {
+    async (data: IRegisterFamily) => {
       try {
         api
           .put(`/product_family/${id}`, {

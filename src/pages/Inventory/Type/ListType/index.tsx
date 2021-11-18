@@ -4,6 +4,7 @@ import { FiEye } from 'react-icons/fi';
 import { ThemeContext } from 'styled-components';
 
 import api from '../../../../services/api';
+import { IType } from '../../../../types/storage/type';
 
 import NewButton from '../../../../components/NewButton';
 import DefaultTable from '../../../../components/DefaultTable';
@@ -13,16 +14,9 @@ import EmptyData from '../../../../components/EmptyData';
 
 import { Container, Main } from './styles';
 
-interface Type {
-  id: string;
-  code: string;
-  accept_structure: boolean;
-  description: string;
-}
-
 const ListType: React.FC = () => {
   const { colors } = useContext(ThemeContext);
-  const [types, setTypes] = useState<Type[]>([]);
+  const [types, setTypes] = useState<IType[]>([]);
 
   useEffect(() => {
     api.get('/product_type').then(response => {

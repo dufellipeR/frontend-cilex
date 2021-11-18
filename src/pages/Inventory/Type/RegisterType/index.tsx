@@ -8,6 +8,7 @@ import Switch from 'react-switch';
 import { ThemeContext } from 'styled-components';
 
 import api from '../../../../services/api';
+import { IRegisterType } from '../../../../types/storage/type';
 
 import Button from '../../../../components/Button';
 import Header from '../../../../components/Header';
@@ -15,12 +16,6 @@ import Input from '../../../../components/Input';
 import ButtonBack from '../../../../components/ButtonBack';
 
 import { Container, Main, FormCustom } from './styles';
-
-interface RegisterTypeForm {
-  code: string;
-  description: string;
-  acceptStructure: boolean;
-}
 
 const formSchemaType = Yup.object().shape({
   code: Yup.string()
@@ -37,7 +32,7 @@ const RegisterType: React.FC = () => {
   const [acceptStructure, setAcceptStructure] = useState(false);
 
   const handleSubmitForm = useCallback(
-    async (data: RegisterTypeForm) => {
+    async (data: IRegisterType) => {
       try {
         const { code, description } = data;
         api
@@ -67,7 +62,7 @@ const RegisterType: React.FC = () => {
             initialValues={{
               code: '',
               description: '',
-              acceptStructure: false,
+              accept_structure: false,
             }}
             validationSchema={formSchemaType}
             onSubmit={handleSubmitForm}

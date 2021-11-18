@@ -9,6 +9,7 @@ import { ThemeContext } from 'styled-components';
 
 import api from '../../../../services/api';
 import { useCrudModules } from '../../../../hooks/useCrudModules';
+import { IRegisterStorage } from '../../../../types/storage/storage';
 
 import Header from '../../../../components/Header';
 import Button from '../../../../components/Button';
@@ -17,11 +18,6 @@ import ButtonBack from '../../../../components/ButtonBack';
 import ModalDelete from '../../../../components/ModalDelete';
 
 import { Container, Main, HeaderContent, FormCustom } from './styles';
-
-interface RegisterStorageForm {
-  code: string;
-  description: string;
-}
 
 const formSchemaStorage = Yup.object().shape({
   code: Yup.string()
@@ -38,16 +34,16 @@ const EditStorage: React.FC = () => {
 
   const [editting, setEditting] = useState<boolean>(false);
   const [showModalDelete, setShowModalDelete] = useState<boolean>(false);
-  const [storage, setStorage] = useState({} as RegisterStorageForm);
+  const [storage, setStorage] = useState({} as IRegisterStorage);
 
   useEffect(() => {
-    api.get<RegisterStorageForm>(`/storage/${id}`).then(response => {
+    api.get<IRegisterStorage>(`/storage/${id}`).then(response => {
       setStorage(response.data);
     });
   }, [id]);
 
   const handleSubmitForm = useCallback(
-    async (data: RegisterStorageForm) => {
+    async (data: IRegisterStorage) => {
       try {
         api
           .put(`/storage/${id}`, {

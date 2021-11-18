@@ -9,6 +9,7 @@ import { ThemeContext } from 'styled-components';
 
 import api from '../../../../services/api';
 import { useCrudModules } from '../../../../hooks/useCrudModules';
+import { IRegisterGroup } from '../../../../types/storage/group';
 
 import Header from '../../../../components/Header';
 import Button from '../../../../components/Button';
@@ -17,11 +18,6 @@ import ButtonBack from '../../../../components/ButtonBack';
 import ModalDelete from '../../../../components/ModalDelete';
 
 import { Container, Main, HeaderContent, FormCustom } from './styles';
-
-interface RegisterGroupForm {
-  code: string;
-  description: string;
-}
 
 const formSchemaGroup = Yup.object().shape({
   code: Yup.string()
@@ -38,16 +34,16 @@ const EditGroup: React.FC = () => {
 
   const [editting, setEditting] = useState<boolean>(false);
   const [showModalDelete, setShowModalDelete] = useState<boolean>(false);
-  const [group, setGroup] = useState({} as RegisterGroupForm);
+  const [group, setGroup] = useState({} as IRegisterGroup);
 
   useEffect(() => {
-    api.get<RegisterGroupForm>(`/product_group/${id}`).then(response => {
+    api.get<IRegisterGroup>(`/product_group/${id}`).then(response => {
       setGroup(response.data);
     });
   }, [id]);
 
   const handleSubmitForm = useCallback(
-    async (data: RegisterGroupForm) => {
+    async (data: IRegisterGroup) => {
       try {
         api
           .put(`/product_group/${id}`, {

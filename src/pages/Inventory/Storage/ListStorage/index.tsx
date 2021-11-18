@@ -4,6 +4,7 @@ import { FiEye } from 'react-icons/fi';
 import { ThemeContext } from 'styled-components';
 
 import api from '../../../../services/api';
+import { IStorage } from '../../../../types/storage/storage';
 
 import NewButton from '../../../../components/NewButton';
 import DefaultTable from '../../../../components/DefaultTable';
@@ -13,15 +14,9 @@ import EmptyData from '../../../../components/EmptyData';
 
 import { Container, Main } from './styles';
 
-interface Storage {
-  id: string;
-  code: string;
-  description: string;
-}
-
 const ListStorage: React.FC = () => {
   const { colors } = useContext(ThemeContext);
-  const [storages, setStorages] = useState<Storage[]>([]);
+  const [storages, setStorages] = useState<IStorage[]>([]);
 
   useEffect(() => {
     api.get('/storage').then(response => {

@@ -9,6 +9,8 @@ import { ThemeContext } from 'styled-components';
 
 import api from '../../../../services/api';
 import { useCrudModules } from '../../../../hooks/useCrudModules';
+import { IGroup } from '../../../../types/storage/group';
+import { IRegisterSubGroup } from '../../../../types/storage/subGroup';
 
 import Header from '../../../../components/Header';
 import Button from '../../../../components/Button';
@@ -18,18 +20,6 @@ import ModalDelete from '../../../../components/ModalDelete';
 import Select from '../../../../components/Select';
 
 import { Container, Main, HeaderContent, FormCustom } from './styles';
-
-interface RegisterSubGroupForm {
-  code: string;
-  description: string;
-  product_group_id: string;
-}
-
-interface Group {
-  id: string;
-  code: string;
-  description: string;
-}
 
 const formSchemaSubGroup = Yup.object().shape({
   code: Yup.string().required('Código Obrigatório'),
@@ -45,11 +35,11 @@ const EditSubGroup: React.FC = () => {
 
   const [editting, setEditting] = useState<boolean>(false);
   const [showModalDelete, setShowModalDelete] = useState<boolean>(false);
-  const [subGroup, setSubGroup] = useState({} as RegisterSubGroupForm);
-  const [groups, setGroups] = useState<Group[]>([]);
+  const [subGroup, setSubGroup] = useState({} as IRegisterSubGroup);
+  const [groups, setGroups] = useState<IGroup[]>([]);
 
   useEffect(() => {
-    api.get<RegisterSubGroupForm>(`/product_subgroup/${id}`).then(response => {
+    api.get<IRegisterSubGroup>(`/product_subgroup/${id}`).then(response => {
       setSubGroup(response.data);
     });
     api.get('/product_group').then(response => {
@@ -58,7 +48,7 @@ const EditSubGroup: React.FC = () => {
   }, [id]);
 
   const handleSubmitForm = useCallback(
-    async (data: RegisterSubGroupForm) => {
+    async (data: IRegisterSubGroup) => {
       try {
         api
           .put(`/product_subgroup/${id}`, {

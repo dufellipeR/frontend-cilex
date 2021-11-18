@@ -6,6 +6,8 @@ import { toast } from 'react-toastify';
 import { FiSave } from 'react-icons/fi';
 
 import api from '../../../../services/api';
+import { IFamily } from '../../../../types/storage/family';
+import { IRegisterSubFamily } from '../../../../types/storage/subFamily';
 
 import Button from '../../../../components/Button';
 import Header from '../../../../components/Header';
@@ -14,18 +16,6 @@ import ButtonBack from '../../../../components/ButtonBack';
 import Select from '../../../../components/Select';
 
 import { Container, Main, FormCustom } from './styles';
-
-interface RegisterSubFamilyForm {
-  code: string;
-  description: string;
-  product_family_id: string;
-}
-
-interface Family {
-  id: string;
-  code: string;
-  description: string;
-}
 
 const formSchemaSubFamily = Yup.object().shape({
   code: Yup.string()
@@ -38,7 +28,7 @@ const formSchemaSubFamily = Yup.object().shape({
 const RegisterSubFamily: React.FC = () => {
   const history = useHistory();
 
-  const [families, setFamilies] = useState<Family[]>([]);
+  const [families, setFamilies] = useState<IFamily[]>([]);
 
   useEffect(() => {
     api.get('/product_family').then(response => {
@@ -47,7 +37,7 @@ const RegisterSubFamily: React.FC = () => {
   }, []);
 
   const handleSubmitForm = useCallback(
-    async (data: RegisterSubFamilyForm) => {
+    async (data: IRegisterSubFamily) => {
       try {
         const { code, description, product_family_id } = data;
         api

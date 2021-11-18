@@ -9,6 +9,7 @@ import { ThemeContext } from 'styled-components';
 
 import api from '../../../../services/api';
 import { useCrudModules } from '../../../../hooks/useCrudModules';
+import { IRegisterApplication } from '../../../../types/storage/application';
 
 import Header from '../../../../components/Header';
 import Button from '../../../../components/Button';
@@ -17,11 +18,6 @@ import ButtonBack from '../../../../components/ButtonBack';
 import ModalDelete from '../../../../components/ModalDelete';
 
 import { Container, Main, HeaderContent, FormCustom } from './styles';
-
-interface RegisterApplicationForm {
-  code: string;
-  description: string;
-}
 
 const formSchemaApplication = Yup.object().shape({
   code: Yup.string()
@@ -38,18 +34,18 @@ const EditApplication: React.FC = () => {
 
   const [editting, setEditting] = useState<boolean>(false);
   const [showModalDelete, setShowModalDelete] = useState<boolean>(false);
-  const [application, setApplication] = useState({} as RegisterApplicationForm);
+  const [application, setApplication] = useState({} as IRegisterApplication);
 
   useEffect(() => {
     api
-      .get<RegisterApplicationForm>(`/product_application/${id}`)
+      .get<IRegisterApplication>(`/product_application/${id}`)
       .then(response => {
         setApplication(response.data);
       });
   }, [id]);
 
   const handleSubmitForm = useCallback(
-    async (data: RegisterApplicationForm) => {
+    async (data: IRegisterApplication) => {
       try {
         api
           .put(`/product_application/${id}`, {

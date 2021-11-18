@@ -9,6 +9,7 @@ import { ThemeContext } from 'styled-components';
 
 import api from '../../../../services/api';
 import { useCrudModules } from '../../../../hooks/useCrudModules';
+import { IRegisterUnitMeasure } from '../../../../types/storage/unitMeasure';
 
 import Header from '../../../../components/Header';
 import Button from '../../../../components/Button';
@@ -17,11 +18,6 @@ import ButtonBack from '../../../../components/ButtonBack';
 import ModalDelete from '../../../../components/ModalDelete';
 
 import { Container, Main, HeaderContent, FormCustom } from './styles';
-
-interface RegisterUnitMeasureForm {
-  code: string;
-  description: string;
-}
 
 const formSchemaUnitMeasure = Yup.object().shape({
   code: Yup.string()
@@ -38,16 +34,16 @@ const EditUnitMeasure: React.FC = () => {
 
   const [editting, setEditting] = useState<boolean>(false);
   const [showModalDelete, setShowModalDelete] = useState<boolean>(false);
-  const [unitMeasure, setUnitMeasure] = useState({} as RegisterUnitMeasureForm);
+  const [unitMeasure, setUnitMeasure] = useState({} as IRegisterUnitMeasure);
 
   useEffect(() => {
-    api.get<RegisterUnitMeasureForm>(`/product_um/${id}`).then(response => {
+    api.get<IRegisterUnitMeasure>(`/product_um/${id}`).then(response => {
       setUnitMeasure(response.data);
     });
   }, [id]);
 
   const handleSubmitForm = useCallback(
-    async (data: RegisterUnitMeasureForm) => {
+    async (data: IRegisterUnitMeasure) => {
       try {
         api
           .put(`/product_um/${id}`, {
