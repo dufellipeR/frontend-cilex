@@ -29,7 +29,7 @@ import { Container, Main, FormCustom, ContainerInputFile } from './styles';
 const formSchemaProduct = Yup.object().shape({
   code: Yup.string().required('Código Obrigatório'),
   description: Yup.string().required('Descrição Obrigatória'),
-  standard_storage: Yup.string().required(),
+  standard_storage: Yup.string().required('Estoque Obrigatório'),
   type_id: Yup.string(),
 
   group_id: Yup.string(),
@@ -142,9 +142,9 @@ const RegisterGroup: React.FC = () => {
         if (umu_id) formData.append('umu_id', umu_id);
         if (technical_description)
           formData.append('technical_description', technical_description);
-
-        formData.append('picture', picture);
-        formData.append('technical_picture', technical_picture);
+        if (picture) formData.append('picture', picture);
+        if (technical_picture)
+          formData.append('technical_picture', technical_picture);
 
         api.post('/product', formData).then(() => {
           toast.success('Registrado com sucesso');

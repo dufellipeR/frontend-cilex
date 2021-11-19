@@ -1,7 +1,7 @@
 import styled, { css } from 'styled-components';
 
 interface InputFileProps {
-  hasThumb?: string;
+  hasThumb: boolean;
 }
 
 export const Container = styled.div``;
@@ -121,15 +121,26 @@ export const ContainerInputFile = styled.label<InputFileProps>`
   ${props =>
     props.hasThumb &&
     css`
-      border: 0;
+      position: relative;
+
+      p,
+      img {
+        display: none;
+      }
     `}
+`;
 
-  .has-thumbnail {
-    border: 0;
-    padding: 10rem;
-  }
+export const RemoveImageButton = styled.button`
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  padding: 0.275rem;
 
-  .has-thumbnail img {
-    display: none;
-  }
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  border: 1px solid ${props => props.theme.colors.main};
+  background: transparent;
+  border-radius: 50%;
 `;

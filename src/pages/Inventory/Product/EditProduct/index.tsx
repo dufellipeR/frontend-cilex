@@ -42,6 +42,7 @@ import {
   InfoCard,
   FormCustom,
   ContainerInputFile,
+  RemoveImageButton,
 } from './styles';
 
 const formSchemaProduct = Yup.object().shape({
@@ -94,6 +95,35 @@ const EditProduct: React.FC = () => {
   useEffect(() => {
     api.get<IRegisterProduct>(`/product/${id}`).then(response => {
       setProduct(response.data);
+
+      if (response.data.picture) {
+        fetch(`http://localhost:3333/api/v1/files/${response.data.picture}`)
+          .then(responsePic => {
+            return responsePic.blob();
+          })
+          .then(myBlob => {
+            const objectUrl = URL.createObjectURL(myBlob);
+            setProduct(prevState => ({
+              ...prevState,
+              picture: objectUrl,
+            }));
+          });
+      }
+      if (response.data.technical_picture) {
+        fetch(
+          `http://localhost:3333/api/v1/files/${response.data.technical_picture}`,
+        )
+          .then(responsePic => {
+            return responsePic.blob();
+          })
+          .then(myBlob => {
+            const objectUrl = URL.createObjectURL(myBlob);
+            setProduct(prevState => ({
+              ...prevState,
+              technical_picture: objectUrl,
+            }));
+          });
+      }
     });
     api.get('/storage').then(response => {
       setStorages(response.data);
@@ -185,6 +215,22 @@ const EditProduct: React.FC = () => {
     },
     [history, id],
   );
+
+  // const handleRemoveImage = useCallback((field: 'picture' | 'technical') => {
+  //   if (field === 'picture') {
+  //     setProduct(prevState => ({
+  //       ...prevState,
+  //       picture: null,
+  //     }));
+  //     setStatePhoto(null);
+  //   } else {
+  //     setProduct(prevState => ({
+  //       ...prevState,
+  //       technical_picture: null,
+  //     }));
+  //     setStateTechnicalDrawing(null);
+  //   }
+  // }, []);
 
   return (
     <>
@@ -474,12 +520,27 @@ const EditProduct: React.FC = () => {
                         }
                       />
                       <div />
-                      {/* <ContainerInputFile
+                      <ContainerInputFile
                         style={{
-                          backgroundImage: `url(${previewTechicalDrawing})`,
+                          backgroundImage: previewTechicalDrawing
+                            ? `url(${previewTechicalDrawing})`
+                            : `url(${product.technical_picture})`,
                         }}
-                        hasThumb={stateTechicalDrawing}
+                        hasThumb={
+                          !!(
+                            previewTechicalDrawing || product.technical_picture
+                          )
+                        }
                       >
+                        {/* {previewTechicalDrawing || product.technical_picture ? (
+                          <RemoveImageButton
+                            type="button"
+                            onClick={() => handleRemoveImage('technical')}
+                          >
+                            <HiOutlineTrash size={24} color={colors.main} />
+                          </RemoveImageButton>
+                        ) : (
+                          <> */}
                         <p>Desenho Técnico</p>
                         <input
                           id="technical_picture"
@@ -496,11 +557,26 @@ const EditProduct: React.FC = () => {
                           }}
                         />
                         <img src={camera} alt="Select img" />
+                        {/* </>
+                        )} */}
                       </ContainerInputFile>
                       <ContainerInputFile
-                        style={{ backgroundImage: `url(${previewPhoto})` }}
-                        hasThumb={statePhoto}
+                        style={{
+                          backgroundImage: previewPhoto
+                            ? `url(${previewPhoto})`
+                            : `url(${product.picture})`,
+                        }}
+                        hasThumb={!!(previewPhoto || product.picture)}
                       >
+                        {/* {previewPhoto || product.picture ? (
+                          <RemoveImageButton
+                            type="button"
+                            onClick={() => handleRemoveImage('picture')}
+                          >
+                            <HiOutlineTrash size={24} color={colors.main} />
+                          </RemoveImageButton>
+                        ) : (
+                          <> */}
                         <p>Foto</p>
                         <input
                           id="picture"
@@ -514,7 +590,9 @@ const EditProduct: React.FC = () => {
                           }}
                         />
                         <img src={camera} alt="Select img" />
-                      </ContainerInputFile> */}
+                        {/* </>
+                        )} */}
+                      </ContainerInputFile>
                     </div>
                     <div id="align-button-save">
                       <Button layoutColor="button-green" type="submit">
