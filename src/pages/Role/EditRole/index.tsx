@@ -45,7 +45,7 @@ const EditRole: React.FC = () => {
       try {
         api
           .put(`/role/${id}`, {
-            code: String(data.code),
+            code: data.code,
             role: data.role,
             description: data.description,
           })
@@ -111,15 +111,14 @@ const EditRole: React.FC = () => {
                     <div id="align-inputs">
                       <Input
                         name="code"
-                        min={1000}
-                        max={9999}
-                        type="number"
+                        type="text"
                         placeholder="Código"
                         value={values.code}
                         onChange={handleChange('code')}
                         messageError={
                           errors.code && touched.code ? errors.code : ''
                         }
+                        maxLength={6}
                       />
                       <Input
                         name="role"

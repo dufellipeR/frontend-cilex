@@ -120,7 +120,7 @@ const RegisterCompany: React.FC = () => {
         if (segmentIdSelected) {
           api
             .post('/company', {
-              code: String(code),
+              code,
               cnpj: cnpj && unformatCNPJ(cnpj),
               razao_social,
               nome_fantasia,
@@ -185,15 +185,14 @@ const RegisterCompany: React.FC = () => {
                     <div id="align-inputs">
                       <Input
                         name="code"
-                        min={1000}
-                        max={9999}
-                        type="number"
+                        type="text"
                         placeholder="Código"
                         value={values.code}
                         onChange={handleChange('code')}
                         messageError={
                           errors.code && touched.code ? errors.code : ''
                         }
+                        maxLength={6}
                       />
                       <Select
                         name="matriz_id"

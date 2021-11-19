@@ -121,7 +121,7 @@ const EditPeople: React.FC = () => {
 
         api
           .put(`/person/${id}`, {
-            code: String(code),
+            code,
             email,
             tel: unformatTel(tel),
             endereco,
@@ -305,15 +305,14 @@ const EditPeople: React.FC = () => {
                       </CheckboxContainer>
                       <Input
                         name="code"
-                        min={1000}
-                        max={9999}
-                        type="number"
+                        type="text"
                         placeholder="Código"
                         value={values.code}
                         onChange={handleChange('code')}
                         messageError={
                           errors.code && touched.code ? errors.code : ''
                         }
+                        maxLength={6}
                       />
                       {isPhysicalPerson ? (
                         <>

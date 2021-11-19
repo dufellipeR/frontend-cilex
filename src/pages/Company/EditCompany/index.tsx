@@ -134,7 +134,7 @@ const EditCompany: React.FC = () => {
 
         api
           .put(`/company/${id}`, {
-            code: String(code),
+            code,
             cnpj: String(cnpj),
             razao_social,
             nome_fantasia,
@@ -249,15 +249,14 @@ const EditCompany: React.FC = () => {
                     <div id="align-inputs">
                       <Input
                         name="code"
-                        min={1000}
-                        max={9999}
-                        type="number"
+                        type="text"
                         placeholder="Código"
                         value={values.code}
                         onChange={handleChange('code')}
                         messageError={
                           errors.code && touched.code ? errors.code : ''
                         }
+                        maxLength={6}
                       />
                       <Select
                         name="matriz_id"

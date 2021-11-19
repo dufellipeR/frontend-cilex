@@ -36,7 +36,7 @@ const RegisterRole: React.FC = () => {
 
         api
           .post('/role', {
-            code: String(code),
+            code,
             role,
             description,
           })
@@ -71,15 +71,14 @@ const RegisterRole: React.FC = () => {
                 <div id="align-inputs">
                   <Input
                     name="code"
-                    min={1000}
-                    max={9999}
-                    type="number"
+                    type="text"
                     placeholder="Código"
                     value={values.code}
                     onChange={handleChange('code')}
                     messageError={
                       errors.code && touched.code ? errors.code : ''
                     }
+                    maxLength={6}
                   />
                   <Input
                     name="role"

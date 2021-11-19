@@ -65,7 +65,7 @@ const RegisterUserGroup: React.FC = () => {
 
         api
           .post('/group', {
-            code: String(code),
+            code,
             description,
             modules,
           })
@@ -119,15 +119,14 @@ const RegisterUserGroup: React.FC = () => {
                 <div id="align-inputs">
                   <Input
                     name="code"
-                    min={1000}
-                    max={9999}
-                    type="number"
+                    type="text"
                     placeholder="Código"
                     value={values.code}
                     onChange={handleChange('code')}
                     messageError={
                       errors.code && touched.code ? errors.code : ''
                     }
+                    maxLength={6}
                   />
                   <Input
                     name="description"
