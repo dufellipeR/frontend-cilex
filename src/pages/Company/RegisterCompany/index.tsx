@@ -142,6 +142,20 @@ const RegisterCompany: React.FC = () => {
               } else {
                 history.push('/company');
               }
+            })
+            .catch(error => {
+              const dataError = error.response.data;
+
+              if (
+                dataError.message ===
+                "There's already a company registered with the same code"
+              ) {
+                toast.error(
+                  'Já existe uma empresa cadastrada com o mesmo código!',
+                );
+              }
+
+              return error;
             });
         } else {
           toast.error('Um segmento deve ser selecionado!');
@@ -361,7 +375,22 @@ const RegisterCompany: React.FC = () => {
                       </Button>
                       <Button
                         layoutColor="button-green"
-                        type={errors !== {} ? 'submit' : 'button'}
+                        onClick={() => {
+                          if (
+                            errors.code ||
+                            errors.cnpj ||
+                            errors.razao_social ||
+                            errors.nome_fantasia ||
+                            errors.email
+                          ) {
+                            toast.error(
+                              'Preencha os campos anteriores corretamente!',
+                            );
+                            handleSubmit();
+                          } else {
+                            handleSubmit();
+                          }
+                        }}
                       >
                         <FiSave size={24} />
                         <span>Salvar</span>
