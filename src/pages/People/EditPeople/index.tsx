@@ -146,6 +146,20 @@ const EditPeople: React.FC = () => {
 
             toast.success('Atualizado com sucesso');
             history.push('/people');
+          })
+          .catch(error => {
+            const dataError = error.response.data;
+
+            if (
+              dataError.message ===
+              "There's already a person registered with the same code"
+            ) {
+              toast.error(
+                'Já existe uma pessoa cadastrada com o mesmo código!',
+              );
+            }
+
+            return error;
           });
       } catch (err) {
         toast.error('Ocorreu um erro na atualização da Empresa!');

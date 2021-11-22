@@ -158,9 +158,23 @@ const RegisterPeople: React.FC = () => {
 
             toast.success('Registrado com sucesso');
             history.push('/people');
+          })
+          .catch(error => {
+            const dataError = error.response.data;
+
+            if (
+              dataError.message ===
+              "There's already a person registered with the same code"
+            ) {
+              toast.error(
+                'Já existe uma pessoa cadastrada com o mesmo código!',
+              );
+            }
+
+            return error;
           });
       } catch (err) {
-        toast.error('Ocorreu um erro no registro da Empresa!');
+        toast.error('Ocorreu um erro no registro da Pessoa!');
       }
     },
     [history],

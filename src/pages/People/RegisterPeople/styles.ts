@@ -8,10 +8,11 @@ export const Main = styled.main`
   padding: 0 2rem 2rem 2rem;
 
   #align-switch {
-    display: grid;
-    grid-template-columns: 0.2fr 1fr 0.2fr;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
     align-items: center;
-    margin: 3rem;
+    margin: 3rem 0;
 
     #container-switch {
       display: flex;
@@ -69,10 +70,8 @@ export const Select = styled.select`
 `;
 
 export const CheckboxContainer = styled.div`
-  margin: auto;
-
   div {
     display: flex;
-    gap: 5rem;
+    gap: 2rem;
   }
 `;
