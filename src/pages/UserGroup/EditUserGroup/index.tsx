@@ -151,6 +151,20 @@ const EditUserGroup: React.FC = () => {
       .catch(() => {
         toast.success('Erro ao deletar Grupo');
         history.push('/group');
+      })
+      .catch(error => {
+        const dataError = error.response.data;
+
+        if (
+          dataError.message ===
+          "There's already an entity registered with the same code"
+        ) {
+          toast.error(
+            'Já existe um grupo de usuários cadastrado com o mesmo código!',
+          );
+        }
+
+        return error;
       });
   };
 
