@@ -37,6 +37,20 @@ const RegisterStorage: React.FC = () => {
           .then(() => {
             toast.success('Registrado com sucesso');
             history.push('/inventory/storage');
+          })
+          .catch(error => {
+            const dataError = error.response.data;
+
+            if (
+              dataError.message ===
+              "There's already an entity registered with the same code"
+            ) {
+              toast.error(
+                'Já existe um estoque cadastrado com o mesmo código!',
+              );
+            }
+
+            return error;
           });
       } catch (err) {
         toast.error('Ocorreu um erro no registro do Estoque!');

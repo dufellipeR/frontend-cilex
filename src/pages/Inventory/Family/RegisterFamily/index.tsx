@@ -37,6 +37,20 @@ const RegisterFamily: React.FC = () => {
           .then(() => {
             toast.success('Registrado com sucesso');
             history.push('/inventory/family');
+          })
+          .catch(error => {
+            const dataError = error.response.data;
+
+            if (
+              dataError.message ===
+              "There's already an entity registered with the same code"
+            ) {
+              toast.error(
+                'Já existe uma família cadastrada com o mesmo código!',
+              );
+            }
+
+            return error;
           });
       } catch (err) {
         toast.error('Ocorreu um erro no registro da Família!');

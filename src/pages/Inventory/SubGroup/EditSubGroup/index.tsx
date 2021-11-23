@@ -59,6 +59,20 @@ const EditSubGroup: React.FC = () => {
           .then(() => {
             toast.success('Atualizado com sucesso');
             history.push('/inventory');
+          })
+          .catch(error => {
+            const dataError = error.response.data;
+
+            if (
+              dataError.message ===
+              "There's already an entity registered with the same code"
+            ) {
+              toast.error(
+                'Já existe um sub-grupo cadastrado com o mesmo código!',
+              );
+            }
+
+            return error;
           });
       } catch (err) {
         toast.error('Ocorreu um erro na atualização do Sub-Grupo!');

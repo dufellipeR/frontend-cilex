@@ -204,21 +204,6 @@ const RegisterTransaction: React.FC = () => {
                   ) : (
                     <>
                       <Select
-                        name="product_id"
-                        value={values.product_id}
-                        onChange={handleChange('product_id')}
-                        messageError={
-                          errors.type && touched.type ? errors.type : ''
-                        }
-                      >
-                        <option value="">Produto</option>
-                        {products.map(product => (
-                          <option value={product.id}>
-                            {product.description}
-                          </option>
-                        ))}
-                      </Select>
-                      <Select
                         name="storageOrigin"
                         value={values.storageOrigin}
                         onChange={handleChange('storageOrigin')}
@@ -250,6 +235,21 @@ const RegisterTransaction: React.FC = () => {
                         {storages.map(storage => (
                           <option value={storage.id}>
                             {storage.description}
+                          </option>
+                        ))}
+                      </Select>
+                      <Select
+                        name="product_id"
+                        value={values.product_id}
+                        onChange={handleChange('product_id')}
+                        messageError={
+                          errors.type && touched.type ? errors.type : ''
+                        }
+                      >
+                        <option value="">Produto</option>
+                        {products.map(product => (
+                          <option value={product.id}>
+                            {product.description}
                           </option>
                         ))}
                       </Select>

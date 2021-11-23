@@ -58,6 +58,18 @@ const EditType: React.FC = () => {
           .then(() => {
             toast.success('Atualizado com sucesso');
             history.push('/inventory');
+          })
+          .catch(error => {
+            const dataError = error.response.data;
+
+            if (
+              dataError.message ===
+              "There's already an entity registered with the same code"
+            ) {
+              toast.error('Já existe um tipo cadastrado com o mesmo código!');
+            }
+
+            return error;
           });
       } catch {
         toast.error('Ocorreu um erro na atualização do Tipo!');

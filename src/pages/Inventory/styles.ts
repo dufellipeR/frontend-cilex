@@ -5,6 +5,8 @@ export const Container = styled.div`
 `;
 
 export const Main = styled.main`
+  padding-bottom: 2rem;
+
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(12.5rem, 15.5rem));
   grid-template-rows: repeat(auto-fit, minmax(10rem, 12.5rem));
