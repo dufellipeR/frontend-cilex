@@ -82,6 +82,10 @@ import ListUnitMeasure from '../pages/Inventory/UnitMeasure/ListUnitMeasure';
 import RegisterUnitMeasure from '../pages/Inventory/UnitMeasure/RegisterUnitMeasure';
 import EditUnitMeasure from '../pages/Inventory/UnitMeasure/EditUnitMeasure';
 
+import ListPet from '../pages/Pet/ListPet';
+import RegisterPet from '../pages/Pet/RegisterPet';
+import EditPet from '../pages/Pet/EditPet';
+
 import Schedule from '../pages/Schedule';
 
 const Routes: React.FC = () => {
@@ -208,6 +212,10 @@ const Routes: React.FC = () => {
       />
       <Route path="/inventory/unitmeasure/:id" component={EditUnitMeasure} />
       {/* ---------------------- FIM LOGÍSTICA ---------------------- */}
+
+      <Route path="/pet" exact component={ListPet} />
+      <Route path="/pet/register" exact component={RegisterPet} />
+      <Route path="/pet/:id" component={EditPet} />
 
       <Route path="/schedule" component={Schedule} />
     </Switch>

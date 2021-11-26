@@ -58,6 +58,13 @@ const Menu: React.FC = () => {
             title="Agenda"
             description="Gerencie sua agenda de serviços"
           />
+          <ModuleCard
+            key="123"
+            to="pet"
+            classIcon="bi bi-calendar"
+            title="Pets"
+            description="Gerencie os pets"
+          />
           {listModules.map(module => (
             <ModuleCard
               key={module.title}

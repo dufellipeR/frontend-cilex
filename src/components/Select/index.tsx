@@ -1,6 +1,7 @@
 import React, { useState, SelectHTMLAttributes } from 'react';
+import { FiAlertCircle } from 'react-icons/fi';
 
-import { Container } from './styles';
+import { Container, SelectStyle, Error } from './styles';
 
 interface SelectProps extends SelectHTMLAttributes<HTMLSelectElement> {
   messageError?: string;
@@ -11,13 +12,20 @@ const Select: React.FC<SelectProps> = ({ messageError, children, ...rest }) => {
 
   return (
     <Container
-      onFocus={() => setSelectFocus(true)}
-      onBlur={() => setSelectFocus(false)}
       isFocus={selectFocus}
       isError={!!messageError}
-      {...rest}
+      onFocus={() => setSelectFocus(true)}
+      onBlur={() => setSelectFocus(false)}
     >
-      {children}
+      <SelectStyle isFocus={selectFocus} isError={!!messageError} {...rest}>
+        {children}
+      </SelectStyle>
+
+      {messageError && (
+        <Error title={messageError}>
+          <FiAlertCircle color="#c53030" size={20} />
+        </Error>
+      )}
     </Container>
   );
 };
