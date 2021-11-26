@@ -86,6 +86,10 @@ import ListPet from '../pages/Pet/ListPet';
 import RegisterPet from '../pages/Pet/RegisterPet';
 import EditPet from '../pages/Pet/EditPet';
 
+import ListServicesCompany from '../pages/ServicesCompany/ListServicesCompany';
+import RegisterServicesCompany from '../pages/ServicesCompany/RegisterServicesCompany';
+import EditServicesCompany from '../pages/ServicesCompany/EditServicesCompany';
+
 import Schedule from '../pages/Schedule';
 
 const Routes: React.FC = () => {
@@ -216,6 +220,14 @@ const Routes: React.FC = () => {
       <Route path="/pet" exact component={ListPet} />
       <Route path="/pet/register" exact component={RegisterPet} />
       <Route path="/pet/:id" component={EditPet} />
+
+      <Route path="/service" exact component={ListServicesCompany} />
+      <Route
+        path="/service/register"
+        exact
+        component={RegisterServicesCompany}
+      />
+      <Route path="/service/:id" component={EditServicesCompany} />
 
       <Route path="/schedule" component={Schedule} />
     </Switch>
