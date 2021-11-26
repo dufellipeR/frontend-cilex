@@ -5,7 +5,7 @@ import ModuleCard from '../../components/ModuleCard';
 import { useAuth } from '../../hooks/auth';
 import api from '../../services/api';
 
-import { Container, Main, Module } from './styles';
+import { Container, Main } from './styles';
 
 interface Module {
   title: string;
@@ -61,7 +61,7 @@ const Menu: React.FC = () => {
           <ModuleCard
             key="123"
             to="pet"
-            classIcon="bi bi-calendar"
+            classIcon="fas fa-dog"
             title="Pets"
             description="Gerencie os pets"
           />

@@ -26,37 +26,37 @@ const Inventory: React.FC = () => {
         />
         <ModuleCard
           to="/inventory/product"
-          classIcon="bi bi-box-seam"
+          classIcon="fas fa-boxes"
           title="Produtos"
           description="Gerencie seus produtos"
         />
         <ModuleCard
           to="/inventory/type"
-          classIcon="bi bi-box-seam"
+          classIcon="bi bi-box"
           title="Tipo"
           description="Gerencie seus tipos"
         />
         <ModuleCard
           to="/inventory/group"
-          classIcon="bi bi-box-seam"
+          classIcon="fas fa-object-group"
           title="Grupo"
           description="Gerencie seus grupos"
         />
         <ModuleCard
           to="/inventory/subgroup"
-          classIcon="bi bi-box-seam"
+          classIcon="fas fa-layer-group"
           title="Sub-grupo"
           description="Gerencie seus sub-grupos"
         />
         <ModuleCard
           to="/inventory/family"
-          classIcon="bi bi-box-seam"
+          classIcon="bi bi-person-bounding-box"
           title="Família"
           description="Gerencie suas famílias"
         />
         <ModuleCard
           to="/inventory/subfamily"
-          classIcon="bi bi-box-seam"
+          classIcon="bi bi-person-bounding-box"
           title="Sub-família"
           description="Gerencie suas sub-famílias"
         />
@@ -68,13 +68,13 @@ const Inventory: React.FC = () => {
         />
         <ModuleCard
           to="/inventory/dimension"
-          classIcon="bi bi-box-seam"
+          classIcon="fas fa-arrows-alt"
           title="Dimensão do Produto"
           description="Gerencie suas dimensões dos produtos"
         />
         <ModuleCard
           to="/inventory/unitmeasure"
-          classIcon="bi bi-box-seam"
+          classIcon="fas fa-text-height"
           title="Unidade de Medida"
           description="Gerencie suas unidades de medidas"
         />

@@ -17,7 +17,8 @@ export const Container = styled(Link)`
   display: flex;
   flex-direction: column;
 
-  .bi {
+  .bi,
+  .fas {
     color: ${props => props.theme.colors.main};
     font-size: 2.5rem;
   }

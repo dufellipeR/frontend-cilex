@@ -43,40 +43,37 @@ const ListPet: React.FC = () => {
   ];
 
   return (
-    <>
-      <Container>
-        <Header pageName="Pets" />
-        <Main>
-          <div id="align-content">
-            <ButtonBack destinationBack="/menu" />
-            <NewButton to="/pet/register">Novo</NewButton>
-            {pets.length > 0 ? (
-              <DefaultTable tbh={['Código', 'Nome']}>
-                <tbody>
-                  {pets.map(pet => (
-                    <tr key={pet.id}>
-                      <td>{pet.code}</td>
-                      <td>{pet.name}</td>
-                      <td>
-                        <Link
-                          style={{ textDecoration: 'none' }}
-                          to={`/pet/${pet.id}`}
-                        >
-                          <FiEye size={24} color={colors.main} />
-                        </Link>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </DefaultTable>
-            ) : (
-              <EmptyData />
-            )}
-          </div>
-        </Main>
-      </Container>
-      <ChangeCompany />
-    </>
+    <Container>
+      <Header pageName="Pets" />
+      <Main>
+        <div id="align-content">
+          <ButtonBack destinationBack="/menu" />
+          <NewButton to="/pet/register">Novo</NewButton>
+          {pets.length > 0 ? (
+            <DefaultTable tbh={['Código', 'Nome']}>
+              <tbody>
+                {pets.map(pet => (
+                  <tr key={pet.id}>
+                    <td>{pet.code}</td>
+                    <td>{pet.name}</td>
+                    <td>
+                      <Link
+                        style={{ textDecoration: 'none' }}
+                        to={`/pet/${pet.id}`}
+                      >
+                        <FiEye size={24} color={colors.main} />
+                      </Link>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </DefaultTable>
+          ) : (
+            <EmptyData />
+          )}
+        </div>
+      </Main>
+    </Container>
   );
 };
 
