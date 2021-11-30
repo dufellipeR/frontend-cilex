@@ -15,12 +15,13 @@ import { Container, Main } from './styles';
 
 interface Transaction {
   id: string; // gerado backend
-  code: string; // código do produto
-  description: string; // descrição do produto
-  type: string; // tipo da transação -> cadastrado
-  quantity: string; // quantidade da transação -> cadastado
-  user: string; // gerado backend
-  date: string; // gerado backend
+  type: string;
+  quantity: string;
+  product_id: string;
+  origin_id?: string;
+  destination_id?: string;
+  user_id: string;
+  created_at: string;
 }
 
 const ListTransaction: React.FC = () => {
@@ -28,29 +29,29 @@ const ListTransaction: React.FC = () => {
   const [transactions, setTransactions] = useState<Transaction[]>([]);
 
   useEffect(() => {
-    // api.get('/transaction').then(response => {
-    //   setTransactions(response.data);
-    // });
-    setTransactions([
-      {
-        id: 'bdda-u123-dsas',
-        code: 'BCM-001',
-        description: 'AÇO MOLA',
-        type: 'Entrada',
-        quantity: '10',
-        user: 'Arthur Gramm',
-        date: new Date().toLocaleDateString(),
-      },
-      {
-        id: 'adss-12dw-32aq-44ds',
-        code: 'BCM-001',
-        description: 'AÇO MOLA',
-        type: 'Saída',
-        quantity: '10',
-        user: 'Arthur Gramm',
-        date: new Date().toLocaleDateString(),
-      },
-    ]);
+    api.get<Transaction[]>('/transaction').then(response => {
+      setTransactions(response.data);
+    });
+    // setTransactions([
+    //   {
+    //     id: 'bdda-u123-dsas',
+    //     code: 'BCM-001',
+    //     description: 'AÇO MOLA',
+    //     type: 'Entrada',
+    //     quantity: '10',
+    //     user: 'Arthur Gramm',
+    //     date: new Date().toLocaleDateString(),
+    //   },
+    //   {
+    //     id: 'adss-12dw-32aq-44ds',
+    //     code: 'BCM-001',
+    //     description: 'AÇO MOLA',
+    //     type: 'Saída',
+    //     quantity: '10',
+    //     user: 'Arthur Gramm',
+    //     date: new Date().toLocaleDateString(),
+    //   },
+    // ]);
   }, []);
 
   return (
@@ -61,25 +62,18 @@ const ListTransaction: React.FC = () => {
           <ButtonBack destinationBack="/inventory" />
           <NewButton to="/inventory/transaction/register">Novo</NewButton>
           {transactions.length > 0 ? (
-            <DefaultTable
-              tbh={[
-                'Código',
-                'Descrição',
-                'Tipo',
-                'Quantidade',
-                'Usuário',
-                'Data',
-              ]}
-            >
+            <DefaultTable tbh={['Tipo', 'Quantidade', 'Usuário', 'Data']}>
               <tbody>
                 {transactions.map(transaction => (
                   <tr key={transaction.id}>
-                    <td>{transaction.code}</td>
-                    <td>{transaction.description}</td>
-                    <td>{transaction.type}</td>
+                    <td>
+                      {transaction.type === 'transfer'
+                        ? 'Transferência'
+                        : 'Movimentação'}
+                    </td>
                     <td>{transaction.quantity}</td>
-                    <td>{transaction.user}</td>
-                    <td>{transaction.date}</td>
+                    <td>{transaction.user_id}</td>
+                    <td>{transaction.created_at}</td>
                     <td>
                       <Link
                         style={{ textDecoration: 'none' }}

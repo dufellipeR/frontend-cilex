@@ -87,7 +87,7 @@ const RegisterTransaction: React.FC = () => {
               quantity,
             })
             .then(() => {
-              toast.success('Registrado com sucesso');
+              toast.success('Movimentação realizada com sucesso');
               history.push('/inventory/transaction');
             });
         } else {
@@ -98,11 +98,12 @@ const RegisterTransaction: React.FC = () => {
             .post('/transaction', {
               product_id,
               quantity,
-              storageOrigin,
-              storageDestination,
+              origin_id: storageOrigin,
+              destination_id: storageDestination,
+              type: 'transfer',
             })
             .then(() => {
-              toast.success('Registrado com sucesso');
+              toast.success('Transferência realizada com sucesso');
               history.push('/inventory/transaction');
             });
         }
@@ -166,7 +167,9 @@ const RegisterTransaction: React.FC = () => {
                         value={values.product_id}
                         onChange={handleChange('product_id')}
                         messageError={
-                          errors.type && touched.type ? errors.type : ''
+                          errors.product_id && touched.product_id
+                            ? errors.product_id
+                            : ''
                         }
                       >
                         <option value="">Produto</option>
@@ -185,8 +188,8 @@ const RegisterTransaction: React.FC = () => {
                         }
                       >
                         <option value="">Entrada/Saída</option>
-                        <option value="income">Entrada</option>
-                        <option value="outcome">Saída</option>
+                        <option value="In">Entrada</option>
+                        <option value="Out">Saída</option>
                       </Select>
                       <Input
                         name="quantity"
