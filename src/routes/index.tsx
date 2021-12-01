@@ -82,9 +82,11 @@ import ListUnitMeasure from '../pages/Inventory/UnitMeasure/ListUnitMeasure';
 import RegisterUnitMeasure from '../pages/Inventory/UnitMeasure/RegisterUnitMeasure';
 import EditUnitMeasure from '../pages/Inventory/UnitMeasure/EditUnitMeasure';
 
-import ListPet from '../pages/Pet/ListPet';
-import RegisterPet from '../pages/Pet/RegisterPet';
-import EditPet from '../pages/Pet/EditPet';
+import Pet from '../pages/Pet';
+
+import ListPet from '../pages/Pet/Pets/ListPet';
+import RegisterPet from '../pages/Pet/Pets/RegisterPet';
+import EditPet from '../pages/Pet/Pets/EditPet';
 
 import ListServicesCompany from '../pages/ServicesCompany/ListServicesCompany';
 import RegisterServicesCompany from '../pages/ServicesCompany/RegisterServicesCompany';
@@ -217,9 +219,11 @@ const Routes: React.FC = () => {
       <Route path="/inventory/unitmeasure/:id" component={EditUnitMeasure} />
       {/* ---------------------- FIM LOGÍSTICA ---------------------- */}
 
-      <Route path="/pet" exact component={ListPet} />
-      <Route path="/pet/register" exact component={RegisterPet} />
-      <Route path="/pet/:id" component={EditPet} />
+      <Route path="/pet" exact component={Pet} />
+
+      <Route path="/pet/pets" exact component={ListPet} />
+      <Route path="/pet/pets/register" exact component={RegisterPet} />
+      <Route path="/pet/pets/:id" component={EditPet} />
 
       <Route path="/service" exact component={ListServicesCompany} />
       <Route

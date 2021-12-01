@@ -14,17 +14,17 @@ import { toast } from 'react-toastify';
 import { ThemeContext } from 'styled-components';
 import Switch from 'react-switch';
 
-import api from '../../../services/api';
-import camera from '../../../assets/camera.svg';
-import { useCrudModules } from '../../../hooks/useCrudModules';
+import api from '../../../../services/api';
+import camera from '../../../../assets/camera.svg';
+import { useCrudModules } from '../../../../hooks/useCrudModules';
 
-import Header from '../../../components/Header';
-import Button from '../../../components/Button';
-import Input from '../../../components/Input';
-import ButtonBack from '../../../components/ButtonBack';
-import ModalDelete from '../../../components/ModalDelete';
-import Select from '../../../components/Select';
-import CustomSelect from '../../../components/CustomSelect';
+import Header from '../../../../components/Header';
+import Button from '../../../../components/Button';
+import Input from '../../../../components/Input';
+import ButtonBack from '../../../../components/ButtonBack';
+import ModalDelete from '../../../../components/ModalDelete';
+import Select from '../../../../components/Select';
+import CustomSelect from '../../../../components/CustomSelect';
 
 import {
   Container,
@@ -186,7 +186,7 @@ const EditPet: React.FC = () => {
           <Main>
             <HeaderContent>
               <div id="container-arrow">
-                <ButtonBack destinationBack="/pet" />
+                <ButtonBack destinationBack="/pet/pets" />
               </div>
               <div id="container-titles">
                 <h2>{pet.name}</h2>

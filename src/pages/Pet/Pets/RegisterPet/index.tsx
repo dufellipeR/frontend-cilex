@@ -12,15 +12,15 @@ import { toast } from 'react-toastify';
 import Switch from 'react-switch';
 import { ThemeContext } from 'styled-components';
 
-import api from '../../../services/api';
-import camera from '../../../assets/camera.svg';
+import api from '../../../../services/api';
+import camera from '../../../../assets/camera.svg';
 
-import Header from '../../../components/Header';
-import ButtonBack from '../../../components/ButtonBack';
-import Input from '../../../components/Input';
-import Button from '../../../components/Button';
-import Select from '../../../components/Select';
-import CustomSelect from '../../../components/CustomSelect';
+import Header from '../../../../components/Header';
+import ButtonBack from '../../../../components/ButtonBack';
+import Input from '../../../../components/Input';
+import Button from '../../../../components/Button';
+import Select from '../../../../components/Select';
+import CustomSelect from '../../../../components/CustomSelect';
 
 import {
   Container,

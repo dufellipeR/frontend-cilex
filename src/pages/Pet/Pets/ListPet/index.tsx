@@ -3,15 +3,15 @@ import { Link } from 'react-router-dom';
 import { FiEye } from 'react-icons/fi';
 import { ThemeContext } from 'styled-components';
 
-import { useAuth } from '../../../hooks/auth';
-import api from '../../../services/api';
+import { useAuth } from '../../../../hooks/auth';
+import api from '../../../../services/api';
 
-import NewButton from '../../../components/NewButton';
-import DefaultTable from '../../../components/DefaultTable';
-import ChangeCompany from '../../../components/ChangeCompany';
-import Header from '../../../components/Header';
-import ButtonBack from '../../../components/ButtonBack';
-import EmptyData from '../../../components/EmptyData';
+import NewButton from '../../../../components/NewButton';
+import DefaultTable from '../../../../components/DefaultTable';
+import ChangeCompany from '../../../../components/ChangeCompany';
+import Header from '../../../../components/Header';
+import ButtonBack from '../../../../components/ButtonBack';
+import EmptyData from '../../../../components/EmptyData';
 
 import { Container, Main } from './styles';
 
@@ -47,7 +47,7 @@ const ListPet: React.FC = () => {
       <Header pageName="Pets" />
       <Main>
         <div id="align-content">
-          <ButtonBack destinationBack="/menu" />
+          <ButtonBack destinationBack="/pet" />
           <NewButton to="/pet/register">Novo</NewButton>
           {pets.length > 0 ? (
             <DefaultTable tbh={['Código', 'Nome']}>
@@ -59,7 +59,7 @@ const ListPet: React.FC = () => {
                     <td>
                       <Link
                         style={{ textDecoration: 'none' }}
-                        to={`/pet/${pet.id}`}
+                        to={`/pet/pets/${pet.id}`}
                       >
                         <FiEye size={24} color={colors.main} />
                       </Link>
