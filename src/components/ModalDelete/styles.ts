@@ -1,10 +1,5 @@
 import styled from 'styled-components';
 
-interface ContentProps {
-  widthRem?: number;
-  heightRem?: number;
-}
-
 export const Background = styled.div`
   position: fixed;
   top: 0;
@@ -20,7 +15,7 @@ export const Background = styled.div`
   z-index: 10;
 `;
 
-export const Content = styled.div<ContentProps>`
+export const Content = styled.div`
   position: relative;
 
   display: flex;
@@ -30,9 +25,6 @@ export const Content = styled.div<ContentProps>`
   padding: 3rem;
   background-color: #fff;
   border-radius: 8px;
-
-  width: ${props => `${props.widthRem}rem`};
-  height: ${props => `${props.heightRem}rem`};
 
   max-width: 100%;
   max-height: 100%;

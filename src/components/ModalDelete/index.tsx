@@ -17,15 +17,13 @@ interface ModalDeleteProps {
 const ModalDelete: React.FC<ModalDeleteProps> = ({
   visible,
   setVisible,
-  widthRem = 30,
-  heightRem = 15,
   actionToDelete,
 }) => {
   const { colors } = useContext(ThemeContext);
 
   return visible ? (
     <Background>
-      <Content widthRem={widthRem} heightRem={heightRem}>
+      <Content>
         <button
           type="button"
           id="button-exit"

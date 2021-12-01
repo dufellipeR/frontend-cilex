@@ -1,3 +1,4 @@
+import { lighten } from 'polished';
 import styled from 'styled-components';
 
 export const Container = styled.div`
@@ -5,11 +6,12 @@ export const Container = styled.div`
 `;
 
 export const Main = styled.main`
-  height: 75vh;
+  height: 65vh;
   display: grid;
   grid-template-columns: 1fr 1fr;
   place-items: center;
   margin: 0 1rem;
+  gap: 1rem;
 
   @media (max-width: 900px) {
     display: flex;
@@ -59,4 +61,53 @@ export const Main = styled.main`
     color: #fff;
   }
   // -----------------
+`;
+
+export const ActionsArea = styled.div`
+  display: grid;
+  grid-template-columns: 30% 20%;
+  align-items: center;
+  justify-content: space-between;
+
+  height: 10vh;
+  margin: 0 1rem;
+
+  #align-buttons {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+`;
+
+export const FormCustom = styled.form`
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-gap: 10px;
+
+  margin: 1rem;
+
+  @media (max-width: 900px) {
+    display: flex;
+    flex-direction: column;
+
+    margin-bottom: 1rem;
+  }
+`;
+
+export const ContainerInputDate = styled.div`
+  border: 2px solid #666360;
+  border-radius: 10px;
+
+  padding: 0 1rem;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  input {
+    width: 80%;
+    padding: 0.275rem;
+    border: 1px solid ${lighten(0.5, '#666360')};
+    border-radius: 10px;
+  }
 `;
