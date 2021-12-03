@@ -31,8 +31,8 @@ export const ServiceIdentifier = styled.div<ServiceIdentifierProps>`
 `;
 
 export const AlignTexts = styled.div`
-  display: grid;
-  grid-template-columns: 1fr 1fr;
+  display: flex;
+  flex-direction: column;
   text-align: start;
-  gap: 1rem;
+  gap: 0.5rem;
 `;

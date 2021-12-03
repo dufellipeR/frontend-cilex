@@ -43,6 +43,7 @@ const CompromiseRow: React.FC<CompromiseRowProps> = ({
 
           {showDetail && (
             <>
+              <p>Pet: {compromise.pet.name}</p>
               <p>Dono: {compromise.pet.owner.name}</p>
               <p>Endereço: {compromise.pet.owner.address}</p>
             </>
