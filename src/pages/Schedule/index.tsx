@@ -187,7 +187,7 @@ const Schedule: React.FC = () => {
     ]);
   }, []);
 
-  function handleClickDay(day: Date) {
+  const handleClickDay = (day: Date) => {
     setDayClicked(day.toLocaleDateString());
 
     const servicesInDayClicked = DBCompromises.filter(
@@ -199,9 +199,9 @@ const Schedule: React.FC = () => {
     );
 
     setCompromises(servicesInDayClicked);
-  }
+  };
 
-  function handleChangeServiceSelected(e: ChangeEvent<HTMLSelectElement>) {
+  const handleChangeServiceSelected = (e: ChangeEvent<HTMLSelectElement>) => {
     const valueChange = e.target.value;
     setServiceSelected(valueChange);
 
@@ -214,7 +214,7 @@ const Schedule: React.FC = () => {
     );
 
     setCompromises(servicesInDayClicked);
-  }
+  };
 
   const handleSubmitForm = useCallback(async (data: RegisterCompromiseForm) => {
     try {

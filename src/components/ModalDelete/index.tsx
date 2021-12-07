@@ -9,8 +9,6 @@ import { Background, Content } from './styles';
 interface ModalDeleteProps {
   visible: boolean;
   setVisible: React.Dispatch<React.SetStateAction<boolean>>;
-  widthRem?: number;
-  heightRem?: number;
   actionToDelete: () => void;
 }
 
