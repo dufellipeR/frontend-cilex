@@ -19,7 +19,7 @@ const Inventory: React.FC = () => {
           description="Gerencie seus pets"
         />
         <ModuleCard
-          to="/pet/vaccines"
+          to="/pet/vaccine"
           classIcon="fas fa-syringe"
           title="Vacinas"
           description="Gerencie suas vacinas"

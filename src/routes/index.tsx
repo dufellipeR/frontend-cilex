@@ -88,6 +88,10 @@ import ListPet from '../pages/Pet/Pets/ListPet';
 import RegisterPet from '../pages/Pet/Pets/RegisterPet';
 import EditPet from '../pages/Pet/Pets/EditPet';
 
+import ListVaccine from '../pages/Pet/Vaccine/ListVaccine';
+import RegisterVaccine from '../pages/Pet/Vaccine/RegisterVaccine';
+import EditVaccine from '../pages/Pet/Vaccine/EditVaccine';
+
 import ListServicesCompany from '../pages/ServicesCompany/ListServicesCompany';
 import RegisterServicesCompany from '../pages/ServicesCompany/RegisterServicesCompany';
 import EditServicesCompany from '../pages/ServicesCompany/EditServicesCompany';
@@ -224,6 +228,10 @@ const Routes: React.FC = () => {
       <Route path="/pet/pets" exact component={ListPet} />
       <Route path="/pet/pets/register" exact component={RegisterPet} />
       <Route path="/pet/pets/:id" component={EditPet} />
+
+      <Route path="/pet/vaccine" exact component={ListVaccine} />
+      <Route path="/pet/vaccine/register" exact component={RegisterVaccine} />
+      <Route path="/pet/vaccine/:id" component={EditVaccine} />
 
       <Route path="/service" exact component={ListServicesCompany} />
       <Route

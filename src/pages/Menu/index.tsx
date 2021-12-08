@@ -63,7 +63,7 @@ const Menu: React.FC = () => {
             to="pet"
             classIcon="fas fa-dog"
             title="Pet"
-            description="Gerencie os pets"
+            description="Gerencie as informações dos pets"
           />
           <ModuleCard
             key="345"
