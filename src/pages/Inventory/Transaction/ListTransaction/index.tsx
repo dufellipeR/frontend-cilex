@@ -14,13 +14,16 @@ import EmptyData from '../../../../components/EmptyData';
 import { Container, Main } from './styles';
 
 interface Transaction {
-  id: string; // gerado backend
+  id: string;
   type: string;
   quantity: string;
   product_id: string;
   origin_id?: string;
   destination_id?: string;
-  user_id: string;
+  user: {
+    id: string;
+    name: string;
+  };
   created_at: string;
 }
 
@@ -30,28 +33,17 @@ const ListTransaction: React.FC = () => {
 
   useEffect(() => {
     api.get<Transaction[]>('/transaction').then(response => {
-      setTransactions(response.data);
+      const updateDate = response.data.map(transaction => {
+        const createdAtDate = new Date(transaction.created_at);
+
+        return {
+          ...transaction,
+          created_at: `${createdAtDate.toLocaleDateString()} ${createdAtDate.toLocaleTimeString()}`,
+        };
+      });
+
+      setTransactions(updateDate);
     });
-    // setTransactions([
-    //   {
-    //     id: 'bdda-u123-dsas',
-    //     code: 'BCM-001',
-    //     description: 'AÇO MOLA',
-    //     type: 'Entrada',
-    //     quantity: '10',
-    //     user: 'Arthur Gramm',
-    //     date: new Date().toLocaleDateString(),
-    //   },
-    //   {
-    //     id: 'adss-12dw-32aq-44ds',
-    //     code: 'BCM-001',
-    //     description: 'AÇO MOLA',
-    //     type: 'Saída',
-    //     quantity: '10',
-    //     user: 'Arthur Gramm',
-    //     date: new Date().toLocaleDateString(),
-    //   },
-    // ]);
   }, []);
 
   return (
@@ -72,7 +64,7 @@ const ListTransaction: React.FC = () => {
                         : 'Movimentação'}
                     </td>
                     <td>{transaction.quantity}</td>
-                    <td>{transaction.user_id}</td>
+                    <td>{transaction.user.name}</td>
                     <td>{transaction.created_at}</td>
                     <td>
                       <Link
