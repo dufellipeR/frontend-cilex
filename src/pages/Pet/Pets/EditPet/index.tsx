@@ -69,7 +69,7 @@ const EditPet: React.FC = () => {
 
   const [editting, setEditting] = useState<boolean>(false);
   const [showModalDelete, setShowModalDelete] = useState<boolean>(false);
-  const [pet, setPet] = useState<RegisterPetForm | null>({
+  const [pet, setPet] = useState<RegisterPetForm>({
     name: 'Zeca',
     picture: '',
     breed: 'Vira-Lata',
@@ -101,7 +101,7 @@ const EditPet: React.FC = () => {
     api.get('/person').then(response => {
       setPeoples(response.data);
     });
-    // api.get<RegisterPetForm | null>(`/pet/${id}`).then(response => {
+    // api.get<RegisterPetForm>(`/pet/${id}`).then(response => {
     //   setPet(response.data);
     // });
   }, [id]);

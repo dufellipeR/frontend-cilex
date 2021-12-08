@@ -18,12 +18,12 @@ import ModalDelete from '../../../../components/ModalDelete';
 
 import { Container, Main, HeaderContent, FormCustom } from './styles';
 
-interface RegisterVaccineForm {
+interface RegisterEnclosureForm {
   code: string;
   description: string;
 }
 
-const EditVaccine: React.FC = () => {
+const EditEnclosure: React.FC = () => {
   const history = useHistory();
   const { id }: any = useParams();
   const { colors } = useContext(ThemeContext);
@@ -31,25 +31,25 @@ const EditVaccine: React.FC = () => {
 
   const [editting, setEditting] = useState<boolean>(false);
   const [showModalDelete, setShowModalDelete] = useState<boolean>(false);
-  const [vaccine, setVaccine] = useState({} as RegisterVaccineForm);
+  const [enclosure, setEnclosure] = useState({} as RegisterEnclosureForm);
 
   useEffect(() => {
-    api.get<RegisterVaccineForm>(`/vaccine/${id}`).then(response => {
-      setVaccine(response.data);
+    api.get<RegisterEnclosureForm>(`/enclosure/${id}`).then(response => {
+      setEnclosure(response.data);
     });
   }, [id]);
 
   const handleSubmitForm = useCallback(
-    async (data: RegisterVaccineForm) => {
+    async (data: RegisterEnclosureForm) => {
       try {
         api
-          .put(`/vaccine/${id}`, {
+          .put(`/enclosure/${id}`, {
             code: data.code,
             description: data.description,
           })
           .then(() => {
             toast.success('Atualizado com sucesso');
-            history.push('/pet/vaccine');
+            history.push('/pet/enclosure');
           })
           .catch(error => {
             const dataError = error.response.data;
@@ -59,20 +59,20 @@ const EditVaccine: React.FC = () => {
               "There's already an entity registered with the same code"
             ) {
               toast.error(
-                'Já existe uma vacina cadastrada com o mesmo código!',
+                'Já existe um recinto cadastrado com o mesmo código!',
               );
             }
 
             return error;
           });
       } catch (err) {
-        toast.error('Ocorreu um erro na atualização da Vacina!');
+        toast.error('Ocorreu um erro na atualização do Recinto!');
       }
     },
     [history, id],
   );
 
-  const formSchemaVaccineEdit = Yup.object().shape({
+  const formSchemaEnclosureEdit = Yup.object().shape({
     code: Yup.string(),
     description: Yup.string(),
   });
@@ -80,16 +80,16 @@ const EditVaccine: React.FC = () => {
   return (
     <>
       <Container>
-        <Header pageName="Editar Vacina" />
-        {vaccine && (
+        <Header pageName="Editar Recinto" />
+        {enclosure && (
           <Main>
             <HeaderContent>
               <div id="container-arrow">
-                <ButtonBack destinationBack="/pet/vaccine" />
+                <ButtonBack destinationBack="/pet/enclosure" />
               </div>
               <div id="container-titles">
-                <h2>{vaccine.code}</h2>
-                <p>{vaccine.description}</p>
+                <h2>{enclosure.code}</h2>
+                <p>{enclosure.description}</p>
               </div>
               <div id="container-buttons-actions">
                 <Button
@@ -110,10 +110,10 @@ const EditVaccine: React.FC = () => {
             {editting && (
               <Formik
                 initialValues={{
-                  code: vaccine.code,
-                  description: vaccine.description,
+                  code: enclosure.code,
+                  description: enclosure.description,
                 }}
-                validationSchema={formSchemaVaccineEdit}
+                validationSchema={formSchemaEnclosureEdit}
                 onSubmit={handleSubmitForm}
               >
                 {({ handleChange, touched, values, errors, handleSubmit }) => (
@@ -133,7 +133,7 @@ const EditVaccine: React.FC = () => {
                       <Input
                         name="description"
                         type="text"
-                        placeholder="Vacina"
+                        placeholder="Recinto"
                         value={values.description}
                         onChange={handleChange('description')}
                         messageError={
@@ -160,11 +160,11 @@ const EditVaccine: React.FC = () => {
         visible={showModalDelete}
         setVisible={setShowModalDelete}
         actionToDelete={() => {
-          deleteDataFromModule({ id, route: 'vaccine', routePush: 'pet' });
+          deleteDataFromModule({ id, route: 'enclosure', routePush: 'pet' });
         }}
       />
     </>
   );
 };
 
-export default EditVaccine;
+export default EditEnclosure;

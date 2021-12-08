@@ -92,6 +92,10 @@ import ListVaccine from '../pages/Pet/Vaccine/ListVaccine';
 import RegisterVaccine from '../pages/Pet/Vaccine/RegisterVaccine';
 import EditVaccine from '../pages/Pet/Vaccine/EditVaccine';
 
+import ListEnclosure from '../pages/Pet/Enclosure/ListEnclosure';
+import RegisterEnclosure from '../pages/Pet/Enclosure/RegisterEnclosure';
+import EditEnclosure from '../pages/Pet/Enclosure/EditEnclosure';
+
 import ListServicesCompany from '../pages/ServicesCompany/ListServicesCompany';
 import RegisterServicesCompany from '../pages/ServicesCompany/RegisterServicesCompany';
 import EditServicesCompany from '../pages/ServicesCompany/EditServicesCompany';
@@ -223,6 +227,7 @@ const Routes: React.FC = () => {
       <Route path="/inventory/unitmeasure/:id" component={EditUnitMeasure} />
       {/* ---------------------- FIM LOGÍSTICA ---------------------- */}
 
+      {/* ---------------------- INÍCIO PET ---------------------- */}
       <Route path="/pet" exact component={Pet} />
 
       <Route path="/pet/pets" exact component={ListPet} />
@@ -232,6 +237,15 @@ const Routes: React.FC = () => {
       <Route path="/pet/vaccine" exact component={ListVaccine} />
       <Route path="/pet/vaccine/register" exact component={RegisterVaccine} />
       <Route path="/pet/vaccine/:id" component={EditVaccine} />
+
+      <Route path="/pet/enclosure" exact component={ListEnclosure} />
+      <Route
+        path="/pet/enclosure/register"
+        exact
+        component={RegisterEnclosure}
+      />
+      <Route path="/pet/enclosure/:id" component={EditEnclosure} />
+      {/* ---------------------- FIM PET ---------------------- */}
 
       <Route path="/service" exact component={ListServicesCompany} />
       <Route
