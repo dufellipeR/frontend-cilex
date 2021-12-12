@@ -36,3 +36,17 @@ export const FormCustom = styled.form`
     }
   }
 `;
+
+export const ContainerInputColor = styled.div`
+  margin: 1rem 0;
+  display: flex;
+  justify-content: center;
+
+  input {
+    margin-left: 2rem;
+  }
+
+  input + span {
+    margin-left: 2rem;
+  }
+`;

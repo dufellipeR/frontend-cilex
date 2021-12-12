@@ -96,9 +96,9 @@ import ListEnclosure from '../pages/Pet/Enclosure/ListEnclosure';
 import RegisterEnclosure from '../pages/Pet/Enclosure/RegisterEnclosure';
 import EditEnclosure from '../pages/Pet/Enclosure/EditEnclosure';
 
-import ListServicesCompany from '../pages/ServicesCompany/ListServicesCompany';
-import RegisterServicesCompany from '../pages/ServicesCompany/RegisterServicesCompany';
-import EditServicesCompany from '../pages/ServicesCompany/EditServicesCompany';
+import ListWork from '../pages/Work/ListWork';
+import RegisterWork from '../pages/Work/RegisterWork';
+import EditWork from '../pages/Work/EditWork';
 
 import Schedule from '../pages/Schedule';
 
@@ -247,13 +247,9 @@ const Routes: React.FC = () => {
       <Route path="/pet/enclosure/:id" component={EditEnclosure} />
       {/* ---------------------- FIM PET ---------------------- */}
 
-      <Route path="/service" exact component={ListServicesCompany} />
-      <Route
-        path="/service/register"
-        exact
-        component={RegisterServicesCompany}
-      />
-      <Route path="/service/:id" component={EditServicesCompany} />
+      <Route path="/work" exact component={ListWork} />
+      <Route path="/work/register" exact component={RegisterWork} />
+      <Route path="/work/:id" component={EditWork} />
 
       <Route path="/schedule" component={Schedule} />
     </Switch>

@@ -12,37 +12,37 @@ import Header from '../../../components/Header';
 import Input from '../../../components/Input';
 import ButtonBack from '../../../components/ButtonBack';
 
-import { Container, Main, FormCustom } from './styles';
+import { Container, Main, FormCustom, ContainerInputColor } from './styles';
 
-interface RegisterServicesCompanyForm {
+interface RegisterWorkForm {
   code: string;
-  service: string;
+  description: string;
   color: string;
 }
 
-const RegisterServicesCompany: React.FC = () => {
+const RegisterWork: React.FC = () => {
   const history = useHistory();
 
-  const formSchemaServicesCompany = Yup.object().shape({
+  const formSchemaWork = Yup.object().shape({
     code: Yup.string().required('Código Obrigatório'),
-    service: Yup.string(),
+    description: Yup.string(),
     color: Yup.string(),
   });
 
   const handleSubmitForm = useCallback(
-    async (data: RegisterServicesCompanyForm) => {
+    async (data: RegisterWorkForm) => {
       try {
-        const { code, service, color } = data;
+        const { code, description, color } = data;
 
         api
-          .post('/service', {
+          .post('/work', {
             code,
-            service,
+            description,
             color,
           })
           .then(() => {
             toast.success('Registrado com sucesso');
-            history.push('/service');
+            history.push('/work');
           })
           .catch(error => {
             const dataError = error.response.data;
@@ -52,14 +52,14 @@ const RegisterServicesCompany: React.FC = () => {
               "There's already an entity registered with the same code"
             ) {
               toast.error(
-                'Já existe um serviço cadastrado com o mesmo código!',
+                'Já existe um trabalho cadastrado com o mesmo código!',
               );
             }
 
             return error;
           });
       } catch (err) {
-        toast.error('Ocorreu um erro no registro do Serviço!');
+        toast.error('Ocorreu um erro no registro do Trabalho!');
       }
     },
     [history],
@@ -68,16 +68,16 @@ const RegisterServicesCompany: React.FC = () => {
   return (
     <>
       <Container>
-        <Header pageName="Registro de Cargos e Funções" />
-        <ButtonBack destinationBack="/service" />
+        <Header pageName="Registro de Trabalho" />
+        <ButtonBack destinationBack="/work" />
         <Main>
           <Formik
             initialValues={{
               code: '',
-              service: '',
+              description: '',
               color: '',
             }}
-            validationSchema={formSchemaServicesCompany}
+            validationSchema={formSchemaWork}
             onSubmit={handleSubmitForm}
           >
             {({ handleChange, touched, values, errors, handleSubmit }) => (
@@ -95,25 +95,27 @@ const RegisterServicesCompany: React.FC = () => {
                     maxLength={6}
                   />
                   <Input
-                    name="service"
+                    name="description"
                     type="text"
-                    placeholder="Serviço"
-                    value={values.service}
-                    onChange={handleChange('service')}
+                    placeholder="Trabalho"
+                    value={values.description}
+                    onChange={handleChange('description')}
                     messageError={
-                      errors.service && touched.service ? errors.service : ''
+                      errors.description && touched.description
+                        ? errors.description
+                        : ''
                     }
                   />
-                  <Input
-                    name="color"
-                    type="text"
-                    placeholder="Cor"
-                    value={values.color}
-                    onChange={handleChange('color')}
-                    messageError={
-                      errors.color && touched.color ? errors.color : ''
-                    }
-                  />
+                  <ContainerInputColor>
+                    <span>Cor</span>
+                    <input
+                      type="color"
+                      name="main"
+                      value={values.color}
+                      onChange={handleChange('color')}
+                    />
+                    <span>{values.color}</span>
+                  </ContainerInputColor>
                 </div>
                 <div id="align-button-save">
                   <Button layoutColor="button-green" type="submit">
@@ -130,4 +132,4 @@ const RegisterServicesCompany: React.FC = () => {
   );
 };
 
-export default RegisterServicesCompany;
+export default RegisterWork;

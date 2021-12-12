@@ -16,15 +16,21 @@ import Input from '../../../components/Input';
 import ButtonBack from '../../../components/ButtonBack';
 import ModalDelete from '../../../components/ModalDelete';
 
-import { Container, Main, HeaderContent, FormCustom } from './styles';
+import {
+  Container,
+  Main,
+  HeaderContent,
+  FormCustom,
+  ContainerInputColor,
+} from './styles';
 
-interface RegisterServicesCompanyForm {
+interface RegisterWorkForm {
   code: string;
-  service: string;
+  description: string;
   color: string;
 }
 
-const EditServicesCompany: React.FC = () => {
+const EditWork: React.FC = () => {
   const history = useHistory();
   const { id }: any = useParams();
   const { colors } = useContext(ThemeContext);
@@ -32,32 +38,30 @@ const EditServicesCompany: React.FC = () => {
 
   const [editting, setEditting] = useState<boolean>(false);
   const [showModalDelete, setShowModalDelete] = useState<boolean>(false);
-  const [service, setService] = useState<RegisterServicesCompanyForm | null>({
+  const [work, setWork] = useState({
     code: '1000',
-    service: 'Banho e Tosa',
+    description: 'Banho e Tosa',
     color: '#F00',
-  });
+  } as RegisterWorkForm);
 
   useEffect(() => {
-    api
-      .get<RegisterServicesCompanyForm | null>(`/service/${id}`)
-      .then(response => {
-        setService(response.data);
-      });
+    api.get<RegisterWorkForm>(`/work/${id}`).then(response => {
+      setWork(response.data);
+    });
   }, [id]);
 
   const handleSubmitForm = useCallback(
-    async (data: RegisterServicesCompanyForm) => {
+    async (data: RegisterWorkForm) => {
       try {
         api
-          .put(`/service/${id}`, {
+          .put(`/work/${id}`, {
             code: data.code,
-            service: data.service,
+            description: data.description,
             color: data.color,
           })
           .then(() => {
             toast.success('Atualizado com sucesso');
-            history.push('/service');
+            history.push('/work');
           })
           .catch(error => {
             const dataError = error.response.data;
@@ -67,38 +71,38 @@ const EditServicesCompany: React.FC = () => {
               "There's already an entity registered with the same code"
             ) {
               toast.error(
-                'Já existe um serviço cadastrado com o mesmo código!',
+                'Já existe um trabalho cadastrado com o mesmo código!',
               );
             }
 
             return error;
           });
       } catch (err) {
-        toast.error('Ocorreu um erro na atualização do Serviço!');
+        toast.error('Ocorreu um erro na atualização do Trabalho!');
       }
     },
     [history, id],
   );
 
-  const formSchemaServicesCompany = Yup.object().shape({
+  const formSchemaWork = Yup.object().shape({
     code: Yup.string(),
-    service: Yup.string(),
+    description: Yup.string(),
     color: Yup.string(),
   });
 
   return (
     <>
       <Container>
-        <Header pageName="Editar Serviço" />
-        {service && (
+        <Header pageName="Editar Trabalho" />
+        {work && (
           <Main>
             <HeaderContent>
               <div id="container-arrow">
-                <ButtonBack destinationBack="/service" />
+                <ButtonBack destinationBack="/work" />
               </div>
               <div id="container-titles">
-                <h2>{service.code}</h2>
-                <p>{service.service}</p>
+                <h2>{work.code}</h2>
+                <p>{work.description}</p>
               </div>
               <div id="container-buttons-actions">
                 <Button
@@ -119,11 +123,11 @@ const EditServicesCompany: React.FC = () => {
             {editting && (
               <Formik
                 initialValues={{
-                  code: service.code,
-                  service: service.service,
-                  color: service.color,
+                  code: work.code,
+                  description: work.description,
+                  color: work.color,
                 }}
-                validationSchema={formSchemaServicesCompany}
+                validationSchema={formSchemaWork}
                 onSubmit={handleSubmitForm}
               >
                 {({ handleChange, touched, values, errors, handleSubmit }) => (
@@ -141,27 +145,27 @@ const EditServicesCompany: React.FC = () => {
                         maxLength={6}
                       />
                       <Input
-                        name="service"
+                        name="description"
                         type="text"
-                        placeholder="Serviço"
-                        value={values.service}
-                        onChange={handleChange('service')}
+                        placeholder="Trabalho"
+                        value={values.description}
+                        onChange={handleChange('description')}
                         messageError={
-                          errors.service && touched.service
-                            ? errors.service
+                          errors.description && touched.description
+                            ? errors.description
                             : ''
                         }
                       />
-                      <Input
-                        name="color"
-                        type="text"
-                        placeholder="Cor"
-                        value={values.color}
-                        onChange={handleChange('color')}
-                        messageError={
-                          errors.color && touched.color ? errors.color : ''
-                        }
-                      />
+                      <ContainerInputColor>
+                        <span>Cor</span>
+                        <input
+                          type="color"
+                          name="main"
+                          value={values.color}
+                          onChange={handleChange('color')}
+                        />
+                        <span>{values.color}</span>
+                      </ContainerInputColor>
                     </div>
                     <div id="align-button-save">
                       <Button layoutColor="button-green" type="submit">
@@ -180,11 +184,11 @@ const EditServicesCompany: React.FC = () => {
         visible={showModalDelete}
         setVisible={setShowModalDelete}
         actionToDelete={() => {
-          deleteDataFromModule({ id, route: 'service', routePush: 'service' });
+          deleteDataFromModule({ id, route: 'work', routePush: 'work' });
         }}
       />
     </>
   );
 };
 
-export default EditServicesCompany;
+export default EditWork;

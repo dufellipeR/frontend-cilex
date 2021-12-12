@@ -14,47 +14,47 @@ import EmptyData from '../../../components/EmptyData';
 
 import { Container, Main } from './styles';
 
-export interface IServicesCompany {
+export interface IWork {
   id: string;
   code: string;
-  service: string;
+  description: string;
   color: string;
 }
 
-const ListServicesCompany: React.FC = () => {
+const ListWork: React.FC = () => {
   const { user } = useAuth();
   const { colors } = useContext(ThemeContext);
 
-  const [services, setServices] = useState<IServicesCompany[]>([
-    { id: '1', code: '1000', service: 'Banho e Tosa', color: '#F00' },
-    { id: '2', code: '2000', service: 'Hospedagem', color: '#FF0' },
-    { id: '3', code: '3000', service: 'Creche', color: '#0FF' },
+  const [works, setWorks] = useState<IWork[]>([
+    { id: '1', code: '1000', description: 'Banho e Tosa', color: '#F00' },
+    { id: '2', code: '2000', description: 'Hospedagem', color: '#FF0' },
+    { id: '3', code: '3000', description: 'Creche', color: '#0FF' },
   ]);
 
   useEffect(() => {
-    api.get<IServicesCompany[]>('/service').then(response => {
-      setServices(response.data);
+    api.get<IWork[]>('/work').then(response => {
+      setWorks(response.data);
     });
   }, []);
 
   return (
     <Container>
-      <Header pageName="Serviços" />
+      <Header pageName="Trabalhos" />
       <Main>
         <div id="align-content">
           <ButtonBack destinationBack="/menu" />
-          <NewButton to="/service/register">Novo</NewButton>
-          {services.length > 0 ? (
-            <DefaultTable tbh={['Código', 'Serviços']}>
+          <NewButton to="/work/register">Novo</NewButton>
+          {works.length > 0 ? (
+            <DefaultTable tbh={['Código', 'Trabalhos']}>
               <tbody>
-                {services.map(service => (
-                  <tr key={service.id}>
-                    <td>{service.code}</td>
-                    <td>{service.service}</td>
+                {works.map(work => (
+                  <tr key={work.id}>
+                    <td>{work.code}</td>
+                    <td>{work.description}</td>
                     <td>
                       <Link
                         style={{ textDecoration: 'none' }}
-                        to={`/service/${service.id}`}
+                        to={`/work/${work.id}`}
                       >
                         <FiEye size={24} color={colors.main} />
                       </Link>
@@ -72,4 +72,4 @@ const ListServicesCompany: React.FC = () => {
   );
 };
 
-export default ListServicesCompany;
+export default ListWork;

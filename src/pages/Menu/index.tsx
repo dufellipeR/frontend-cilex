@@ -67,10 +67,10 @@ const Menu: React.FC = () => {
           />
           <ModuleCard
             key="345"
-            to="service"
+            to="work"
             classIcon="bi bi-gear"
-            title="Serviços"
-            description="Gerencie seus serviços"
+            title="Trabalhos"
+            description="Gerencie seus trabalhos"
           />
           {listModules.map(module => (
             <ModuleCard
