@@ -5,6 +5,7 @@ import { ThemeContext } from 'styled-components';
 
 import { useAuth } from '../../../../hooks/auth';
 import api from '../../../../services/api';
+import { IVaccine } from '../../../../types/pet/vaccine';
 
 import NewButton from '../../../../components/NewButton';
 import DefaultTable from '../../../../components/DefaultTable';
@@ -13,12 +14,6 @@ import ButtonBack from '../../../../components/ButtonBack';
 import EmptyData from '../../../../components/EmptyData';
 
 import { Container, Main } from './styles';
-
-export interface IVaccine {
-  id: string;
-  code: string;
-  description: string;
-}
 
 const ListVaccine: React.FC = () => {
   const { user } = useAuth();

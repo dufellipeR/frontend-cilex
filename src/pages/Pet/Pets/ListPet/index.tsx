@@ -17,30 +17,23 @@ import { Container, Main } from './styles';
 
 export interface IPets {
   id: string;
-  code: string;
   name: string;
+  breed: string;
+  gender: string;
+  castrated: boolean;
 }
 
 const ListPet: React.FC = () => {
   const { user } = useAuth();
   const { colors } = useContext(ThemeContext);
 
-  // const [pets, setPets] = useState<IPets[]>([]);
+  const [pets, setPets] = useState<IPets[]>([]);
 
-  // useEffect(() => {
-  //   api.get<IPets[]>('/pets').then(response => {
-  //     setPets(response.data);
-  //   });
-  // }, []);
-
-  const pets: IPets[] = [
-    { id: '1', code: '1001', name: 'Zeca' },
-    { id: '2', code: '1002', name: 'Zeca' },
-    { id: '3', code: '1003', name: 'Zeca' },
-    { id: '4', code: '1004', name: 'Zeca' },
-    { id: '5', code: '1005', name: 'Zeca' },
-    { id: '6', code: '1006', name: 'Zeca' },
-  ];
+  useEffect(() => {
+    api.get<IPets[]>('/pet').then(response => {
+      setPets(response.data);
+    });
+  }, []);
 
   return (
     <Container>
@@ -48,14 +41,15 @@ const ListPet: React.FC = () => {
       <Main>
         <div id="align-content">
           <ButtonBack destinationBack="/pet" />
-          <NewButton to="/pet/register">Novo</NewButton>
+          <NewButton to="/pet/pets/register">Novo</NewButton>
           {pets.length > 0 ? (
-            <DefaultTable tbh={['Código', 'Nome']}>
+            <DefaultTable tbh={['Nome', 'Raça', 'Castrado ?']}>
               <tbody>
                 {pets.map(pet => (
                   <tr key={pet.id}>
-                    <td>{pet.code}</td>
                     <td>{pet.name}</td>
+                    <td>{pet.breed}</td>
+                    <td>{pet.castrated ? 'Sim' : 'Não'}</td>
                     <td>
                       <Link
                         style={{ textDecoration: 'none' }}

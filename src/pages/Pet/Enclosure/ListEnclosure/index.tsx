@@ -5,6 +5,7 @@ import { ThemeContext } from 'styled-components';
 
 import { useAuth } from '../../../../hooks/auth';
 import api from '../../../../services/api';
+import { IEnclosure } from '../../../../types/pet/enclosure';
 
 import NewButton from '../../../../components/NewButton';
 import DefaultTable from '../../../../components/DefaultTable';
@@ -13,12 +14,6 @@ import ButtonBack from '../../../../components/ButtonBack';
 import EmptyData from '../../../../components/EmptyData';
 
 import { Container, Main } from './styles';
-
-export interface IEnclosure {
-  id: string;
-  code: string;
-  description: string;
-}
 
 const ListEnclosure: React.FC = () => {
   const { user } = useAuth();

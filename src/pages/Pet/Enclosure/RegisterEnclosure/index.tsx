@@ -6,6 +6,7 @@ import { toast } from 'react-toastify';
 import { FiSave } from 'react-icons/fi';
 
 import api from '../../../../services/api';
+import { IRegisterEnclosure } from '../../../../types/pet/enclosure';
 
 import Button from '../../../../components/Button';
 import Header from '../../../../components/Header';
@@ -13,11 +14,6 @@ import Input from '../../../../components/Input';
 import ButtonBack from '../../../../components/ButtonBack';
 
 import { Container, Main, FormCustom } from './styles';
-
-interface RegisterEnclosureForm {
-  code: string;
-  description: string;
-}
 
 const RegisterEnclosure: React.FC = () => {
   const history = useHistory();
@@ -28,7 +24,7 @@ const RegisterEnclosure: React.FC = () => {
   });
 
   const handleSubmitForm = useCallback(
-    async (data: RegisterEnclosureForm) => {
+    async (data: IRegisterEnclosure) => {
       try {
         const { code, description } = data;
 

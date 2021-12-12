@@ -9,6 +9,7 @@ import { ThemeContext } from 'styled-components';
 
 import api from '../../../../services/api';
 import { useCrudModules } from '../../../../hooks/useCrudModules';
+import { IRegisterVaccine } from '../../../../types/pet/vaccine';
 
 import Header from '../../../../components/Header';
 import Button from '../../../../components/Button';
@@ -18,11 +19,6 @@ import ModalDelete from '../../../../components/ModalDelete';
 
 import { Container, Main, HeaderContent, FormCustom } from './styles';
 
-interface RegisterVaccineForm {
-  code: string;
-  description: string;
-}
-
 const EditVaccine: React.FC = () => {
   const history = useHistory();
   const { id }: any = useParams();
@@ -31,16 +27,16 @@ const EditVaccine: React.FC = () => {
 
   const [editting, setEditting] = useState<boolean>(false);
   const [showModalDelete, setShowModalDelete] = useState<boolean>(false);
-  const [vaccine, setVaccine] = useState({} as RegisterVaccineForm);
+  const [vaccine, setVaccine] = useState({} as IRegisterVaccine);
 
   useEffect(() => {
-    api.get<RegisterVaccineForm>(`/vaccine/${id}`).then(response => {
+    api.get<IRegisterVaccine>(`/vaccine/${id}`).then(response => {
       setVaccine(response.data);
     });
   }, [id]);
 
   const handleSubmitForm = useCallback(
-    async (data: RegisterVaccineForm) => {
+    async (data: IRegisterVaccine) => {
       try {
         api
           .put(`/vaccine/${id}`, {

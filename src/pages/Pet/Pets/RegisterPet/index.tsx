@@ -5,6 +5,7 @@ import React, {
   useContext,
   useMemo,
 } from 'react';
+import { useHistory } from 'react-router-dom';
 import { Formik, Field } from 'formik';
 import * as Yup from 'yup';
 import { FiSave } from 'react-icons/fi';
@@ -14,6 +15,8 @@ import { ThemeContext } from 'styled-components';
 
 import api from '../../../../services/api';
 import camera from '../../../../assets/camera.svg';
+import { IVaccine } from '../../../../types/pet/vaccine';
+import { IEnclosure } from '../../../../types/pet/enclosure';
 
 import Header from '../../../../components/Header';
 import ButtonBack from '../../../../components/ButtonBack';
@@ -31,7 +34,7 @@ import {
   ContainerInputDate,
 } from './styles';
 
-interface Vacines {
+interface VaccinesMultiSelect {
   label: string;
   value: string;
 }
@@ -40,14 +43,14 @@ interface RegisterPetForm {
   name: string;
   picture: string;
   breed: string;
-  birthDate: string;
+  bornAt: string;
   gender: string;
   sociable: boolean;
   castrated: boolean;
-  acessories: string;
-  location: string;
-  vacine: Vacines[];
-  owner: string;
+  items: string;
+  enclosure_id: string;
+  vaccines: string[];
+  owner_id: string;
   note: string;
 }
 
@@ -60,29 +63,28 @@ const formSchemaPet = Yup.object().shape({
   name: Yup.string().required('Nome Obrigatório'),
   picture: Yup.mixed(),
   breed: Yup.string(),
-  birthDate: Yup.string(),
-  gender: Yup.string().required('Gênero Obrigatório'),
+  bornAt: Yup.string(),
+  gender: Yup.string(),
   sociable: Yup.boolean(),
   castrated: Yup.boolean(),
-  acessories: Yup.string(),
-  location: Yup.string(),
+  items: Yup.string(),
+  enclosure_id: Yup.string(),
   // eslint-disable-next-line react/forbid-prop-types
-  vacine: Yup.array(),
-  owner: Yup.string(),
+  vaccines: Yup.array(),
+  owner_id: Yup.string().required('Dono Obrigatório'),
   note: Yup.string(),
 });
 
 const RegisterPet: React.FC = () => {
+  const history = useHistory();
   const { colors } = useContext(ThemeContext);
 
   const [peoples, setPeoples] = useState<People[]>([]);
   const [petPicture, setPetPicture] = useState<any>(null);
-
-  const listVacines = [
-    { label: 'Covid-19', value: 'CV19' },
-    { label: 'Covid-20', value: 'CV20' },
-    { label: 'Covid-21', value: 'CV21' },
-  ];
+  const [vaccinesOptions, setVaccinesOptions] = useState<VaccinesMultiSelect[]>(
+    [],
+  );
+  const [enclosures, setEnclosures] = useState<IEnclosure[]>([]);
 
   const previewPetPicture = useMemo(() => {
     return petPicture ? URL.createObjectURL(petPicture) : null;
@@ -92,35 +94,94 @@ const RegisterPet: React.FC = () => {
     api.get('/person').then(response => {
       setPeoples(response.data);
     });
+    api.get<IVaccine[]>('/vaccine').then(response => {
+      const fixListToUseInMultiSelect = response.data.map(vaccine => {
+        return {
+          label: vaccine.description,
+          value: vaccine.id,
+        };
+      });
+      setVaccinesOptions(fixListToUseInMultiSelect);
+    });
+    api.get('/enclosure').then(response => {
+      setEnclosures(response.data);
+    });
   }, []);
 
-  const handleSubmitForm = useCallback(async (data: RegisterPetForm) => {
-    try {
-      console.log(data);
-    } catch (err) {
-      toast.error('Ocorreu um erro no registro do Pet');
-    }
-  }, []);
+  const handleSubmitForm = useCallback(
+    async (data: RegisterPetForm) => {
+      try {
+        const {
+          name,
+          picture,
+          breed,
+          bornAt,
+          gender,
+          sociable,
+          castrated,
+          items,
+          enclosure_id,
+          vaccines,
+          owner_id,
+          note,
+        } = data;
+
+        api
+          .post('/pet', {
+            name,
+            breed: breed || undefined,
+            born_at: bornAt || undefined,
+            gender: gender || undefined,
+            sociable,
+            castrated,
+            enclosure_id: enclosure_id || undefined,
+            owner_id,
+            items: items || undefined,
+            vaccines: vaccines || undefined,
+            note: note || undefined,
+          })
+          .then(response => {
+            if (picture) {
+              const pet_id = response.data.id;
+
+              const formData = new FormData();
+              formData.append('picture', picture);
+
+              api.patch(`/pet/${pet_id}`, formData).then(() => {
+                toast.success('Registrado com sucesso');
+                history.push('/pet/pets');
+              });
+            } else {
+              toast.success('Registrado com sucesso');
+              history.push('/pet/pets');
+            }
+          });
+      } catch (err) {
+        toast.error('Ocorreu um erro no registro do Pet');
+      }
+    },
+    [history],
+  );
 
   return (
     <>
       <Container>
         <Header pageName="Registro de Pet" />
-        <ButtonBack destinationBack="/pet" />
+        <ButtonBack destinationBack="/pet/pets" />
         <Main>
           <Formik
             initialValues={{
               name: '',
               picture: '',
               breed: '',
-              birthDate: '',
+              bornAt: '',
               gender: '',
               sociable: false,
               castrated: false,
-              acessories: '',
-              location: '',
-              vacine: [],
-              owner: '',
+              items: '',
+              enclosure_id: '',
+              vaccines: [],
+              owner_id: '',
               note: '',
             }}
             validationSchema={formSchemaPet}
@@ -160,9 +221,9 @@ const RegisterPet: React.FC = () => {
                     <p>Nascimento: </p>
                     <input
                       type="date"
-                      name="birthDate"
-                      value={values.birthDate}
-                      onChange={handleChange('birthDate')}
+                      name="bornAt"
+                      value={values.bornAt}
+                      onChange={handleChange('bornAt')}
                     />
                   </ContainerInputDate>
                   <Select
@@ -174,46 +235,49 @@ const RegisterPet: React.FC = () => {
                     }
                   >
                     <option value="">Gênero</option>
-                    <option value="M">Macho</option>
-                    <option value="F">Fêmea</option>
+                    <option value="male">Macho</option>
+                    <option value="female">Fêmea</option>
                   </Select>
                   <Select
-                    name="location"
-                    value={values.location}
-                    onChange={handleChange('location')}
+                    name="enclosure_id"
+                    value={values.enclosure_id}
+                    onChange={handleChange('enclosure_id')}
                   >
-                    <option value="">Localização</option>
-                    <option value="G">Gaiola</option>
-                    <option value="P">Pátio</option>
+                    <option value="">Recinto</option>
+                    {enclosures.map(enclosure => (
+                      <option key={enclosure.id} value={enclosure.id}>
+                        {enclosure.description}
+                      </option>
+                    ))}
                   </Select>
                   <Field
                     className="select-custom"
-                    name="vacine"
-                    options={listVacines}
+                    name="vaccines"
+                    options={vaccinesOptions}
                     component={CustomSelect}
                     placeholder="Vacinas"
                     isMulti
                   />
                   <Select
-                    name="owner"
-                    value={values.owner}
-                    onChange={handleChange('owner')}
+                    name="owner_id"
+                    value={values.owner_id}
+                    onChange={handleChange('owner_id')}
                   >
                     <option value="">Dono</option>
                     {peoples.map(people => (
-                      <option value={people.id}>{people.nome}</option>
+                      <option key={people.id} value={people.id}>
+                        {people.nome}
+                      </option>
                     ))}
                   </Select>
                   <Input
-                    name="acessories"
+                    name="items"
                     type="text"
                     placeholder="Acessórios"
-                    value={values.acessories}
-                    onChange={handleChange('acessories')}
+                    value={values.items}
+                    onChange={handleChange('items')}
                     messageError={
-                      errors.acessories && touched.acessories
-                        ? errors.acessories
-                        : ''
+                      errors.items && touched.items ? errors.items : ''
                     }
                   />
                   <ContainerSwitch>

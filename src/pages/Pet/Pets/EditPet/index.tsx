@@ -1,3 +1,4 @@
+/* eslint-disable no-nested-ternary */
 import React, {
   useCallback,
   useEffect,
@@ -17,6 +18,8 @@ import Switch from 'react-switch';
 import api from '../../../../services/api';
 import camera from '../../../../assets/camera.svg';
 import { useCrudModules } from '../../../../hooks/useCrudModules';
+import { IVaccine } from '../../../../types/pet/vaccine';
+import { IEnclosure } from '../../../../types/pet/enclosure';
 
 import Header from '../../../../components/Header';
 import Button from '../../../../components/Button';
@@ -34,9 +37,11 @@ import {
   ContainerSwitch,
   ContainerInputFile,
   ContainerInputDate,
+  ContainerPetData,
+  InfoCard,
 } from './styles';
 
-interface Vacines {
+interface VaccinesMultiSelect {
   label: string;
   value: string;
 }
@@ -48,16 +53,16 @@ interface People {
 
 interface RegisterPetForm {
   name: string;
-  picture: string;
+  picture: any;
   breed: string;
-  birthDate: string;
+  born_at: string;
   gender: string;
   sociable: boolean;
   castrated: boolean;
-  acessories: string;
-  location: string;
-  vacine: string[];
-  owner: string;
+  items: string;
+  enclosure_id: string;
+  vaccines: string[];
+  owner_id: string;
   note: string;
 }
 
@@ -67,44 +72,71 @@ const EditPet: React.FC = () => {
   const { colors } = useContext(ThemeContext);
   const { deleteDataFromModule } = useCrudModules();
 
-  const [editting, setEditting] = useState<boolean>(false);
-  const [showModalDelete, setShowModalDelete] = useState<boolean>(false);
-  const [pet, setPet] = useState<RegisterPetForm>({
-    name: 'Zeca',
-    picture: '',
-    breed: 'Vira-Lata',
-    birthDate: '25/11/2021',
-    gender: 'M',
-    sociable: true,
-    castrated: true,
-    acessories: 'Nenhum',
-    location: 'Gaiola 10',
-    vacine: ['CV19', 'CV20'],
-    owner: 'Arthur',
-    note: 'Bravo',
-  });
-
-  const [peoples, setPeoples] = useState<People[]>([]);
   const [petPicture, setPetPicture] = useState<any>(null);
 
-  const listVacines = [
-    { label: 'Covid-19', value: 'CV19' },
-    { label: 'Covid-20', value: 'CV20' },
-    { label: 'Covid-21', value: 'CV21' },
-  ];
+  const [editting, setEditting] = useState<boolean>(false);
+  const [showModalDelete, setShowModalDelete] = useState<boolean>(false);
+  const [pet, setPet] = useState({} as RegisterPetForm);
+
+  const [peoples, setPeoples] = useState<People[]>([]);
+  const [enclosures, setEnclosures] = useState<IEnclosure[]>([]);
+  const [vaccinesOptions, setVaccinesOptions] = useState<VaccinesMultiSelect[]>(
+    [],
+  );
+
+  useEffect(() => {
+    api.get(`/pet/${id}`).then(response => {
+      setPet(response.data);
+
+      if (response.data.picture) {
+        fetch(`http://localhost:3333/api/v1/files/${response.data.picture}`)
+          .then(responsePic => {
+            return responsePic.blob();
+          })
+          .then(myBlob => {
+            const objectUrl = URL.createObjectURL(myBlob);
+            setPet(prevState => ({
+              ...prevState,
+              picture: objectUrl,
+            }));
+          });
+      }
+    });
+    api.get(`/pet_vaccine?pet=${id}`).then(response => {
+      const petVaccines = response.data.map((item: any) => {
+        return item.vaccine_id;
+      });
+      setPet(prevState => ({
+        ...prevState,
+        vaccines: petVaccines,
+      }));
+    });
+    api.get<IVaccine[]>('/vaccine').then(response => {
+      const fixListToUseInMultiSelect = response.data.map(vaccine => {
+        return {
+          label: vaccine.description,
+          value: vaccine.id,
+        };
+      });
+      setVaccinesOptions(fixListToUseInMultiSelect);
+    });
+    api.get('/person').then(response => {
+      setPeoples(response.data);
+    });
+    api.get('/enclosure').then(response => {
+      setEnclosures(response.data);
+    });
+  }, [id]);
+
+  const formatDataToBR = (date: string): string => {
+    const splitedDate = date.split('');
+    const dateFormated = `${splitedDate[8]}${splitedDate[9]}/${splitedDate[5]}${splitedDate[6]}/${splitedDate[0]}${splitedDate[1]}${splitedDate[2]}${splitedDate[3]}`;
+    return dateFormated;
+  };
 
   const previewPetPicture = useMemo(() => {
     return petPicture ? URL.createObjectURL(petPicture) : null;
   }, [petPicture]);
-
-  useEffect(() => {
-    api.get('/person').then(response => {
-      setPeoples(response.data);
-    });
-    // api.get<RegisterPetForm>(`/pet/${id}`).then(response => {
-    //   setPet(response.data);
-    // });
-  }, [id]);
 
   const handleSubmitForm = useCallback(
     async (data: RegisterPetForm) => {
@@ -113,70 +145,71 @@ const EditPet: React.FC = () => {
           name,
           picture,
           breed,
-          birthDate,
+          born_at,
           gender,
           sociable,
           castrated,
-          acessories,
-          location,
-          vacine,
-          owner,
+          items,
+          enclosure_id,
+          vaccines,
+          owner_id,
           note,
         } = data;
 
         api
           .put(`/pet/${id}`, {
             name,
-            picture,
-            breed,
-            birthDate,
-            gender,
-            sociable,
-            castrated,
-            acessories,
-            location,
-            vacine,
-            owner,
-            note,
+            breed: breed || undefined,
+            born_at: born_at || undefined,
+            gender: gender || undefined,
+            sociable: sociable || undefined,
+            castrated: castrated || undefined,
+            enclosure_id: enclosure_id || undefined,
+            owner_id,
+            items: items || undefined,
+            vaccines: vaccines || undefined,
+            note: note || undefined,
           })
           .then(() => {
-            toast.success('Atualizado com sucesso');
-            history.push('/pet');
-          })
-          .catch(error => {
-            const dataError = error.response.data;
+            if (picture) {
+              const pet_id = id;
 
-            if (
-              dataError.message ===
-              "There's already an entity registered with the same code"
-            ) {
-              toast.error('Já existe um cargo cadastrado com o mesmo código!');
+              const formData = new FormData();
+              formData.append('picture', picture);
+
+              api.patch(`/pet/${pet_id}`, formData).then(() => {
+                toast.success('Atualizado com sucesso');
+                history.push('/pet/pets');
+              });
+            } else {
+              toast.success('Atualizado com sucesso');
+              history.push('/pet/pets');
             }
-
-            return error;
           });
       } catch (err) {
-        toast.error('Ocorreu um erro na atualização do Cargo!');
+        toast.error('Ocorreu um erro na atualização do Pet!');
       }
     },
     [history, id],
   );
 
   const formSchemaPetEdit = Yup.object().shape({
-    name: Yup.string().required('Nome Obrigatório'),
+    name: Yup.string(),
     picture: Yup.mixed(),
     breed: Yup.string(),
-    birthDate: Yup.string(),
-    gender: Yup.string().required('Gênero Obrigatório'),
+    born_at: Yup.string(),
+    gender: Yup.string(),
     sociable: Yup.boolean(),
     castrated: Yup.boolean(),
-    acessories: Yup.string(),
-    location: Yup.string(),
+    items: Yup.string(),
+    enclosure_id: Yup.string(),
     // eslint-disable-next-line react/forbid-prop-types
-    vacine: Yup.array(),
-    owner: Yup.string(),
+    vaccines: Yup.array(),
+    owner_id: Yup.string(),
     note: Yup.string(),
   });
+
+  console.log(pet);
 
   return (
     <>
@@ -190,7 +223,6 @@ const EditPet: React.FC = () => {
               </div>
               <div id="container-titles">
                 <h2>{pet.name}</h2>
-                <p>{pet.gender === 'M' ? 'Macho' : 'Fêmea'}</p>
               </div>
               <div id="container-buttons-actions">
                 <Button
@@ -208,21 +240,55 @@ const EditPet: React.FC = () => {
               </div>
             </HeaderContent>
 
+            <ContainerPetData>
+              <InfoCard>
+                <h4>Informações</h4>
+
+                <span>
+                  {pet.breed ? `Raça: ${pet.breed}` : 'Não há Raça cadastrada'}
+                </span>
+                <span>
+                  {pet.born_at
+                    ? `Nascimento: ${formatDataToBR(pet.born_at)}`
+                    : 'Não há Data de Nascimento cadastrada'}
+                </span>
+                <span>
+                  {pet.gender
+                    ? `Gênero: ${pet.gender === 'male' ? 'Macho' : 'Fêmea'}`
+                    : 'Não há Gênero cadastrado'}
+                </span>
+              </InfoCard>
+              <InfoCard>
+                <h4>Saúde</h4>
+
+                <span>
+                  {`Castrado: ${pet.castrated === true ? 'Sim' : 'Não'}`}
+                </span>
+                <span>
+                  {Array.isArray(pet.vaccines)
+                    ? pet.vaccines.length > 0
+                      ? 'Possui Vacinas'
+                      : 'Não possui Vacinas'
+                    : 'Não há dados das Vacinas'}
+                </span>
+              </InfoCard>
+            </ContainerPetData>
+
             {editting && (
               <Formik
                 initialValues={{
                   name: pet.name,
-                  picture: pet.picture,
-                  breed: pet.breed,
-                  birthDate: pet.birthDate,
-                  gender: pet.gender,
+                  picture: null,
+                  breed: pet.breed ? pet.breed : '',
+                  born_at: pet.born_at ? pet.born_at : '',
+                  gender: pet.gender ? pet.gender : '',
                   sociable: pet.sociable,
                   castrated: pet.castrated,
-                  acessories: pet.acessories,
-                  location: pet.location,
-                  vacine: pet.vacine,
-                  owner: pet.owner,
-                  note: pet.note,
+                  items: pet.items ? pet.items : '',
+                  enclosure_id: pet.enclosure_id ? pet.enclosure_id : '',
+                  vaccines: pet.vaccines,
+                  owner_id: pet.owner_id,
+                  note: pet.note ? pet.note : '',
                 }}
                 validationSchema={formSchemaPetEdit}
                 onSubmit={handleSubmitForm}
@@ -259,11 +325,11 @@ const EditPet: React.FC = () => {
                       />
                       <ContainerInputDate>
                         <p>Nascimento: </p>
-                        <input
+                        <Field
                           type="date"
-                          name="birthDate"
-                          value={values.birthDate}
-                          onChange={handleChange('birthDate')}
+                          name="born_at"
+                          value={values.born_at}
+                          onChange={handleChange('born_at')}
                         />
                       </ContainerInputDate>
                       <Select
@@ -275,46 +341,59 @@ const EditPet: React.FC = () => {
                         }
                       >
                         <option value="">Gênero</option>
-                        <option value="M">Macho</option>
-                        <option value="F">Fêmea</option>
+                        <option value="male">Macho</option>
+                        <option value="female">Fêmea</option>
                       </Select>
                       <Select
-                        name="location"
-                        value={values.location}
-                        onChange={handleChange('location')}
+                        name="enclosure_id"
+                        value={values.enclosure_id}
+                        onChange={handleChange('enclosure_id')}
+                        messageError={
+                          errors.enclosure_id && touched.enclosure_id
+                            ? errors.enclosure_id
+                            : ''
+                        }
                       >
                         <option value="">Localização</option>
-                        <option value="G">Gaiola</option>
-                        <option value="P">Pátio</option>
+                        {enclosures.map(enclosure => (
+                          <option key={enclosure.id} value={enclosure.id}>
+                            {enclosure.description}
+                          </option>
+                        ))}
                       </Select>
                       <Field
                         className="select-custom"
-                        name="vacine"
-                        options={listVacines}
+                        name="vaccines"
+                        options={vaccinesOptions}
                         component={CustomSelect}
                         placeholder="Vacinas"
                         isMulti
                       />
                       <Select
-                        name="owner"
-                        value={values.owner}
-                        onChange={handleChange('owner')}
+                        name="owner_id"
+                        value={values.owner_id}
+                        onChange={handleChange('owner_id')}
+                        messageError={
+                          errors.owner_id && touched.owner_id
+                            ? errors.owner_id
+                            : ''
+                        }
                       >
                         <option value="">Dono</option>
                         {peoples.map(people => (
-                          <option value={people.id}>{people.nome}</option>
+                          <option key={people.id} value={people.id}>
+                            {people.nome}
+                          </option>
                         ))}
                       </Select>
                       <Input
-                        name="acessories"
+                        name="items"
                         type="text"
                         placeholder="Acessórios"
-                        value={values.acessories}
-                        onChange={handleChange('acessories')}
+                        value={values.items}
+                        onChange={handleChange('items')}
                         messageError={
-                          errors.acessories && touched.acessories
-                            ? errors.acessories
-                            : ''
+                          errors.items && touched.items ? errors.items : ''
                         }
                       />
                       <ContainerSwitch>
@@ -349,18 +428,24 @@ const EditPet: React.FC = () => {
                           onColor={colors.main}
                         />
                       </ContainerSwitch>
-                      <textarea
+                      <Field
+                        as="textarea"
                         cols={30}
                         placeholder="Observações"
                         name="note"
                         value={values.note}
                         onChange={handleChange('note')}
+                        messageError={
+                          errors.note && touched.note ? errors.note : ''
+                        }
                       />
                       <ContainerInputFile
                         style={{
-                          backgroundImage: `url(${previewPetPicture})`,
+                          backgroundImage: previewPetPicture
+                            ? `url(${previewPetPicture})`
+                            : `url(${pet.picture})`,
                         }}
-                        hasThumb={petPicture}
+                        hasThumb={!!(previewPetPicture || pet.picture)}
                       >
                         <p>Foto do Pet</p>
                         <input
@@ -394,7 +479,7 @@ const EditPet: React.FC = () => {
         visible={showModalDelete}
         setVisible={setShowModalDelete}
         actionToDelete={() => {
-          deleteDataFromModule({ id, route: 'role', routePush: 'role' });
+          deleteDataFromModule({ id, route: 'pet', routePush: 'pet/pets' });
         }}
       />
     </>

@@ -1,4 +1,3 @@
-/* eslint-disable react/require-default-props */
 import { FieldProps } from 'formik';
 import React from 'react';
 import Select, { OptionsType, ValueType } from 'react-select';
@@ -22,7 +21,7 @@ export const CustomSelect = ({
   form,
   options,
   isMulti = false,
-}: CustomSelectProps) => {
+}: CustomSelectProps): JSX.Element => {
   const onChange = (option: ValueType<any, any>) => {
     form.setFieldValue(
       field.name,

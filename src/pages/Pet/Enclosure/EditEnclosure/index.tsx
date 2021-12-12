@@ -9,6 +9,7 @@ import { ThemeContext } from 'styled-components';
 
 import api from '../../../../services/api';
 import { useCrudModules } from '../../../../hooks/useCrudModules';
+import { IRegisterEnclosure } from '../../../../types/pet/enclosure';
 
 import Header from '../../../../components/Header';
 import Button from '../../../../components/Button';
@@ -18,11 +19,6 @@ import ModalDelete from '../../../../components/ModalDelete';
 
 import { Container, Main, HeaderContent, FormCustom } from './styles';
 
-interface RegisterEnclosureForm {
-  code: string;
-  description: string;
-}
-
 const EditEnclosure: React.FC = () => {
   const history = useHistory();
   const { id }: any = useParams();
@@ -31,16 +27,16 @@ const EditEnclosure: React.FC = () => {
 
   const [editting, setEditting] = useState<boolean>(false);
   const [showModalDelete, setShowModalDelete] = useState<boolean>(false);
-  const [enclosure, setEnclosure] = useState({} as RegisterEnclosureForm);
+  const [enclosure, setEnclosure] = useState({} as IRegisterEnclosure);
 
   useEffect(() => {
-    api.get<RegisterEnclosureForm>(`/enclosure/${id}`).then(response => {
+    api.get<IRegisterEnclosure>(`/enclosure/${id}`).then(response => {
       setEnclosure(response.data);
     });
   }, [id]);
 
   const handleSubmitForm = useCallback(
-    async (data: RegisterEnclosureForm) => {
+    async (data: IRegisterEnclosure) => {
       try {
         api
           .put(`/enclosure/${id}`, {

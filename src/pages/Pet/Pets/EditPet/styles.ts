@@ -2,7 +2,7 @@ import { lighten } from 'polished';
 import styled, { css } from 'styled-components';
 
 interface InputFileProps {
-  hasThumb?: string;
+  hasThumb: boolean;
 }
 
 export const Container = styled.div``;
@@ -37,6 +37,33 @@ export const HeaderContent = styled.div`
     display: flex;
     align-items: center;
     gap: 1rem;
+  }
+`;
+
+export const ContainerPetData = styled.div`
+  display: grid;
+  grid-template-columns: 50% 50%;
+  justify-content: space-around;
+  align-items: center;
+
+  margin: 4rem 2rem;
+`;
+
+export const InfoCard = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 0.5rem 0;
+
+  h4 {
+    font-weight: bold;
+    color: ${props => props.theme.colors.main};
+  }
+
+  span {
+    max-width: 100%;
+    word-break: break-all;
+    text-align: center;
   }
 `;
 
