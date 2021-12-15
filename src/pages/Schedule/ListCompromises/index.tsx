@@ -7,19 +7,23 @@ import CompromiseRow from '../CompromiseRow';
 import { Container } from './styles';
 
 interface Compromise {
-  id: number;
-  day: string;
+  id: string;
+  date: string;
   hour: string;
-  service: {
-    title: string;
+  done: boolean;
+  work: {
+    id: string;
     color: string;
+    description: string;
   };
   pet: {
+    id: string;
     name: string;
-    owner: {
-      name: string;
-      address: string;
-    };
+  };
+  owner: {
+    id: string;
+    nome: string;
+    endereco: string;
   };
 }
 
@@ -57,7 +61,7 @@ const ListCompromises: React.FC<ListCompromisesProps> = ({
         )}
 
         {compromises.map(compromise => {
-          if (compromise.day === dayClicked) {
+          if (compromise.date === dayClicked) {
             return (
               <CompromiseRow
                 key={compromise.id}
