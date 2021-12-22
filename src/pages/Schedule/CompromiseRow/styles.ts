@@ -18,11 +18,11 @@ export const Container = styled.div<ContainerProps>`
     `linear-gradient(to right, ${props.theme.colors.mainHover}, #FBFBFB)`};
   border-radius: 1rem;
 
-  ${props =>
+  /* ${props =>
     props.done &&
     css`
       border: 2px solid ${props.theme.colors.green};
-    `}
+    `} */
 `;
 
 export const InsideContainer = styled.div`

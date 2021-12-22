@@ -39,7 +39,7 @@ const Input: React.FC<InputProps> = ({
           )}
         </Field>
       ) : (
-        <input
+        <Field
           onFocus={() => setInputFocus(true)}
           onBlur={() => setInputFocus(false)}
           {...rest}

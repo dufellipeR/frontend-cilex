@@ -25,16 +25,19 @@ interface Compromise {
     nome: string;
     endereco: string;
   };
+  recurrence?: string;
 }
 
 interface ListCompromisesProps {
   dayClicked: string;
   compromises: Compromise[];
+  renderDay: (day: Date | string) => void;
 }
 
 const ListCompromises: React.FC<ListCompromisesProps> = ({
   dayClicked,
   compromises,
+  renderDay,
 }) => {
   const { colors } = useContext(ThemeContext);
   const [showDetailCompromise, setShowDetailCompromise] = useState(false);
@@ -67,6 +70,7 @@ const ListCompromises: React.FC<ListCompromisesProps> = ({
                 key={compromise.id}
                 compromise={compromise}
                 showDetail={showDetailCompromise}
+                renderDay={renderDay}
               />
             );
           }

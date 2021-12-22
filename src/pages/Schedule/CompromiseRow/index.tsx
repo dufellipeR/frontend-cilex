@@ -1,6 +1,7 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { ThemeContext } from 'styled-components';
-import { BsCheck, BsTrash } from 'react-icons/bs';
+import { BsTrash } from 'react-icons/bs';
+import { ImCheckboxUnchecked, ImCheckmark } from 'react-icons/im';
 import { FiSave } from 'react-icons/fi';
 import { toast } from 'react-toastify';
 import { Formik } from 'formik';
@@ -44,8 +45,10 @@ interface CompromiseRowProps {
       nome: string;
       endereco: string;
     };
+    recurrence?: string;
   };
   showDetail: boolean;
+  renderDay: (day: Date | string) => void;
 }
 interface Works {
   id: string;
@@ -56,16 +59,6 @@ interface Works {
 interface Pets {
   id: string;
   name: string;
-}
-
-interface CompromiseSelected {
-  id: string;
-  date: string;
-  hour: string;
-  work_id: string;
-  pet_id: string;
-  done: boolean;
-  recurrence?: string;
 }
 
 interface CompromiseForm {
@@ -80,6 +73,7 @@ interface CompromiseForm {
 const CompromiseRow: React.FC<CompromiseRowProps> = ({
   compromise,
   showDetail,
+  renderDay,
 }) => {
   const { colors } = useContext(ThemeContext);
 
@@ -87,24 +81,35 @@ const CompromiseRow: React.FC<CompromiseRowProps> = ({
   const [pets, setPets] = useState<Pets[]>([]);
   const [modalVisible, setModalVisible] = useState(false);
   const [modalDeleteVisible, setModalDeleteVisible] = useState(false);
-  const [compromiseSelected, setCompromiseSelected] = useState(
-    {} as CompromiseSelected,
-  );
 
-  const handleFinishedCompromise = (id: string) => {
+  const handleFinishedCompromise = () => {
     api.get('/work').then(response => {
       setWorks(response.data);
     });
     api.get('/pet').then(response => {
       setPets(response.data);
     });
-    api.get(`/appointments/${id}`).then(response => {
-      setCompromiseSelected(response.data);
-    });
 
-    setTimeout(() => {
-      setModalVisible(true);
-    }, 1000);
+    setModalVisible(true);
+  };
+
+  const handleUnfinishedCompromise = () => {
+    api
+      .put(`/appointments/${compromise.id}`, {
+        date: compromise.date,
+        hour: compromise.hour,
+        work_id: compromise.work.id,
+        pet_id: compromise.pet.id,
+        done: false,
+      })
+      .then(() => {
+        toast.success('Serviço concluído!');
+        renderDay(compromise.date);
+        setModalVisible(false);
+      })
+      .catch(() => {
+        toast.error('Erro na conclusão do Serviço!');
+      });
   };
 
   const handleDeleteCompromise = (id: string) => {
@@ -131,17 +136,18 @@ const CompromiseRow: React.FC<CompromiseRowProps> = ({
 
     const formatedDate = new Date(year, month, day).toLocaleDateString(); // dd/mm/yyyy
 
-    if (compromiseSelected.recurrence) {
+    if (compromise.recurrence) {
       api
-        .put(`/appointments/${compromiseSelected.id}`, {
-          date: compromiseSelected.date,
-          hour: compromiseSelected.hour,
-          work_id: compromiseSelected.work_id,
-          pet_id: compromiseSelected.pet_id,
+        .put(`/appointments/${compromise.id}`, {
+          date: compromise.date,
+          hour: compromise.hour,
+          work_id: compromise.work.id,
+          pet_id: compromise.pet.id,
           done: true,
         })
         .then(() => {
           toast.success('Serviço concluído!');
+          renderDay(compromise.date);
         })
         .catch(() => {
           toast.error('Erro na conclusão do Serviço!');
@@ -157,6 +163,7 @@ const CompromiseRow: React.FC<CompromiseRowProps> = ({
         })
         .then(() => {
           toast.success('Serviço remarcado!');
+          renderDay(compromise.date);
         })
         .catch(() => {
           toast.error('Erro na remarcação do Serviço!');
@@ -164,15 +171,16 @@ const CompromiseRow: React.FC<CompromiseRowProps> = ({
       setModalVisible(false);
     } else {
       api
-        .put(`/appointments/${compromiseSelected.id}`, {
-          date: compromiseSelected.date,
-          hour: compromiseSelected.hour,
-          work_id: compromiseSelected.work_id,
-          pet_id: compromiseSelected.pet_id,
+        .put(`/appointments/${compromise.id}`, {
+          date: compromise.date,
+          hour: compromise.hour,
+          work_id: compromise.work.id,
+          pet_id: compromise.pet.id,
           done: true,
         })
         .then(() => {
           toast.success('Serviço concluído!');
+          renderDay(compromise.date);
           setModalVisible(false);
         })
         .catch(() => {
@@ -202,16 +210,16 @@ const CompromiseRow: React.FC<CompromiseRowProps> = ({
           </AlignTexts>
 
           <ContainerButtonsActions>
-            <ButtonActions
-              disabled={compromise.done}
-              onClick={() => handleFinishedCompromise(compromise.id)}
-            >
-              <BsCheck size={24} color={colors.main} />
-            </ButtonActions>
-            <ButtonActions
-              disabled={compromise.done}
-              onClick={() => setModalDeleteVisible(true)}
-            >
+            {compromise.done ? (
+              <ButtonActions onClick={handleUnfinishedCompromise}>
+                <ImCheckmark size={20} color={colors.main} />
+              </ButtonActions>
+            ) : (
+              <ButtonActions onClick={handleFinishedCompromise}>
+                <ImCheckboxUnchecked size={20} color={colors.main} />
+              </ButtonActions>
+            )}
+            <ButtonActions onClick={() => setModalDeleteVisible(true)}>
               <BsTrash size={22} color="#F00" />
             </ButtonActions>
           </ContainerButtonsActions>
@@ -221,12 +229,12 @@ const CompromiseRow: React.FC<CompromiseRowProps> = ({
         <Modal visible={modalVisible} setVisible={setModalVisible}>
           <Formik
             initialValues={{
-              date: compromiseSelected.date,
-              hour: compromiseSelected.hour,
-              pet_id: compromiseSelected.pet_id,
-              work_id: compromiseSelected.work_id,
+              date: compromise.date,
+              hour: compromise.hour,
+              pet_id: compromise.pet.id,
+              work_id: compromise.work.id,
               done: true,
-              recurrence: compromiseSelected.recurrence,
+              recurrence: compromise.recurrence,
             }}
             // validationSchema={formSchemaCompromise}
             onSubmit={handleSubmitForm}
@@ -240,7 +248,7 @@ const CompromiseRow: React.FC<CompromiseRowProps> = ({
                     name="date"
                     value={values.date}
                     onChange={handleChange('date')}
-                    disabled={!compromiseSelected.recurrence}
+                    disabled={!compromise.recurrence}
                   />
                 </ContainerInputDate>
                 <Input
@@ -250,7 +258,7 @@ const CompromiseRow: React.FC<CompromiseRowProps> = ({
                   value={values.hour}
                   onChange={handleChange('hour')}
                   messageError={errors.hour && touched.hour ? errors.hour : ''}
-                  disabled={!compromiseSelected.recurrence}
+                  disabled={!compromise.recurrence}
                 />
                 <Select
                   name="pet_id"
@@ -259,7 +267,7 @@ const CompromiseRow: React.FC<CompromiseRowProps> = ({
                   messageError={
                     errors.pet_id && touched.pet_id ? errors.pet_id : ''
                   }
-                  disabled={!compromiseSelected.recurrence}
+                  disabled={!compromise.recurrence}
                 >
                   <option value="">Pet</option>
                   {pets.map(pet => (
@@ -275,7 +283,7 @@ const CompromiseRow: React.FC<CompromiseRowProps> = ({
                   messageError={
                     errors.work_id && touched.work_id ? errors.work_id : ''
                   }
-                  disabled={!compromiseSelected.recurrence}
+                  disabled={!compromise.recurrence}
                 >
                   <option value="">Serviços</option>
                   {works.map(work => (
@@ -284,7 +292,7 @@ const CompromiseRow: React.FC<CompromiseRowProps> = ({
                     </option>
                   ))}
                 </Select>
-                {compromiseSelected.recurrence && (
+                {compromise.recurrence && (
                   <Select
                     name="recurrence"
                     value={values.recurrence}
@@ -304,9 +312,7 @@ const CompromiseRow: React.FC<CompromiseRowProps> = ({
                 <Button layoutColor="button-green" type="submit">
                   <FiSave size={24} />
                   <span>
-                    {compromiseSelected.recurrence
-                      ? 'Concluir e Remarcar'
-                      : 'Concuir'}
+                    {compromise.recurrence ? 'Concluir e Remarcar' : 'Concuir'}
                   </span>
                 </Button>
               </FormCustom>

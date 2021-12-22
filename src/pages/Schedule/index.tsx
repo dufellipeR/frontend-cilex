@@ -43,6 +43,7 @@ interface Compromise {
     nome: string;
     endereco: string;
   };
+  recurrence?: string;
 }
 
 interface RegisterCompromiseForm {
@@ -92,14 +93,22 @@ const Schedule: React.FC = () => {
     });
   }, []);
 
-  const handleClickDay = (day: Date) => {
-    setDayClicked(day.toLocaleDateString());
+  const handleClickDay = (day: Date | string) => {
+    if (typeof day === 'string') {
+      setDayClicked(day);
 
-    api
-      .get<Compromise[]>(`/appointments?date=${day.toLocaleDateString()}`)
-      .then(response => {
+      api.get<Compromise[]>(`/appointments?date=${day}`).then(response => {
         setCompromises(response.data);
       });
+    } else {
+      setDayClicked(day.toLocaleDateString());
+
+      api
+        .get<Compromise[]>(`/appointments?date=${day.toLocaleDateString()}`)
+        .then(response => {
+          setCompromises(response.data);
+        });
+    }
 
     // const servicesInDayClicked = DBCompromises.filter(
     //   compromise => compromise.day === day.toLocaleDateString(),
@@ -186,7 +195,11 @@ const Schedule: React.FC = () => {
       </ActionsArea>
       <Main>
         <Calendar onClickDay={value => handleClickDay(value)} />
-        <ListCompromise dayClicked={dayClicked} compromises={compromises} />
+        <ListCompromise
+          dayClicked={dayClicked}
+          compromises={compromises}
+          renderDay={handleClickDay}
+        />
       </Main>
       <Modal visible={modalVisible} setVisible={setModalVisible}>
         <Formik

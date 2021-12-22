@@ -51,27 +51,6 @@ const Menu: React.FC = () => {
       <Container>
         <Header pageName="Menu" />
         <Main>
-          <ModuleCard
-            key="123"
-            to="schedule"
-            classIcon="bi bi-calendar"
-            title="Agenda"
-            description="Gerencie sua agenda de serviços"
-          />
-          <ModuleCard
-            key="234"
-            to="pet"
-            classIcon="fas fa-dog"
-            title="Pet"
-            description="Gerencie as informações dos pets"
-          />
-          <ModuleCard
-            key="345"
-            to="work"
-            classIcon="bi bi-gear"
-            title="Trabalhos"
-            description="Gerencie seus trabalhos"
-          />
           {listModules.map(module => (
             <ModuleCard
               key={module.title}
