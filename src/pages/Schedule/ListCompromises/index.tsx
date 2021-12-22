@@ -22,7 +22,8 @@ interface Compromise {
   };
   owner: {
     id: string;
-    nome: string;
+    nome?: string;
+    razao_social?: string;
     endereco: string;
   };
   recurrence?: string;

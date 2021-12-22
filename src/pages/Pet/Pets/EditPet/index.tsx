@@ -48,7 +48,8 @@ interface VaccinesMultiSelect {
 
 interface People {
   id: string;
-  nome: string;
+  nome?: string;
+  razao_social?: string;
 }
 
 interface RegisterPetForm {
@@ -382,7 +383,7 @@ const EditPet: React.FC = () => {
                         <option value="">Dono</option>
                         {peoples.map(people => (
                           <option key={people.id} value={people.id}>
-                            {people.nome}
+                            {people.nome || people.razao_social}
                           </option>
                         ))}
                       </Select>

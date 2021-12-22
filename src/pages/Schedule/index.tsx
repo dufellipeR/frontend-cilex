@@ -40,7 +40,8 @@ interface Compromise {
   };
   owner: {
     id: string;
-    nome: string;
+    nome?: string;
+    razao_social?: string;
     endereco: string;
   };
   recurrence?: string;
@@ -136,40 +137,44 @@ const Schedule: React.FC = () => {
     setCompromises(servicesInDayClicked);
   };
 
-  const handleSubmitForm = useCallback(async (data: RegisterCompromiseForm) => {
-    try {
-      const { date, recurrence, hour, pet_id, work_id } = data;
+  const handleSubmitForm = useCallback(
+    async (data: RegisterCompromiseForm) => {
+      try {
+        const { date, recurrence, hour, pet_id, work_id } = data;
 
-      const splitedDate = date.split('');
+        const splitedDate = date.split('');
 
-      const year = Number(
-        `${splitedDate[0]}${splitedDate[1]}${splitedDate[2]}${splitedDate[3]}`,
-      );
-      const month = Number(`${splitedDate[5]}${splitedDate[6]}`) - 1;
-      const day = Number(`${splitedDate[8]}${splitedDate[9]}`);
+        const year = Number(
+          `${splitedDate[0]}${splitedDate[1]}${splitedDate[2]}${splitedDate[3]}`,
+        );
+        const month = Number(`${splitedDate[5]}${splitedDate[6]}`) - 1;
+        const day = Number(`${splitedDate[8]}${splitedDate[9]}`);
 
-      const formatedDate = new Date(year, month, day).toLocaleDateString(); // dd/mm/yyyy
+        const formatedDate = new Date(year, month, day).toLocaleDateString(); // dd/mm/yyyy
 
-      api
-        .post('/appointments', {
-          date: formatedDate,
-          hour,
-          pet_id,
-          work_id,
-          done: false,
-          recurrence,
-        })
-        .then(() => {
-          toast.success('Compromisso cadastado com sucesso!');
-          setModalVisible(false);
-        })
-        .catch(() => {
-          toast.error('Criação do compromisso ocorreu um erro!');
-        });
-    } catch (err) {
-      toast.error('Ocorreu um erro no registro do Compromisso');
-    }
-  }, []);
+        api
+          .post('/appointments', {
+            date: formatedDate,
+            hour,
+            pet_id,
+            work_id,
+            done: false,
+            recurrence,
+          })
+          .then(() => {
+            toast.success('Compromisso cadastado com sucesso!');
+            handleClickDay(dayClicked);
+            setModalVisible(false);
+          })
+          .catch(() => {
+            toast.error('Criação do compromisso ocorreu um erro!');
+          });
+      } catch (err) {
+        toast.error('Ocorreu um erro no registro do Compromisso');
+      }
+    },
+    [dayClicked],
+  );
 
   return (
     <Container>

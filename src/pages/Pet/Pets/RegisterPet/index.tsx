@@ -56,7 +56,8 @@ interface RegisterPetForm {
 
 interface People {
   id: string;
-  nome: string;
+  nome?: string;
+  razao_social?: string;
 }
 
 const formSchemaPet = Yup.object().shape({
@@ -266,7 +267,7 @@ const RegisterPet: React.FC = () => {
                     <option value="">Dono</option>
                     {peoples.map(people => (
                       <option key={people.id} value={people.id}>
-                        {people.nome}
+                        {people.nome || people.razao_social}
                       </option>
                     ))}
                   </Select>

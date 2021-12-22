@@ -42,7 +42,8 @@ interface CompromiseRowProps {
     };
     owner: {
       id: string;
-      nome: string;
+      nome?: string;
+      razao_social?: string;
       endereco: string;
     };
     recurrence?: string;
@@ -117,6 +118,7 @@ const CompromiseRow: React.FC<CompromiseRowProps> = ({
       .delete(`/appointments/${id}`)
       .then(() => {
         toast.success('Compromisso deletado.');
+        renderDay(compromise.date);
       })
       .catch(() => {
         toast.error('Erro na exclusão do Compromisso.');
@@ -202,9 +204,16 @@ const CompromiseRow: React.FC<CompromiseRowProps> = ({
 
             {showDetail && (
               <>
-                <p>Pet: {compromise.pet.name}</p>
-                <p>Dono: {compromise.owner.nome}</p>
-                <p>Endereço: {compromise.owner.endereco}</p>
+                <p>
+                  <b>Pet:</b> {compromise.pet.name}
+                </p>
+                <p>
+                  <b>Dono:</b>{' '}
+                  {compromise.owner.nome || compromise.owner.razao_social}
+                </p>
+                <p>
+                  <b>Endereço:</b> {compromise.owner.endereco}
+                </p>
               </>
             )}
           </AlignTexts>
