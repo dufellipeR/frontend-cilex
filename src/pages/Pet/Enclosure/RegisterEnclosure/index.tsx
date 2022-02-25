@@ -20,7 +20,7 @@ const RegisterEnclosure: React.FC = () => {
 
   const formSchemaEnclosure = Yup.object().shape({
     code: Yup.string().required('Código Obrigatório'),
-    description: Yup.string().required('Recinto Obrigatório'),
+    description: Yup.string().required('Canil Obrigatório'),
   });
 
   const handleSubmitForm = useCallback(
@@ -44,15 +44,13 @@ const RegisterEnclosure: React.FC = () => {
               dataError.message ===
               "There's already an entity registered with the same code"
             ) {
-              toast.error(
-                'Já existe um Recinto cadastrado com o mesmo código!',
-              );
+              toast.error('Já existe um Canil cadastrado com o mesmo código!');
             }
 
             return error;
           });
       } catch (err) {
-        toast.error('Ocorreu um erro no registro do Recinto!');
+        toast.error('Ocorreu um erro no registro do Canil!');
       }
     },
     [history],
@@ -61,7 +59,7 @@ const RegisterEnclosure: React.FC = () => {
   return (
     <>
       <Container>
-        <Header pageName="Registro de Recintos" />
+        <Header pageName="Registro de Canis" />
         <ButtonBack destinationBack="/pet/enclosure" />
         <Main>
           <Formik
@@ -89,7 +87,7 @@ const RegisterEnclosure: React.FC = () => {
                   <Input
                     name="description"
                     type="text"
-                    placeholder="Recinto"
+                    placeholder="Canil"
                     value={values.description}
                     onChange={handleChange('description')}
                     messageError={

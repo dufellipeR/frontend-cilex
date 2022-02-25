@@ -27,8 +27,8 @@ const Inventory: React.FC = () => {
         <ModuleCard
           to="/pet/enclosure"
           classIcon="fas fa-map-marker-alt"
-          title="Recintos"
-          description="Gerencie seus recintos"
+          title="Canis"
+          description="Gerencie seus canis"
         />
       </Main>
     </Container>

@@ -82,7 +82,7 @@ const RegisterPeople: React.FC = () => {
 
   const formSchemaPeople = Yup.object().shape({
     code: Yup.number().required('Código obrigatório'),
-    email: Yup.string().required('E-mail obrigatório'),
+    email: Yup.string(),
     tel: Yup.string(),
     endereco: Yup.string(),
     cep: Yup.string(),
@@ -104,9 +104,7 @@ const RegisterPeople: React.FC = () => {
       : Yup.string().required('Nome Fantasia obrigatório'),
 
     // Fisica
-    cpf: isPhysicalPerson
-      ? Yup.string().required('CPF obrigatório').min(14).max(14)
-      : Yup.string(),
+    cpf: isPhysicalPerson ? Yup.string().min(14).max(14) : Yup.string(),
     nome: isPhysicalPerson
       ? Yup.string().required('Nome obrigatório')
       : Yup.string(),

@@ -29,13 +29,13 @@ const ListEnclosure: React.FC = () => {
 
   return (
     <Container>
-      <Header pageName="Recintos" />
+      <Header pageName="Canis" />
       <Main>
         <div id="align-content">
           <ButtonBack destinationBack="/pet" />
           <NewButton to="/pet/enclosure/register">Novo</NewButton>
           {enclosures.length > 0 ? (
-            <DefaultTable tbh={['Código', 'Recinto']}>
+            <DefaultTable tbh={['Código', 'Canil']}>
               <tbody>
                 {enclosures.map(enclosure => (
                   <tr key={enclosure.id}>

@@ -4,7 +4,6 @@ import { Link } from 'react-router-dom';
 export const Container = styled(Link)`
   position: relative;
 
-  max-height: 15.5rem;
   padding: 2rem;
 
   text-decoration: none;

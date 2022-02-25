@@ -157,7 +157,7 @@ const EditSubFamily: React.FC = () => {
                             : ''
                         }
                       >
-                        <option value="">Fampilia</option>
+                        <option value="">Familia</option>
                         {families.map(family => (
                           <option value={family.id}>
                             {family.code} - {family.description}

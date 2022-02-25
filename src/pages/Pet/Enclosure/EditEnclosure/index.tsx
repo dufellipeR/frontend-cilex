@@ -54,15 +54,13 @@ const EditEnclosure: React.FC = () => {
               dataError.message ===
               "There's already an entity registered with the same code"
             ) {
-              toast.error(
-                'Já existe um recinto cadastrado com o mesmo código!',
-              );
+              toast.error('Já existe um canil cadastrado com o mesmo código!');
             }
 
             return error;
           });
       } catch (err) {
-        toast.error('Ocorreu um erro na atualização do Recinto!');
+        toast.error('Ocorreu um erro na atualização do Canil!');
       }
     },
     [history, id],
@@ -76,7 +74,7 @@ const EditEnclosure: React.FC = () => {
   return (
     <>
       <Container>
-        <Header pageName="Editar Recinto" />
+        <Header pageName="Editar Canil" />
         {enclosure && (
           <Main>
             <HeaderContent>
@@ -129,7 +127,7 @@ const EditEnclosure: React.FC = () => {
                       <Input
                         name="description"
                         type="text"
-                        placeholder="Recinto"
+                        placeholder="Canil"
                         value={values.description}
                         onChange={handleChange('description')}
                         messageError={

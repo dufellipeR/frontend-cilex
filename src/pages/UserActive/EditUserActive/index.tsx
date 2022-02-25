@@ -131,7 +131,7 @@ const EditUserActive: React.FC = () => {
                 password: '',
                 email: user.email,
                 isAdmin: user.isAdmin,
-                group_id: user.group_id,
+                group_id: user.group_id ? user.group_id : '',
               }}
               validationSchema={formSchemaUser}
               onSubmit={handleSubmitForm}

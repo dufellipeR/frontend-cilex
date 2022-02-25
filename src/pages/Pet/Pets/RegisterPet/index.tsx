@@ -104,7 +104,7 @@ const RegisterPet: React.FC = () => {
       });
       setVaccinesOptions(fixListToUseInMultiSelect);
     });
-    api.get('/enclosure').then(response => {
+    api.get<IEnclosure[]>('/enclosure').then(response => {
       setEnclosures(response.data);
     });
   }, []);
@@ -163,6 +163,8 @@ const RegisterPet: React.FC = () => {
     },
     [history],
   );
+
+  console.log('Re-load');
 
   return (
     <>
@@ -244,10 +246,10 @@ const RegisterPet: React.FC = () => {
                     value={values.enclosure_id}
                     onChange={handleChange('enclosure_id')}
                   >
-                    <option value="">Recinto</option>
+                    <option value="">Canil</option>
                     {enclosures.map(enclosure => (
                       <option key={enclosure.id} value={enclosure.id}>
-                        {enclosure.description}
+                        {enclosure.code} - {enclosure.description}
                       </option>
                     ))}
                   </Select>

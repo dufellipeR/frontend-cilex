@@ -20,4 +20,11 @@ export const Main = styled.main`
     flex-direction: column;
     gap: 1rem;
   }
+
+  #align-action-icons {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+  }
 `;
