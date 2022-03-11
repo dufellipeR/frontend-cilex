@@ -9,7 +9,7 @@ import api from '../../../services/api';
 
 import Button from '../../../components/Button';
 import Header from '../../../components/Header';
-import Input from '../../../components/Input';
+import InputFormik from '../../../components/InputFormik';
 import ButtonBack from '../../../components/ButtonBack';
 
 import { Container, Main, FormCustom, ContainerInputColor } from './styles';
@@ -83,7 +83,7 @@ const RegisterWork: React.FC = () => {
             {({ handleChange, touched, values, errors, handleSubmit }) => (
               <FormCustom onSubmit={handleSubmit}>
                 <div id="align-inputs">
-                  <Input
+                  <InputFormik
                     name="code"
                     type="text"
                     placeholder="Código"
@@ -94,7 +94,7 @@ const RegisterWork: React.FC = () => {
                     }
                     maxLength={6}
                   />
-                  <Input
+                  <InputFormik
                     name="description"
                     type="text"
                     placeholder="Trabalho"

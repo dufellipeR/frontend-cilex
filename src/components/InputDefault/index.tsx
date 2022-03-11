@@ -7,13 +7,13 @@ import { FiAlertCircle } from 'react-icons/fi';
 
 import { Container, Error } from './styles';
 
-interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
+interface InputDefaultProps extends InputHTMLAttributes<HTMLInputElement> {
   icon?: React.ComponentType<IconBaseProps>;
   messageError?: string;
   mask?: (string | RegExp)[];
 }
 
-const Input: React.FC<InputProps> = ({
+const InputDefault: React.FC<InputDefaultProps> = ({
   icon: Icon,
   messageError,
   mask,
@@ -26,20 +26,16 @@ const Input: React.FC<InputProps> = ({
       {Icon && <Icon size={20} />}
 
       {mask ? (
-        <Field name={rest.name} {...rest}>
-          {({ field }: FieldProps) => (
-            <MaskedInput
-              {...field}
-              placeholder={rest.placeholder}
-              mask={mask}
-              type="text"
-              onFocus={() => setInputFocus(true)}
-              onBlur={() => setInputFocus(false)}
-            />
-          )}
-        </Field>
+        <MaskedInput
+          {...rest}
+          placeholder={rest.placeholder}
+          mask={mask}
+          type="text"
+          onFocus={() => setInputFocus(true)}
+          onBlur={() => setInputFocus(false)}
+        />
       ) : (
-        <Field
+        <input
           onFocus={() => setInputFocus(true)}
           onBlur={() => setInputFocus(false)}
           {...rest}
@@ -54,4 +50,4 @@ const Input: React.FC<InputProps> = ({
     </Container>
   );
 };
-export default Input;
+export default InputDefault;

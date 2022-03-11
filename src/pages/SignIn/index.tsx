@@ -7,7 +7,7 @@ import { Formik } from 'formik';
 
 import { useAuth } from '../../hooks/auth';
 
-import Input from '../../components/Input';
+import InputFormik from '../../components/InputFormik';
 import Button from '../../components/Button';
 
 import solutionSvg from '../../assets/solution.svg';
@@ -66,7 +66,7 @@ const SignIn: React.FC = () => {
           >
             {({ handleChange, touched, values, errors, handleSubmit }) => (
               <FormCustom onSubmit={handleSubmit}>
-                <Input
+                <InputFormik
                   icon={FiUser}
                   name="username"
                   type="text"
@@ -78,7 +78,7 @@ const SignIn: React.FC = () => {
                   }
                 />
 
-                <Input
+                <InputFormik
                   icon={FiLock}
                   name="password"
                   type="password"

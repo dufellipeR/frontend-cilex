@@ -29,7 +29,7 @@ import { ISubFamily } from '../../../../types/storage/subFamily';
 
 import Header from '../../../../components/Header';
 import Button from '../../../../components/Button';
-import Input from '../../../../components/Input';
+import InputFormik from '../../../../components/InputFormik';
 import ButtonBack from '../../../../components/ButtonBack';
 import ModalDelete from '../../../../components/ModalDelete';
 import Select from '../../../../components/Select';
@@ -345,7 +345,7 @@ const EditProduct: React.FC = () => {
                 }) => (
                   <FormCustom onSubmit={handleSubmit}>
                     <div id="align-inputs">
-                      <Input
+                      <InputFormik
                         name="code"
                         type="text"
                         placeholder="Código"
@@ -356,7 +356,7 @@ const EditProduct: React.FC = () => {
                         }
                         maxLength={6}
                       />
-                      <Input
+                      <InputFormik
                         name="description"
                         type="text"
                         placeholder="Descrição"
@@ -524,7 +524,7 @@ const EditProduct: React.FC = () => {
                           <option value={unit.id}>{unit.description}</option>
                         ))}
                       </Select>
-                      <Input
+                      <InputFormik
                         name="technical_description"
                         type="text"
                         placeholder="Descrição Técnica"

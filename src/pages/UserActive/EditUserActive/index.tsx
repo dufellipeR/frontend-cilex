@@ -11,7 +11,7 @@ import { ThemeContext } from 'styled-components';
 import api from '../../../services/api';
 
 import Header from '../../../components/Header';
-import Input from '../../../components/Input';
+import InputFormik from '../../../components/InputFormik';
 import Button from '../../../components/Button';
 import ButtonBack from '../../../components/ButtonBack';
 import Checkbox from '../../../components/Checkbox';
@@ -149,7 +149,7 @@ const EditUserActive: React.FC = () => {
                     />
                     <p>Ativo</p>
                   </div>
-                  <Input
+                  <InputFormik
                     name="email"
                     type="text"
                     placeholder="Email"
@@ -159,7 +159,7 @@ const EditUserActive: React.FC = () => {
                       errors.email && touched.email ? errors.email : ''
                     }
                   />
-                  <Input
+                  <InputFormik
                     name="username"
                     type="text"
                     placeholder="Usuário"
@@ -169,7 +169,7 @@ const EditUserActive: React.FC = () => {
                       errors.username && touched.username ? errors.username : ''
                     }
                   />
-                  <Input
+                  <InputFormik
                     name="password"
                     type="password"
                     placeholder="Nova Senha"
@@ -179,17 +179,25 @@ const EditUserActive: React.FC = () => {
                       errors.password && touched.password ? errors.password : ''
                     }
                   />
-                  <Select
-                    name="group_id"
-                    value={values.group_id}
-                    onChange={handleChange('group_id')}
-                  >
-                    {userGroups.map(group => (
-                      <option key={group.id} value={group.id}>
-                        {group.description}
-                      </option>
-                    ))}
-                  </Select>
+                  {!user.isAdmin && (
+                    <Select
+                      name="group_id"
+                      value={values.group_id}
+                      onChange={handleChange('group_id')}
+                    >
+                      {userGroups.length > 0 ? (
+                        userGroups.map(group => (
+                          <option key={group.id} value={group.id}>
+                            {group.description}
+                          </option>
+                        ))
+                      ) : (
+                        <option value="">
+                          Nenhum grupo de usuários cadastrado
+                        </option>
+                      )}
+                    </Select>
+                  )}
                   <CheckboxContainer>
                     <Checkbox name="isAdmin" label="É Admin ?" />
                   </CheckboxContainer>

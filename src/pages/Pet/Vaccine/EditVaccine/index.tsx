@@ -13,7 +13,7 @@ import { IRegisterVaccine } from '../../../../types/pet/vaccine';
 
 import Header from '../../../../components/Header';
 import Button from '../../../../components/Button';
-import Input from '../../../../components/Input';
+import InputFormik from '../../../../components/InputFormik';
 import ButtonBack from '../../../../components/ButtonBack';
 import ModalDelete from '../../../../components/ModalDelete';
 
@@ -115,7 +115,7 @@ const EditVaccine: React.FC = () => {
                 {({ handleChange, touched, values, errors, handleSubmit }) => (
                   <FormCustom onSubmit={handleSubmit}>
                     <div id="align-inputs">
-                      <Input
+                      <InputFormik
                         name="code"
                         type="text"
                         placeholder="Código"
@@ -126,7 +126,7 @@ const EditVaccine: React.FC = () => {
                         }
                         maxLength={6}
                       />
-                      <Input
+                      <InputFormik
                         name="description"
                         type="text"
                         placeholder="Vacina"

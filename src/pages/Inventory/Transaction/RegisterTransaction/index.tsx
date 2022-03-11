@@ -11,7 +11,7 @@ import api from '../../../../services/api';
 
 import Button from '../../../../components/Button';
 import Header from '../../../../components/Header';
-import Input from '../../../../components/Input';
+import InputFormik from '../../../../components/InputFormik';
 import ButtonBack from '../../../../components/ButtonBack';
 import Select from '../../../../components/Select';
 
@@ -191,7 +191,7 @@ const RegisterTransaction: React.FC = () => {
                         <option value="In">Entrada</option>
                         <option value="Out">Saída</option>
                       </Select>
-                      <Input
+                      <InputFormik
                         name="quantity"
                         type="text"
                         placeholder="Quantidade"
@@ -256,7 +256,7 @@ const RegisterTransaction: React.FC = () => {
                           </option>
                         ))}
                       </Select>
-                      <Input
+                      <InputFormik
                         name="quantity"
                         type="text"
                         placeholder="Quantidade"

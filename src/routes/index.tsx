@@ -97,6 +97,7 @@ import EditVaccine from '../pages/Pet/Vaccine/EditVaccine';
 import ListEnclosure from '../pages/Pet/Enclosure/ListEnclosure';
 import RegisterEnclosure from '../pages/Pet/Enclosure/RegisterEnclosure';
 import EditEnclosure from '../pages/Pet/Enclosure/EditEnclosure';
+import SeeAllEnclosures from '../pages/Pet/Enclosure/SeeAllEnclosures';
 
 import ListWork from '../pages/Work/ListWork';
 import RegisterWork from '../pages/Work/RegisterWork';
@@ -247,6 +248,7 @@ const Routes: React.FC = () => {
         exact
         component={RegisterEnclosure}
       />
+      <Route path="/pet/enclosure/all" exact component={SeeAllEnclosures} />
       <Route path="/pet/enclosure/:id" component={EditEnclosure} />
       {/* ---------------------- FIM PET ---------------------- */}
 

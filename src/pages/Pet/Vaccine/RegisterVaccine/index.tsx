@@ -10,7 +10,7 @@ import { IRegisterVaccine } from '../../../../types/pet/vaccine';
 
 import Button from '../../../../components/Button';
 import Header from '../../../../components/Header';
-import Input from '../../../../components/Input';
+import InputFormik from '../../../../components/InputFormik';
 import ButtonBack from '../../../../components/ButtonBack';
 
 import { Container, Main, FormCustom } from './styles';
@@ -75,7 +75,7 @@ const RegisterVaccine: React.FC = () => {
             {({ handleChange, touched, values, errors, handleSubmit }) => (
               <FormCustom onSubmit={handleSubmit}>
                 <div id="align-inputs">
-                  <Input
+                  <InputFormik
                     name="code"
                     type="text"
                     placeholder="Código"
@@ -86,7 +86,7 @@ const RegisterVaccine: React.FC = () => {
                     }
                     maxLength={6}
                   />
-                  <Input
+                  <InputFormik
                     name="description"
                     type="text"
                     placeholder="Vacina"

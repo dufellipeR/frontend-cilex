@@ -14,7 +14,7 @@ import { useCrudModules } from '../../../../hooks/useCrudModules';
 
 import Header from '../../../../components/Header';
 import Button from '../../../../components/Button';
-import Input from '../../../../components/Input';
+import InputFormik from '../../../../components/InputFormik';
 import ButtonBack from '../../../../components/ButtonBack';
 import ModalDelete from '../../../../components/ModalDelete';
 
@@ -118,7 +118,7 @@ const EditDimension: React.FC = () => {
                 {({ handleChange, touched, values, errors, handleSubmit }) => (
                   <FormCustom onSubmit={handleSubmit}>
                     <div id="align-inputs">
-                      <Input
+                      <InputFormik
                         name="code"
                         type="text"
                         placeholder="Código"
@@ -129,7 +129,7 @@ const EditDimension: React.FC = () => {
                         }
                         maxLength={6}
                       />
-                      <Input
+                      <InputFormik
                         name="description"
                         type="text"
                         placeholder="Dimensão"

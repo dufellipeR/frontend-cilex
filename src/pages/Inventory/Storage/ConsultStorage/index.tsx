@@ -1,33 +1,54 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 
-import Header from '../../../../components/Header';
+import { useParams } from 'react-router-dom';
+
 import DefaultTable from '../../../../components/DefaultTable';
+import ButtonBack from '../../../../components/ButtonBack';
 import EmptyData from '../../../../components/EmptyData';
+import DefaultLayout from '../../../../components/DefaultLayout';
+import api from '../../../../services/api';
 
-import { Container, Main } from './styles';
+interface ConsultStorageParams {
+  id: string;
+}
+
+interface ConsultStorageProducts {
+  description: string;
+  quantity: string;
+}
 
 const ConsultStorage: React.FC = () => {
-  const products = [
-    { id: 1, product: 'Shampoo 1', qtd: 1 },
-    { id: 2, product: 'Shampoo 2', qtd: 2 },
-    { id: 3, product: 'Shampoo 3', qtd: 3 },
-    { id: 4, product: 'Shampoo 4', qtd: 4 },
-    { id: 5, product: 'Shampoo 5', qtd: 5 },
-    { id: 6, product: 'Shampoo 6', qtd: 6 },
-    { id: 7, product: 'Shampoo 7', qtd: 7 },
-  ];
+  const { id } = useParams<ConsultStorageParams>();
+
+  const [products, setProducts] = useState<ConsultStorageProducts[]>([]);
+
+  useEffect(() => {
+    try {
+      api
+        .post(`/product/calculateInventory`, {
+          storage_id: id,
+          startDate: '2021-11-26 17:47:03.050257',
+          endDate: '2022-01-31T22:44:04.467Z',
+        })
+        .then(response => {
+          setProducts(response.data);
+        });
+    } catch {
+      console.log('Error');
+    }
+  }, [id]);
 
   return (
-    <Container>
-      <Header pageName="Consultar Estoque" />
-      <Main>
+    <DefaultLayout pageNameHeader="Consultar Estoque">
+      <div id="align-content">
+        <ButtonBack destinationBack="/inventory/storage" />
         {products.length > 0 ? (
           <DefaultTable tbh={['Produto', 'Quantidade']}>
             <tbody>
               {products.map(product => (
-                <tr key={product.id}>
-                  <td>{product.product}</td>
-                  <td>{product.qtd}</td>
+                <tr key={product.description}>
+                  <td>{product.description}</td>
+                  <td>{product.quantity}</td>
                 </tr>
               ))}
             </tbody>
@@ -35,8 +56,8 @@ const ConsultStorage: React.FC = () => {
         ) : (
           <EmptyData />
         )}
-      </Main>
-    </Container>
+      </div>
+    </DefaultLayout>
   );
 };
 

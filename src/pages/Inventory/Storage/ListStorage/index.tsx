@@ -46,12 +46,12 @@ const ListStorage: React.FC = () => {
                       >
                         <FiEye size={24} color={colors.main} />
                       </Link>
-                      <Link
+                      {/* <Link
                         style={{ textDecoration: 'none' }}
                         to={`/inventory/consult/${storage.id}`}
                       >
                         <BsList size={24} color={colors.main} />
-                      </Link>
+                      </Link> */}
                     </td>
                   </tr>
                 ))}

@@ -17,7 +17,7 @@ import { maskPhone, maskCEP, maskCNPJ } from '../../../utils/masks';
 
 import Header from '../../../components/Header';
 import Button from '../../../components/Button';
-import Input from '../../../components/Input';
+import InputFormik from '../../../components/InputFormik';
 import ButtonBack from '../../../components/ButtonBack';
 import ModalDelete from '../../../components/ModalDelete';
 
@@ -261,7 +261,7 @@ const EditCompany: React.FC = () => {
                 {({ handleChange, touched, values, errors, handleSubmit }) => (
                   <FormCustom onSubmit={handleSubmit}>
                     <div id="align-inputs">
-                      <Input
+                      <InputFormik
                         name="code"
                         type="text"
                         placeholder="Código"
@@ -284,7 +284,7 @@ const EditCompany: React.FC = () => {
                           </option>
                         ))}
                       </Select>
-                      <Input
+                      <InputFormik
                         name="cnpj"
                         type="text"
                         placeholder="CNPJ"
@@ -294,7 +294,7 @@ const EditCompany: React.FC = () => {
                         }
                         maxLength={18}
                       />
-                      <Input
+                      <InputFormik
                         name="razao_social"
                         type="text"
                         placeholder="Razão Social"
@@ -306,7 +306,7 @@ const EditCompany: React.FC = () => {
                             : ''
                         }
                       />
-                      <Input
+                      <InputFormik
                         name="nome_fantasia"
                         type="text"
                         placeholder="Nome Fantasia"
@@ -318,7 +318,7 @@ const EditCompany: React.FC = () => {
                             : ''
                         }
                       />
-                      <Input
+                      <InputFormik
                         name="email"
                         type="email"
                         placeholder="E-mail"
@@ -328,7 +328,7 @@ const EditCompany: React.FC = () => {
                           errors.email && touched.email ? errors.email : ''
                         }
                       />
-                      <Input
+                      <InputFormik
                         name="tel"
                         type="text"
                         placeholder="Telefone"
@@ -337,7 +337,7 @@ const EditCompany: React.FC = () => {
                           errors.tel && touched.tel ? errors.tel : ''
                         }
                       />
-                      <Input
+                      <InputFormik
                         name="endereco"
                         type="text"
                         placeholder="Endereço"
@@ -349,7 +349,7 @@ const EditCompany: React.FC = () => {
                             : ''
                         }
                       />
-                      <Input
+                      <InputFormik
                         name="cep"
                         type="text"
                         placeholder="CEP"
@@ -358,7 +358,7 @@ const EditCompany: React.FC = () => {
                           errors.cep && touched.cep ? errors.cep : ''
                         }
                       />
-                      <Input
+                      <InputFormik
                         name="uf"
                         type="text"
                         placeholder="Estado"
@@ -366,7 +366,7 @@ const EditCompany: React.FC = () => {
                         onChange={handleChange('uf')}
                         messageError={errors.uf && touched.uf ? errors.uf : ''}
                       />
-                      <Input
+                      <InputFormik
                         name="info"
                         type="text"
                         placeholder="Informações"

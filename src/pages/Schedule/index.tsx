@@ -22,7 +22,7 @@ import {
   FormCustom,
   ContainerInputDate,
 } from './styles';
-import Input from '../../components/Input';
+import InputFormik from '../../components/InputFormik';
 
 interface Compromise {
   id: string;
@@ -229,7 +229,7 @@ const Schedule: React.FC = () => {
                   onChange={handleChange('date')}
                 />
               </ContainerInputDate>
-              <Input
+              <InputFormik
                 name="hour"
                 type="text"
                 placeholder="Hora"

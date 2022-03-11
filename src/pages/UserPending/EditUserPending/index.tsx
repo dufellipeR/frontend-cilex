@@ -9,7 +9,7 @@ import { BsUnlock } from 'react-icons/bs';
 import api from '../../../services/api';
 
 import Header from '../../../components/Header';
-import Input from '../../../components/Input';
+import InputFormik from '../../../components/InputFormik';
 import Button from '../../../components/Button';
 import ButtonBack from '../../../components/ButtonBack';
 import Checkbox from '../../../components/Checkbox';
@@ -135,7 +135,7 @@ const EditUserPending: React.FC = () => {
             >
               {({ handleChange, touched, values, errors, handleSubmit }) => (
                 <FormCustom onSubmit={handleSubmit}>
-                  <Input
+                  <InputFormik
                     name="email"
                     type="text"
                     placeholder="Email"
@@ -145,7 +145,7 @@ const EditUserPending: React.FC = () => {
                       errors.email && touched.email ? errors.email : ''
                     }
                   />
-                  <Input
+                  <InputFormik
                     name="username"
                     type="text"
                     placeholder="Usuário"
@@ -155,7 +155,7 @@ const EditUserPending: React.FC = () => {
                       errors.username && touched.username ? errors.username : ''
                     }
                   />
-                  <Input
+                  <InputFormik
                     name="password"
                     type="password"
                     placeholder="Senha"

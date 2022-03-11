@@ -23,7 +23,7 @@ import {
   ButtonActions,
   ContainerButtonsModal,
 } from './styles';
-import Input from '../../../components/Input';
+import InputFormik from '../../../components/InputFormik';
 
 interface CompromiseRowProps {
   compromise: {
@@ -260,7 +260,7 @@ const CompromiseRow: React.FC<CompromiseRowProps> = ({
                     disabled={!compromise.recurrence}
                   />
                 </ContainerInputDate>
-                <Input
+                <InputFormik
                   name="hour"
                   type="text"
                   placeholder="Hora"

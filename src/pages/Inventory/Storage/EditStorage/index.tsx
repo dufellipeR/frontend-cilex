@@ -13,7 +13,8 @@ import { IRegisterStorage } from '../../../../types/storage/storage';
 
 import Header from '../../../../components/Header';
 import Button from '../../../../components/Button';
-import Input from '../../../../components/Input';
+import InputFormik from '../../../../components/InputFormik';
+import InputDefault from '../../../../components/InputDefault';
 import ButtonBack from '../../../../components/ButtonBack';
 import ModalDelete from '../../../../components/ModalDelete';
 
@@ -105,6 +106,13 @@ const EditStorage: React.FC = () => {
               </div>
             </HeaderContent>
 
+            {/* <FormCustom>
+              <div id="align-inputs">
+                <InputDefault type="text" placeholder="Código" value="123" />
+                <InputDefault type="text" placeholder="Código" value="123" />
+              </div>
+            </FormCustom> */}
+
             {editting && (
               <Formik
                 initialValues={{
@@ -117,7 +125,7 @@ const EditStorage: React.FC = () => {
                 {({ handleChange, touched, values, errors, handleSubmit }) => (
                   <FormCustom onSubmit={handleSubmit}>
                     <div id="align-inputs">
-                      <Input
+                      <InputFormik
                         name="code"
                         type="text"
                         placeholder="Código"
@@ -128,7 +136,7 @@ const EditStorage: React.FC = () => {
                         }
                         maxLength={6}
                       />
-                      <Input
+                      <InputFormik
                         name="description"
                         type="text"
                         placeholder="Descrição"

@@ -9,7 +9,7 @@ import { Link } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import getValidationErrors from '../../utils/getValidationErrors';
 
-import Input from '../../components/Input';
+import InputFormik from '../../components/InputFormik';
 import Button from '../../components/Button';
 
 import { Container, Background, AnimationContainer, Content } from './styles';
@@ -69,7 +69,7 @@ const ForgotPassword: React.FC = () => {
             <Form ref={formRef} onSubmit={handleSubmit}>
               <h1>Recuperar Senha</h1>
 
-              <Input
+              <InputFormik
                 icon={FiMail}
                 name="email"
                 type="text"

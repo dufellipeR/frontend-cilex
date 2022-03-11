@@ -24,7 +24,7 @@ import {
 import Header from '../../../components/Header';
 import Button from '../../../components/Button';
 import Checkbox from '../../../components/Checkbox';
-import Input from '../../../components/Input';
+import InputFormik from '../../../components/InputFormik';
 import ButtonBack from '../../../components/ButtonBack';
 import ModalDelete from '../../../components/ModalDelete';
 
@@ -314,7 +314,7 @@ const EditPeople: React.FC = () => {
                       <CheckboxContainer>
                         <Checkbox name="isUser" label="É usuário ?" />
                       </CheckboxContainer>
-                      <Input
+                      <InputFormik
                         name="code"
                         type="text"
                         placeholder="Código"
@@ -327,7 +327,7 @@ const EditPeople: React.FC = () => {
                       />
                       {isPhysicalPerson ? (
                         <>
-                          <Input
+                          <InputFormik
                             name="cpf"
                             type="text"
                             placeholder="CPF"
@@ -337,7 +337,7 @@ const EditPeople: React.FC = () => {
                             }
                             maxLength={14}
                           />
-                          <Input
+                          <InputFormik
                             name="nome"
                             type="text"
                             placeholder="Nome"
@@ -350,7 +350,7 @@ const EditPeople: React.FC = () => {
                         </>
                       ) : (
                         <>
-                          <Input
+                          <InputFormik
                             name="cnpj"
                             type="text"
                             placeholder="CNPJ"
@@ -360,7 +360,7 @@ const EditPeople: React.FC = () => {
                             }
                             maxLength={18}
                           />
-                          <Input
+                          <InputFormik
                             name="razao_social"
                             type="text"
                             placeholder="Razão Social"
@@ -372,7 +372,7 @@ const EditPeople: React.FC = () => {
                                 : ''
                             }
                           />
-                          <Input
+                          <InputFormik
                             name="nome_fantasia"
                             type="text"
                             placeholder="Nome Fantasia"
@@ -386,7 +386,7 @@ const EditPeople: React.FC = () => {
                           />
                         </>
                       )}
-                      <Input
+                      <InputFormik
                         name="email"
                         type="email"
                         placeholder="E-mail"
@@ -396,7 +396,7 @@ const EditPeople: React.FC = () => {
                           errors.email && touched.email ? errors.email : ''
                         }
                       />
-                      <Input
+                      <InputFormik
                         name="tel"
                         type="text"
                         placeholder="Telefone"
@@ -405,7 +405,7 @@ const EditPeople: React.FC = () => {
                           errors.tel && touched.tel ? errors.tel : ''
                         }
                       />
-                      <Input
+                      <InputFormik
                         name="endereco"
                         type="text"
                         placeholder="Endereço"
@@ -417,7 +417,7 @@ const EditPeople: React.FC = () => {
                             : ''
                         }
                       />
-                      <Input
+                      <InputFormik
                         name="cep"
                         type="text"
                         placeholder="CEP"
@@ -426,7 +426,7 @@ const EditPeople: React.FC = () => {
                           errors.cep && touched.cep ? errors.cep : ''
                         }
                       />
-                      <Input
+                      <InputFormik
                         name="uf"
                         type="text"
                         placeholder="Estado"
@@ -457,7 +457,7 @@ const EditPeople: React.FC = () => {
                           </option>
                         ))}
                       </Select>
-                      <Input
+                      <InputFormik
                         name="info"
                         type="text"
                         placeholder="Informações"

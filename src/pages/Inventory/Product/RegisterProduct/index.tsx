@@ -20,7 +20,7 @@ import { ISubFamily } from '../../../../types/storage/subFamily';
 
 import Button from '../../../../components/Button';
 import Header from '../../../../components/Header';
-import Input from '../../../../components/Input';
+import InputFormik from '../../../../components/InputFormik';
 import ButtonBack from '../../../../components/ButtonBack';
 import Select from '../../../../components/Select';
 
@@ -210,7 +210,7 @@ const RegisterGroup: React.FC = () => {
             }) => (
               <FormCustom onSubmit={handleSubmit}>
                 <div id="align-inputs">
-                  <Input
+                  <InputFormik
                     name="code"
                     type="text"
                     placeholder="Código"
@@ -221,7 +221,7 @@ const RegisterGroup: React.FC = () => {
                     }
                     maxLength={6}
                   />
-                  <Input
+                  <InputFormik
                     name="description"
                     type="text"
                     placeholder="Descrição"
@@ -379,7 +379,7 @@ const RegisterGroup: React.FC = () => {
                       <option value={unit.id}>{unit.description}</option>
                     ))}
                   </Select>
-                  <Input
+                  <InputFormik
                     name="technical_description"
                     type="text"
                     placeholder="Descrição Técnica"

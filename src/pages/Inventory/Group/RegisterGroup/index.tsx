@@ -10,7 +10,7 @@ import { IRegisterGroup } from '../../../../types/storage/group';
 
 import Button from '../../../../components/Button';
 import Header from '../../../../components/Header';
-import Input from '../../../../components/Input';
+import InputFormik from '../../../../components/InputFormik';
 import ButtonBack from '../../../../components/ButtonBack';
 
 import { Container, Main, FormCustom } from './styles';
@@ -74,7 +74,7 @@ const RegisterGroup: React.FC = () => {
             {({ handleChange, touched, values, errors, handleSubmit }) => (
               <FormCustom onSubmit={handleSubmit}>
                 <div id="align-inputs">
-                  <Input
+                  <InputFormik
                     name="code"
                     type="text"
                     placeholder="Código"
@@ -85,7 +85,7 @@ const RegisterGroup: React.FC = () => {
                     }
                     maxLength={6}
                   />
-                  <Input
+                  <InputFormik
                     name="description"
                     type="text"
                     placeholder="Descrição"

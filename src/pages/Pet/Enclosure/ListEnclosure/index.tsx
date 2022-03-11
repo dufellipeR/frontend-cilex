@@ -8,6 +8,7 @@ import api from '../../../../services/api';
 import { IEnclosure } from '../../../../types/pet/enclosure';
 
 import NewButton from '../../../../components/NewButton';
+import Button from '../../../../components/Button';
 import DefaultTable from '../../../../components/DefaultTable';
 import Header from '../../../../components/Header';
 import ButtonBack from '../../../../components/ButtonBack';
@@ -33,7 +34,10 @@ const ListEnclosure: React.FC = () => {
       <Main>
         <div id="align-content">
           <ButtonBack destinationBack="/pet" />
-          <NewButton to="/pet/enclosure/register">Novo</NewButton>
+          <div id="align-buttons">
+            <NewButton to="/pet/enclosure/register">Novo</NewButton>
+            <NewButton to="/pet/enclosure/all">Ver Todos</NewButton>
+          </div>
           {enclosures.length > 0 ? (
             <DefaultTable tbh={['Código', 'Canil']}>
               <tbody>

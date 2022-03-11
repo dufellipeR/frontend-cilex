@@ -18,7 +18,7 @@ import {
 
 import Button from '../../../components/Button';
 import Header from '../../../components/Header';
-import Input from '../../../components/Input';
+import InputFormik from '../../../components/InputFormik';
 import ButtonBack from '../../../components/ButtonBack';
 
 import {
@@ -197,7 +197,7 @@ const RegisterCompany: React.FC = () => {
                 {isStepOne ? (
                   <>
                     <div id="align-inputs">
-                      <Input
+                      <InputFormik
                         name="code"
                         type="text"
                         placeholder="Código"
@@ -223,7 +223,7 @@ const RegisterCompany: React.FC = () => {
                           </option>
                         ))}
                       </Select>
-                      <Input
+                      <InputFormik
                         name="cnpj"
                         type="text"
                         placeholder="CNPJ"
@@ -233,7 +233,7 @@ const RegisterCompany: React.FC = () => {
                         }
                         maxLength={18}
                       />
-                      <Input
+                      <InputFormik
                         name="razao_social"
                         type="text"
                         placeholder="Razão Social"
@@ -245,7 +245,7 @@ const RegisterCompany: React.FC = () => {
                             : ''
                         }
                       />
-                      <Input
+                      <InputFormik
                         name="nome_fantasia"
                         type="text"
                         placeholder="Nome Fantasia"
@@ -257,7 +257,7 @@ const RegisterCompany: React.FC = () => {
                             : ''
                         }
                       />
-                      <Input
+                      <InputFormik
                         name="email"
                         type="email"
                         placeholder="E-mail"
@@ -267,7 +267,7 @@ const RegisterCompany: React.FC = () => {
                           errors.email && touched.email ? errors.email : ''
                         }
                       />
-                      <Input
+                      <InputFormik
                         name="tel"
                         type="text"
                         placeholder="Telefone"
@@ -276,7 +276,7 @@ const RegisterCompany: React.FC = () => {
                           errors.tel && touched.tel ? errors.tel : ''
                         }
                       />
-                      <Input
+                      <InputFormik
                         name="endereco"
                         type="text"
                         placeholder="Endereço"
@@ -288,7 +288,7 @@ const RegisterCompany: React.FC = () => {
                             : ''
                         }
                       />
-                      <Input
+                      <InputFormik
                         name="cep"
                         type="text"
                         placeholder="CEP"
@@ -297,7 +297,7 @@ const RegisterCompany: React.FC = () => {
                           errors.cep && touched.cep ? errors.cep : ''
                         }
                       />
-                      <Input
+                      <InputFormik
                         name="uf"
                         type="text"
                         placeholder="Estado"
@@ -305,7 +305,7 @@ const RegisterCompany: React.FC = () => {
                         onChange={handleChange('uf')}
                         messageError={errors.uf && touched.uf ? errors.uf : ''}
                       />
-                      <Input
+                      <InputFormik
                         name="info"
                         type="text"
                         placeholder="Informações"

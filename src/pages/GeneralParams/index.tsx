@@ -12,6 +12,7 @@ import cilexLogo from '../../assets/cilex-logo.png';
 import Header from '../../components/Header';
 import Button from '../../components/Button';
 import ButtonBack from '../../components/ButtonBack';
+import InputFormik from '../../components/InputFormik';
 
 import {
   Container,

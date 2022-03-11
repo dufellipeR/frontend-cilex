@@ -20,7 +20,7 @@ import {
 
 import Button from '../../../components/Button';
 import Header from '../../../components/Header';
-import Input from '../../../components/Input';
+import InputFormik from '../../../components/InputFormik';
 import ButtonBack from '../../../components/ButtonBack';
 import Checkbox from '../../../components/Checkbox';
 
@@ -225,7 +225,7 @@ const RegisterPeople: React.FC = () => {
                   </CheckboxContainer>
                 </div>
                 <div id="align-inputs">
-                  <Input
+                  <InputFormik
                     name="code"
                     type="text"
                     placeholder="Código"
@@ -238,7 +238,7 @@ const RegisterPeople: React.FC = () => {
                   />
                   {isPhysicalPerson ? (
                     <>
-                      <Input
+                      <InputFormik
                         name="cpf"
                         type="text"
                         placeholder="CPF"
@@ -248,7 +248,7 @@ const RegisterPeople: React.FC = () => {
                         }
                         maxLength={14}
                       />
-                      <Input
+                      <InputFormik
                         name="nome"
                         type="text"
                         placeholder="Nome"
@@ -261,7 +261,7 @@ const RegisterPeople: React.FC = () => {
                     </>
                   ) : (
                     <>
-                      <Input
+                      <InputFormik
                         name="cnpj"
                         type="text"
                         placeholder="CNPJ"
@@ -271,7 +271,7 @@ const RegisterPeople: React.FC = () => {
                         }
                         maxLength={18}
                       />
-                      <Input
+                      <InputFormik
                         name="razao_social"
                         type="text"
                         placeholder="Razão Social"
@@ -283,7 +283,7 @@ const RegisterPeople: React.FC = () => {
                             : ''
                         }
                       />
-                      <Input
+                      <InputFormik
                         name="nome_fantasia"
                         type="text"
                         placeholder="Nome Fantasia"
@@ -297,7 +297,7 @@ const RegisterPeople: React.FC = () => {
                       />
                     </>
                   )}
-                  <Input
+                  <InputFormik
                     name="email"
                     type="email"
                     placeholder="E-mail"
@@ -307,14 +307,14 @@ const RegisterPeople: React.FC = () => {
                       errors.email && touched.email ? errors.email : ''
                     }
                   />
-                  <Input
+                  <InputFormik
                     name="tel"
                     type="text"
                     placeholder="Telefone"
                     mask={maskPhone}
                     messageError={errors.tel && touched.tel ? errors.tel : ''}
                   />
-                  <Input
+                  <InputFormik
                     name="endereco"
                     type="text"
                     placeholder="Endereço"
@@ -324,14 +324,14 @@ const RegisterPeople: React.FC = () => {
                       errors.endereco && touched.endereco ? errors.endereco : ''
                     }
                   />
-                  <Input
+                  <InputFormik
                     name="cep"
                     type="text"
                     placeholder="CEP"
                     mask={maskCEP}
                     messageError={errors.cep && touched.cep ? errors.cep : ''}
                   />
-                  <Input
+                  <InputFormik
                     name="uf"
                     type="text"
                     placeholder="Estado"
@@ -358,7 +358,7 @@ const RegisterPeople: React.FC = () => {
                       <option value={option.value}>{option.label}</option>
                     ))}
                   </Select>
-                  <Input
+                  <InputFormik
                     name="info"
                     type="text"
                     placeholder="Informações"

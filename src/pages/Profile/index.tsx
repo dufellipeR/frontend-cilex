@@ -11,7 +11,7 @@ import * as Yup from 'yup';
 import { Link, useHistory } from 'react-router-dom';
 
 import { toast } from 'react-toastify';
-import Input from '../../components/Input';
+import InputFormik from '../../components/InputFormik';
 import Button from '../../components/Button';
 
 import getValidationErrors from '../../utils/getValidationErrors';
@@ -144,30 +144,35 @@ const Profile: React.FC = () => {
 
             <h1>Meu perfil</h1>
 
-            <Input icon={FiUser} name="name" type="text" placeholder="Nome" />
+            <InputFormik
+              icon={FiUser}
+              name="name"
+              type="text"
+              placeholder="Nome"
+            />
 
-            <Input
+            <InputFormik
               icon={FiMail}
               name="email"
               type="text"
               placeholder="E-mail"
             />
 
-            <Input
+            <InputFormik
               icon={FiLock}
               name="old_password"
               type="password"
               placeholder="Senha Atual"
             />
 
-            <Input
+            <InputFormik
               icon={FiLock}
               name="password"
               type="password"
               placeholder="Nova Senha"
             />
 
-            <Input
+            <InputFormik
               icon={FiLock}
               name="password_confirmation"
               type="password"

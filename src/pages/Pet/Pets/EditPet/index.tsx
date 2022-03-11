@@ -23,7 +23,7 @@ import { IEnclosure } from '../../../../types/pet/enclosure';
 
 import Header from '../../../../components/Header';
 import Button from '../../../../components/Button';
-import Input from '../../../../components/Input';
+import InputFormik from '../../../../components/InputFormik';
 import ButtonBack from '../../../../components/ButtonBack';
 import ModalDelete from '../../../../components/ModalDelete';
 import Select from '../../../../components/Select';
@@ -304,7 +304,7 @@ const EditPet: React.FC = () => {
                 }) => (
                   <FormCustom onSubmit={handleSubmit}>
                     <div id="align-inputs">
-                      <Input
+                      <InputFormik
                         name="name"
                         type="text"
                         placeholder="Nome"
@@ -314,7 +314,7 @@ const EditPet: React.FC = () => {
                           errors.name && touched.name ? errors.name : ''
                         }
                       />
-                      <Input
+                      <InputFormik
                         name="breed"
                         type="text"
                         placeholder="Raça"
@@ -387,7 +387,7 @@ const EditPet: React.FC = () => {
                           </option>
                         ))}
                       </Select>
-                      <Input
+                      <InputFormik
                         name="items"
                         type="text"
                         placeholder="Acessórios"
