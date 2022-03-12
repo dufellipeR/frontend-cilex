@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { transparentize } from 'polished';
 import { toast } from 'react-toastify';
@@ -21,14 +21,26 @@ import {
   Main,
   Section,
 } from './styles';
+import api from '../../services/api';
+import { useCompany } from '../../hooks/useCompany';
+
 
 const GeneralParams: React.FC = () => {
   const { theme, toggleTheme } = useToggleTheme();
   const { setLogo } = useUpdateLogo();
+  const { company } = useCompany()
   const history = useHistory();
 
   const [mainColor, setMainColor] = useState(theme.colors.main);
   const [stateLogo, setStateLogo] = useState('');
+
+  // useEffect(() => {
+
+  //   api.patch(`/company/${company.id}`).then(response => {
+
+  //   }); 
+    
+  // }, []);
 
   const onSelectFile = (e: any) => {
     if (!e.target.files || e.target.files.length === 0) {
@@ -43,6 +55,7 @@ const GeneralParams: React.FC = () => {
   }, [stateLogo]);
 
   const handleSaveParams = () => {
+
     if (mainColor) {
       toggleTheme({
         title: 'customized',
@@ -57,6 +70,14 @@ const GeneralParams: React.FC = () => {
     if (stateLogo) {
       const objectUrl = URL.createObjectURL(stateLogo);
       setLogo(objectUrl);
+
+      // const formData = new FormData();
+      // formData.append('company_logo', stateLogo);
+
+      // api.patch(`/company/${company.id}`, formData).then(() => {
+      //   toast.success('Atualizado com sucesso');
+      //   history.push('/menu');
+      // });
     }
 
     toast.success('Parâmetros atualizados!');

@@ -97,7 +97,7 @@ const RegisterUserGroup: React.FC = () => {
   useEffect(() => {
     api
       .get<Module[]>(
-        `company_modules/?company_id=${JSON.parse(company as string).id}`,
+        `company_modules/?company_id=${JSON.parse(company as string).id}`, // Usar hook de empresa
       )
       .then(response => {
         const responseModules = response.data;

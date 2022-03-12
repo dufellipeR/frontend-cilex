@@ -12,6 +12,7 @@ import { useHasUserCompany } from '../../hooks/useHasUserCompany';
 import HeaderHome from '../../components/HeaderHome';
 
 import { Container, Options, Main, Companies, Company } from './styles';
+import { useCompany } from '../../hooks/useCompany';
 
 interface IUserCompany {
   id: string;
@@ -22,6 +23,7 @@ interface IUserCompany {
 const ChoseCompany: React.FC = () => {
   const history = useHistory();
   const { user } = useAuth();
+  const { setCompany } = useCompany()
   const { setHasUserCompany } = useHasUserCompany();
   // const { toggleTheme } = useToggleTheme();
 
@@ -29,7 +31,7 @@ const ChoseCompany: React.FC = () => {
 
   const handleChoice = useCallback(
     (company: IUserCompany) => {
-      localStorage.setItem('@Cilex:companySelected', JSON.stringify(company));
+      setCompany(company)
       // toggleTheme({
       //   title: 'customized',
       //   colors: {
@@ -46,6 +48,8 @@ const ChoseCompany: React.FC = () => {
   useEffect(() => {
     api.get<IUserCompany[]>(`/usercompany?user=${user.id}`).then(response => {
       if (response.data.length === 0) {
+        console.log(response);
+        
         setHasUserCompany(false);
         history.push('/company/register');
       } else {
