@@ -24,11 +24,10 @@ import {
 import api from '../../services/api';
 import { useCompany } from '../../hooks/useCompany';
 
-
 const GeneralParams: React.FC = () => {
   const { theme, toggleTheme } = useToggleTheme();
   const { setLogo } = useUpdateLogo();
-  const { company } = useCompany()
+  const { company } = useCompany();
   const history = useHistory();
 
   const [mainColor, setMainColor] = useState(theme.colors.main);
@@ -38,8 +37,8 @@ const GeneralParams: React.FC = () => {
 
   //   api.patch(`/company/${company.id}`).then(response => {
 
-  //   }); 
-    
+  //   });
+
   // }, []);
 
   const onSelectFile = (e: any) => {
@@ -55,7 +54,6 @@ const GeneralParams: React.FC = () => {
   }, [stateLogo]);
 
   const handleSaveParams = () => {
-
     if (mainColor) {
       toggleTheme({
         title: 'customized',
