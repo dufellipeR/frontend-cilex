@@ -27,7 +27,6 @@ const InputDefault: React.FC<InputDefaultProps> = ({
 
       {mask ? (
         <MaskedInput
-          {...rest}
           placeholder={rest.placeholder}
           mask={mask}
           type="text"
@@ -38,7 +37,6 @@ const InputDefault: React.FC<InputDefaultProps> = ({
         <input
           onFocus={() => setInputFocus(true)}
           onBlur={() => setInputFocus(false)}
-          {...rest}
         />
       )}
 
