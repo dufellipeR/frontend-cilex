@@ -4,7 +4,6 @@ import { transparentize } from 'polished';
 import { toast } from 'react-toastify';
 
 import { useToggleTheme } from '../../hooks/useToggleTheme';
-import { useLogoState } from '../../hooks/useLogoState';
 
 import camera from '../../assets/camera.svg';
 import cilexLogo from '../../assets/cilex-logo.png';
@@ -26,12 +25,11 @@ import { useCompany } from '../../hooks/useCompany';
 
 const GeneralParams: React.FC = () => {
   const { theme, toggleTheme } = useToggleTheme();
-  // const { setLogo } = useLogoState();
-  const { company } = useCompany();
+  const { company, setCompany } = useCompany();
   const history = useHistory();
 
   const [mainColor, setMainColor] = useState(theme.colors.main);
-  const [stateLogo, setStateLogo] = useState<string>();
+  const [stateLogo, setStateLogo] = useState<any>();
 
   // useEffect(() => {
   //   setMainColor(company.company_color);
@@ -82,15 +80,18 @@ const GeneralParams: React.FC = () => {
 
     if (stateLogo) {
       const objectUrl = URL.createObjectURL(stateLogo);
-      // setLogo(objectUrl);
 
-      // const formData = new FormData();
-      // formData.append('company_logo', stateLogo);
+      const formData = new FormData();
+      formData.append('company_logo', stateLogo);
 
-      // api.patch(`/company/${company.id}`, formData).then(() => {
-      //   toast.success('Atualizado com sucesso');
-      //   history.push('/menu');
-      // });
+      api.patch(`/company/${company.id}`, formData).then(() => {
+        toast.success('Atualizado com sucesso');
+        setCompany({
+          ...company,
+          company_logo: objectUrl,
+        });
+        history.push('/menu');
+      });
     }
 
     toast.success('Parâmetros atualizados!');
@@ -98,6 +99,7 @@ const GeneralParams: React.FC = () => {
   };
 
   const handleResetParams = () => {
+    // Reset Color ---------------------------------------------
     toggleTheme({
       title: 'orange',
       colors: {
@@ -112,10 +114,34 @@ const GeneralParams: React.FC = () => {
         company_color: mainColor,
       })
       .then(() => {
+        setMainColor('#ff7a00');
+        setCompany({
+          ...company,
+          company_color: '#ff7a00',
+        });
         toast.success('Parâmetros reiniciados!');
       });
-    setMainColor('#ff7a00');
-    // setLogo(cilexLogo);
+
+    // Reset Image ---------------------------------------------
+    fetch(cilexLogo)
+      .then(res => res.blob())
+      .then(blob => {
+        const objectUrl = URL.createObjectURL(blob);
+
+        setCompany({
+          ...company,
+          company_logo: objectUrl,
+        });
+
+        const formData = new FormData();
+        formData.append('company_logo', blob);
+
+        api.patch(`/company/${company.id}`, formData).then(() => {
+          toast.success('Atualizado com sucesso');
+
+          history.push('/menu');
+        });
+      });
   };
 
   return (

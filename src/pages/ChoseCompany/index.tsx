@@ -2,8 +2,9 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { HiOutlineOfficeBuilding } from 'react-icons/hi';
 // import { transparentize } from 'polished';
-
 import { transparentize } from 'polished';
+import cilexLogo from '../../assets/cilex-logo.png';
+
 import chooseSvg from '../../assets/town.svg';
 import api from '../../services/api';
 import { useAuth } from '../../hooks/auth';
@@ -15,7 +16,6 @@ import HeaderHome from '../../components/HeaderHome';
 import { Container, Options, Main, Companies, Company } from './styles';
 import { useCompany } from '../../hooks/useCompany';
 import { useToggleTheme } from '../../hooks/useToggleTheme';
-import { useLogoState } from '../../hooks/useLogoState';
 
 interface IUserCompany {
   id: string;
@@ -38,7 +38,15 @@ const ChoseCompany: React.FC = () => {
 
   const handleChoice = useCallback(
     (company: IUserCompany) => {
-      setCompany(company);
+      if (company.company_logo === null) {
+        setCompany({ ...company, company_logo: cilexLogo });
+      } else {
+        setCompany({
+          ...company,
+          company_logo: `http://localhost:3333/api/v1/files/${company.company_logo}`,
+        });
+      }
+      // http://localhost:3333/api/v1/files/${logo}
 
       toggleTheme({
         title: 'customized',
@@ -51,13 +59,12 @@ const ChoseCompany: React.FC = () => {
 
       history.push('home');
     },
-    [
-      /* history toggleTheme */
-    ],
+    [history, toggleTheme, setCompany],
   );
 
   useEffect(() => {
     api.get<IUserCompany[]>(`/usercompany?user=${user.id}`).then(response => {
+      console.log('Response: ', response.data);
       if (response.data.length === 0) {
         setHasUserCompany(false);
         history.push('/company/register');
