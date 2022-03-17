@@ -5,11 +5,12 @@ import { FiHome, FiPower } from 'react-icons/fi';
 import orange from '../../styles/theme/orange';
 import { useToggleTheme } from '../../hooks/useToggleTheme';
 import { useAuth } from '../../hooks/auth';
-import { useUpdateLogo } from '../../hooks/useUpdateLogo';
+import { useLogoState } from '../../hooks/useLogoState';
 
 import Button from '../Button';
 
 import { Container } from './styles';
+import { useCompany } from '../../hooks/useCompany';
 
 interface HeaderProps {
   pageName: string;
@@ -26,13 +27,11 @@ const Header: React.FC<HeaderProps> = ({ pageName, disabledHome = false }) => {
   const history = useHistory();
   const { signOut } = useAuth();
   const { toggleTheme } = useToggleTheme();
-  const { logo } = useUpdateLogo();
-
-  const [companySelected, setCompanySelected] = useState({} as CompanySelected);
+  const { logo } = useLogoState();
+  const { company } = useCompany();
 
   useEffect(() => {
-    const companyString = localStorage.getItem('@Cilex:companySelected');
-    if (companyString) setCompanySelected(JSON.parse(companyString));
+    console.log(logo);
   }, []);
 
   const handleLogout = useCallback((): void => {
@@ -48,13 +47,13 @@ const Header: React.FC<HeaderProps> = ({ pageName, disabledHome = false }) => {
   return (
     <Container>
       <div id="container-logo">
-        <img src={logo} alt="logo" />
+        <img src={`http://localhost:3333/api/v1/files/${logo}`} alt="logo" />
       </div>
 
       <div id="container-texts">
         <h3>{pageName}</h3>
         <p>
-          {companySelected.code} - {companySelected.razao_social}
+          {company.code} - {company.razao_social}
         </p>
       </div>
 

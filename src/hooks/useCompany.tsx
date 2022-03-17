@@ -6,6 +6,8 @@ interface Company {
   id: string;
   code: string;
   razao_social: string;
+  company_logo: string;
+  company_color: string;
 }
 
 interface CompanyState {

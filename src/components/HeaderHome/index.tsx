@@ -8,11 +8,12 @@ import ptBR from 'date-fns/locale/pt-BR';
 import orange from '../../styles/theme/orange';
 import { useToggleTheme } from '../../hooks/useToggleTheme';
 import { useAuth } from '../../hooks/auth';
-import { useUpdateLogo } from '../../hooks/useUpdateLogo';
+import cilexLogo from '../../assets/cilex-logo.png';
 
 import Button from '../Button';
 
 import { Container, Greetings } from './styles';
+import { useLogoState } from '../../hooks/useLogoState';
 
 interface HeaderProps {
   message: string;
@@ -22,11 +23,24 @@ const Header: React.FC<HeaderProps> = ({ message }) => {
   const history = useHistory();
   const { user, signOut } = useAuth();
   const { toggleTheme } = useToggleTheme();
-  const { logo } = useUpdateLogo();
+  const { logo } = useLogoState();
 
   const [date, setDate] = useState<string[]>([]);
 
   useEffect(() => {
+    console.log(logo);
+
+    // if (logo !== cilexLogo && logo !== null) {
+    //   console.log('entrou tem logo');
+
+    //   setFileLogo(`http://localhost:3333/api/v1/files/${logo}`);
+    // } else {
+    //   console.log('entrou sem logo');
+
+    //   setLogo(cilexLogo);
+    //   setFileLogo(cilexLogo);
+    // }
+    // const filelogo = `http://localhost:3333/api/v1/files/${logo}`;
     const data = new Date();
     const dateFormatted = format(data, 'EEEE/dd/MMMM/yyyy', { locale: ptBR });
     const dateSplitted = dateFormatted.split('/');

@@ -4,14 +4,14 @@ import { AuthProvider } from './auth';
 import { CompanyProvider } from './useCompany';
 import { CrudModulesProvider } from './useCrudModules';
 import { HasUserCompanyProvider } from './useHasUserCompany';
-import { UpdateLogoProvider } from './useUpdateLogo';
+import { StateLogoProvider } from './useLogoState';
 
 const AppProvider: React.FC = ({ children }) => (
   <AuthProvider>
     <CompanyProvider>
       <HasUserCompanyProvider>
         <CrudModulesProvider>
-          <UpdateLogoProvider>{children}</UpdateLogoProvider>
+          <StateLogoProvider>{children}</StateLogoProvider>
         </CrudModulesProvider>
       </HasUserCompanyProvider>
     </CompanyProvider>
