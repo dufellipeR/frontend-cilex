@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback } from 'react';
 import { useHistory } from 'react-router-dom';
 import { FiHome, FiPower } from 'react-icons/fi';
 
@@ -16,23 +16,18 @@ interface HeaderProps {
   disabledHome?: boolean;
 }
 
-interface CompanySelected {
-  id: string;
-  code: string;
-  razao_social: string;
-}
-
 const Header: React.FC<HeaderProps> = ({ pageName, disabledHome = false }) => {
   const history = useHistory();
   const { signOut } = useAuth();
   const { toggleTheme } = useToggleTheme();
-  const { company } = useCompany();
+  const { company, clearCompany } = useCompany();
 
   const handleLogout = useCallback((): void => {
     signOut();
     toggleTheme(orange);
+    clearCompany();
     history.push('/');
-  }, [history, signOut, toggleTheme]);
+  }, [history, signOut, toggleTheme, clearCompany]);
 
   const handleHome = useCallback((): void => {
     history.push('/home');

@@ -21,7 +21,7 @@ import {
   Section,
 } from './styles';
 import api from '../../services/api';
-import { useCompany } from '../../hooks/useCompany';
+import { Company, useCompany } from '../../hooks/useCompany';
 
 const GeneralParams: React.FC = () => {
   const { theme, toggleTheme } = useToggleTheme();
@@ -58,7 +58,12 @@ const GeneralParams: React.FC = () => {
     return stateLogo ? URL.createObjectURL(stateLogo) : null;
   }, [stateLogo]);
 
-  const handleSaveParams = () => {
+  const handleSaveParams = async () => {
+    let newParams = {
+      color: '',
+      logo: '',
+    };
+
     if (mainColor) {
       toggleTheme({
         title: 'customized',
@@ -69,79 +74,58 @@ const GeneralParams: React.FC = () => {
         },
       });
 
-      api
-        .patch(`/company/${company.id}/updateColor`, {
-          company_color: mainColor,
-        })
-        .then(() => {
-          toast.success('Atualizado com sucesso');
-        });
+      const response = await api.patch(`/company/${company.id}/updateColor`, {
+        company_color: mainColor,
+      });
+
+      newParams = {
+        ...newParams,
+        color: response.data.company_color,
+      };
     }
 
     if (stateLogo) {
-      const objectUrl = URL.createObjectURL(stateLogo);
-
       const formData = new FormData();
       formData.append('company_logo', stateLogo);
 
-      api.patch(`/company/${company.id}`, formData).then(() => {
-        toast.success('Atualizado com sucesso');
-        setCompany({
-          ...company,
-          company_logo: objectUrl,
-        });
-        history.push('/menu');
-      });
+      const response = await api.patch(`/company/${company.id}`, formData);
+
+      newParams = {
+        ...newParams,
+        logo: `http://localhost:3333/api/v1/files/${response.data.company_logo}`,
+      };
     }
+
+    setCompany({
+      ...company,
+      company_color: newParams.color,
+      company_logo: newParams.logo,
+    });
 
     toast.success('Parâmetros atualizados!');
     history.push('/menu');
   };
 
   const handleResetParams = () => {
-    // Reset Color ---------------------------------------------
-    toggleTheme({
-      title: 'orange',
-      colors: {
-        main: '#ff7a00',
-        mainHover: transparentize(0.8, '#ff7a00'),
-        green: '#8DC73E',
-      },
+    api.get(`/company/${company.id}/reset`).then(response => {
+      toggleTheme({
+        title: 'orange',
+        colors: {
+          main: response.data.company_color,
+          mainHover: transparentize(0.8, response.data.company_color),
+          green: '#8DC73E',
+        },
+      });
+
+      setCompany({
+        ...company,
+        company_color: response.data.company_color,
+        company_logo: `http://localhost:3333/api/v1/files/${response.data.company_logo}`,
+      });
+
+      toast.success('Reiniciado com sucesso');
+      history.push('/menu');
     });
-
-    api
-      .patch(`/company/${company.id}/updateColor`, {
-        company_color: mainColor,
-      })
-      .then(() => {
-        setMainColor('#ff7a00');
-        setCompany({
-          ...company,
-          company_color: '#ff7a00',
-        });
-        toast.success('Parâmetros reiniciados!');
-      });
-
-    // Reset Image ---------------------------------------------
-    fetch(cilexLogo)
-      .then(res => res.blob())
-      .then(blob => {
-        const objectUrl = URL.createObjectURL(blob);
-
-        setCompany({
-          ...company,
-          company_logo: objectUrl,
-        });
-
-        const formData = new FormData();
-        formData.append('company_logo', blob);
-
-        api.patch(`/company/${company.id}`, formData).then(() => {
-          toast.success('Atualizado com sucesso');
-
-          history.push('/menu');
-        });
-      });
   };
 
   return (

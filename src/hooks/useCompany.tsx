@@ -3,7 +3,7 @@ import React, { createContext, useCallback, useState, useContext } from 'react';
 import api from '../services/api';
 import logoImg from '../assets/cilex-logo.png';
 
-interface Company {
+export interface Company {
   id: string;
   code: string;
   razao_social: string;
@@ -18,6 +18,7 @@ interface CompanyState {
 interface CompanyContextData {
   company: Company;
   setCompany(company: Company): void;
+  clearCompany(): void;
 }
 
 const CompanyContext = createContext<CompanyContextData>(
@@ -40,8 +41,16 @@ const CompanyProvider: React.FC = ({ children }) => {
     setData({ company });
   }, []);
 
+  const clearCompany = useCallback(() => {
+    setData({} as CompanyState);
+  }, []);
+
+  console.log(data.company);
+
   return (
-    <CompanyContext.Provider value={{ company: data.company, setCompany }}>
+    <CompanyContext.Provider
+      value={{ company: data.company, setCompany, clearCompany }}
+    >
       {children}
     </CompanyContext.Provider>
   );

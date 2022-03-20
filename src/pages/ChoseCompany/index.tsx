@@ -27,32 +27,26 @@ interface IUserCompany {
 
 const ChoseCompany: React.FC = () => {
   const history = useHistory();
-  const { theme, toggleTheme } = useToggleTheme();
+  const { toggleTheme } = useToggleTheme();
   const { user } = useAuth();
   const { setCompany } = useCompany();
 
   const { setHasUserCompany } = useHasUserCompany();
-  // const { toggleTheme } = useToggleTheme();
 
   const [userCompanies, setUserCompanies] = useState<IUserCompany[]>([]);
 
   const handleChoice = useCallback(
     (company: IUserCompany) => {
-      if (company.company_logo === null) {
-        setCompany({ ...company, company_logo: cilexLogo });
-      } else {
-        setCompany({
-          ...company,
-          company_logo: `http://localhost:3333/api/v1/files/${company.company_logo}`,
-        });
-      }
-      // http://localhost:3333/api/v1/files/${logo}
+      setCompany({
+        ...company,
+        company_logo: `http://localhost:3333/api/v1/files/${company.company_logo}`,
+      });
 
       toggleTheme({
         title: 'customized',
         colors: {
           main: company.company_color,
-          mainHover: transparentize(0.8, '#000'),
+          mainHover: transparentize(0.8, company.company_color),
           green: '#8DC73E',
         },
       });
@@ -64,7 +58,6 @@ const ChoseCompany: React.FC = () => {
 
   useEffect(() => {
     api.get<IUserCompany[]>(`/usercompany?user=${user.id}`).then(response => {
-      console.log('Response: ', response.data);
       if (response.data.length === 0) {
         setHasUserCompany(false);
         history.push('/company/register');

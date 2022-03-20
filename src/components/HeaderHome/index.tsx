@@ -4,6 +4,7 @@ import { useHistory } from 'react-router-dom';
 import { FiPower } from 'react-icons/fi';
 import { format } from 'date-fns';
 import ptBR from 'date-fns/locale/pt-BR';
+import cilexLogo from '../../assets/cilex-logo.png';
 
 import orange from '../../styles/theme/orange';
 import { useToggleTheme } from '../../hooks/useToggleTheme';
@@ -22,7 +23,7 @@ const Header: React.FC<HeaderProps> = ({ message }) => {
   const history = useHistory();
   const { user, signOut } = useAuth();
   const { toggleTheme } = useToggleTheme();
-  const { company } = useCompany();
+  const { company, clearCompany } = useCompany();
 
   const [date, setDate] = useState<string[]>([]);
 
@@ -42,13 +43,18 @@ const Header: React.FC<HeaderProps> = ({ message }) => {
   const handleLogout = useCallback((): void => {
     signOut();
     toggleTheme(orange);
+    clearCompany();
     history.push('/');
-  }, [history, signOut, toggleTheme]);
+  }, [history, signOut, toggleTheme, clearCompany]);
 
   return (
     <Container>
       <div id="container-logo">
-        <img src={company.company_logo} alt="logo" />
+        {company ? (
+          <img src={company.company_logo} alt="logo" />
+        ) : (
+          <img src={cilexLogo} alt="logo" />
+        )}
       </div>
 
       <Greetings>
