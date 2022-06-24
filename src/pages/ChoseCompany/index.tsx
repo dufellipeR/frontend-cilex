@@ -2,6 +2,8 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { HiOutlineOfficeBuilding } from 'react-icons/hi';
 // import { transparentize } from 'polished';
+import { transparentize } from 'polished';
+import cilexLogo from '../../assets/cilex-logo.png';
 
 import chooseSvg from '../../assets/town.svg';
 import api from '../../services/api';
@@ -13,45 +15,50 @@ import HeaderHome from '../../components/HeaderHome';
 
 import { Container, Options, Main, Companies, Company } from './styles';
 import { useCompany } from '../../hooks/useCompany';
+import { useToggleTheme } from '../../hooks/useToggleTheme';
 
 interface IUserCompany {
   id: string;
   code: string;
   razao_social: string;
+  company_logo: string;
+  company_color: string;
 }
 
 const ChoseCompany: React.FC = () => {
   const history = useHistory();
+  const { toggleTheme } = useToggleTheme();
   const { user } = useAuth();
   const { setCompany } = useCompany();
+
   const { setHasUserCompany } = useHasUserCompany();
-  // const { toggleTheme } = useToggleTheme();
 
   const [userCompanies, setUserCompanies] = useState<IUserCompany[]>([]);
 
   const handleChoice = useCallback(
     (company: IUserCompany) => {
-      setCompany(company);
-      // toggleTheme({
-      //   title: 'customized',
-      //   colors: {
-      //     main: '#000',
-      //     mainHover: transparentize(0.8, '#000'),
-      //     green: '#8DC73E',
-      //   },
-      // });
+      setCompany({
+        ...company,
+        company_logo: `http://localhost:3333/api/v1/files/${company.company_logo}`,
+      });
+
+      toggleTheme({
+        title: 'customized',
+        colors: {
+          main: company.company_color,
+          mainHover: transparentize(0.8, company.company_color),
+          green: '#8DC73E',
+        },
+      });
+
       history.push('home');
     },
-    [
-      /* history toggleTheme */
-    ],
+    [history, toggleTheme, setCompany],
   );
 
   useEffect(() => {
     api.get<IUserCompany[]>(`/usercompany?user=${user.id}`).then(response => {
       if (response.data.length === 0) {
-        console.log(response);
-
         setHasUserCompany(false);
         history.push('/company/register');
       } else {

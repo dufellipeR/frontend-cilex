@@ -4,7 +4,6 @@ import { transparentize } from 'polished';
 import { toast } from 'react-toastify';
 
 import { useToggleTheme } from '../../hooks/useToggleTheme';
-import { useUpdateLogo } from '../../hooks/useUpdateLogo';
 
 import camera from '../../assets/camera.svg';
 import cilexLogo from '../../assets/cilex-logo.png';
@@ -22,23 +21,29 @@ import {
   Section,
 } from './styles';
 import api from '../../services/api';
-import { useCompany } from '../../hooks/useCompany';
+import { Company, useCompany } from '../../hooks/useCompany';
 
 const GeneralParams: React.FC = () => {
   const { theme, toggleTheme } = useToggleTheme();
-  const { setLogo } = useUpdateLogo();
-  const { company } = useCompany();
+  const { company, setCompany } = useCompany();
   const history = useHistory();
 
   const [mainColor, setMainColor] = useState(theme.colors.main);
-  const [stateLogo, setStateLogo] = useState('');
+  const [stateLogo, setStateLogo] = useState<any>();
 
   // useEffect(() => {
+  //   setMainColor(company.company_color);
 
-  //   api.patch(`/company/${company.id}`).then(response => {
-
-  //   });
-
+  //   if (company.company_logo) {
+  //     fetch(`http://localhost:3333/api/v1/files/${company.company_logo}`)
+  //       .then(responsePic => {
+  //         return responsePic.blob();
+  //       })
+  //       .then(myBlob => {
+  //         const objectUrl = URL.createObjectURL(myBlob);
+  //         setStateLogo(objectUrl);
+  //       });
+  //   }
   // }, []);
 
   const onSelectFile = (e: any) => {
@@ -53,7 +58,12 @@ const GeneralParams: React.FC = () => {
     return stateLogo ? URL.createObjectURL(stateLogo) : null;
   }, [stateLogo]);
 
-  const handleSaveParams = () => {
+  const handleSaveParams = async () => {
+    let newParams = {
+      color: '',
+      logo: '',
+    };
+
     if (mainColor) {
       toggleTheme({
         title: 'customized',
@@ -63,37 +73,59 @@ const GeneralParams: React.FC = () => {
           green: '#8DC73E',
         },
       });
+
+      const response = await api.patch(`/company/${company.id}/updateColor`, {
+        company_color: mainColor,
+      });
+
+      newParams = {
+        ...newParams,
+        color: response.data.company_color,
+      };
     }
 
     if (stateLogo) {
-      const objectUrl = URL.createObjectURL(stateLogo);
-      setLogo(objectUrl);
+      const formData = new FormData();
+      formData.append('company_logo', stateLogo);
 
-      // const formData = new FormData();
-      // formData.append('company_logo', stateLogo);
+      const response = await api.patch(`/company/${company.id}`, formData);
 
-      // api.patch(`/company/${company.id}`, formData).then(() => {
-      //   toast.success('Atualizado com sucesso');
-      //   history.push('/menu');
-      // });
+      newParams = {
+        ...newParams,
+        logo: `http://localhost:3333/api/v1/files/${response.data.company_logo}`,
+      };
     }
+
+    setCompany({
+      ...company,
+      company_color: newParams.color,
+      company_logo: newParams.logo,
+    });
 
     toast.success('Parâmetros atualizados!');
     history.push('/menu');
   };
 
   const handleResetParams = () => {
-    toggleTheme({
-      title: 'orange',
-      colors: {
-        main: '#ff7a00',
-        mainHover: transparentize(0.8, '#ff7a00'),
-        green: '#8DC73E',
-      },
-    });
+    api.get(`/company/${company.id}/reset`).then(response => {
+      toggleTheme({
+        title: 'orange',
+        colors: {
+          main: response.data.company_color,
+          mainHover: transparentize(0.8, response.data.company_color),
+          green: '#8DC73E',
+        },
+      });
 
-    setLogo(cilexLogo);
-    toast.success('Parâmetros reiniciados!');
+      setCompany({
+        ...company,
+        company_color: response.data.company_color,
+        company_logo: `http://localhost:3333/api/v1/files/${response.data.company_logo}`,
+      });
+
+      toast.success('Reiniciado com sucesso');
+      history.push('/menu');
+    });
   };
 
   return (
@@ -120,7 +152,9 @@ const GeneralParams: React.FC = () => {
 
           <div className="box-input">
             <ContainerInputFile
-              style={{ backgroundImage: `url(${previewLogo})` }}
+              style={{
+                backgroundImage: `url(${previewLogo})`,
+              }}
               hasThumb={stateLogo}
             >
               <span>Logo</span>

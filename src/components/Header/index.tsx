@@ -1,11 +1,11 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback } from 'react';
 import { useHistory } from 'react-router-dom';
 import { FiHome, FiPower } from 'react-icons/fi';
 
 import orange from '../../styles/theme/orange';
 import { useToggleTheme } from '../../hooks/useToggleTheme';
 import { useAuth } from '../../hooks/auth';
-import { useUpdateLogo } from '../../hooks/useUpdateLogo';
+import { useCompany } from '../../hooks/useCompany';
 
 import Button from '../Button';
 
@@ -16,30 +16,18 @@ interface HeaderProps {
   disabledHome?: boolean;
 }
 
-interface CompanySelected {
-  id: string;
-  code: string;
-  razao_social: string;
-}
-
 const Header: React.FC<HeaderProps> = ({ pageName, disabledHome = false }) => {
   const history = useHistory();
   const { signOut } = useAuth();
   const { toggleTheme } = useToggleTheme();
-  const { logo } = useUpdateLogo();
-
-  const [companySelected, setCompanySelected] = useState({} as CompanySelected);
-
-  useEffect(() => {
-    const companyString = localStorage.getItem('@Cilex:companySelected');
-    if (companyString) setCompanySelected(JSON.parse(companyString));
-  }, []);
+  const { company, clearCompany } = useCompany();
 
   const handleLogout = useCallback((): void => {
     signOut();
     toggleTheme(orange);
+    clearCompany();
     history.push('/');
-  }, [history, signOut, toggleTheme]);
+  }, [history, signOut, toggleTheme, clearCompany]);
 
   const handleHome = useCallback((): void => {
     history.push('/home');
@@ -48,13 +36,13 @@ const Header: React.FC<HeaderProps> = ({ pageName, disabledHome = false }) => {
   return (
     <Container>
       <div id="container-logo">
-        <img src={logo} alt="logo" />
+        <img src={company.company_logo} alt="logo" />
       </div>
 
       <div id="container-texts">
         <h3>{pageName}</h3>
         <p>
-          {companySelected.code} - {companySelected.razao_social}
+          {company.code} - {company.razao_social}
         </p>
       </div>
 
